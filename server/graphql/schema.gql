@@ -1,0 +1,66 @@
+type User {
+  id: ID!
+  firstName: String
+  lastName: String
+  email: String
+  image: String
+  role: String
+  createdAt: String
+  updatedAt: String
+  appointments: [Appointment!]
+}
+
+type Appointment {
+  id: ID!
+  name: String
+  description: String
+  color: String
+  endDate: String
+  startDate: String
+  ownerId: Int
+  approverId: Int
+  createdAt: String
+  updatedAt: String
+  owner: User!
+  approver: User!
+}
+
+input OrderByInput {
+  col: String
+  by: String
+}
+
+type Query {
+  user(id: ID!): User
+  users(offset: Int, limit: Int, order: OrderByInput): [User]
+  login(email: String, password: String): String
+
+  appointment(id: ID!): Appointment
+  appointments(
+    offset: Int
+    limit: Int
+    order: OrderByInput
+    ownerId: Int
+  ): [Appointment]
+}
+
+type Mutation {
+  register(
+    firstName: String!
+    lastName: String!
+    email: String!
+    password: String!
+  ): User
+
+  addAppointment(
+    name: String!
+    description: String
+    startDate: String!
+    endDate: String!
+    color: String
+    ownerId: Int!
+    approverId: Int
+  ): Appointment
+
+  #TODO: CRUD operation on all types
+}
