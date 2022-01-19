@@ -1,33 +1,82 @@
+import { useState } from 'react'
 import DefaultLayout from '@/layouts/default'
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
+import { useMutation } from '@apollo/client'
+import { REGISTER } from '@/lib/graphql/mutations'
+import { Alert, Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
 
 const Register = () => {
+  const [alert, setAlert] = useState('')
+  const [email, setEmail] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [verifyPassword, setVerifyPassword] = useState('')
+  const [attemptRegistration, { data, loading, error }] = useMutation(REGISTER)
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (password !== verifyPassword) {
+      setAlert('Passwords do not match')
+      return
+    }
+    console.table({ email, lastName, firstName, password, verifyPassword })
+
+    attemptRegistration({
+      variables: { email, lastName, firstName, password },
+    })
+  }
+
   return (
     <DefaultLayout title="Register - SDAAMS">
       <Container>
         <Row className="justify-content-center">
           <Col md={8}>
+            {alert && <Alert variant="warning">{alert}</Alert>}
             <Card className="shadow-sm my-3">
               <Card.Header className="bg-dark text-white">Register</Card.Header>
               <Card.Body>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                   <Row className="justify-content-center">
                     <Col md={6}>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formBasicFirstName"
+                      >
                         <Form.Label>First Name</Form.Label>
-                        <Form.Control type="text" placeholder="First Name" />
+                        <Form.Control
+                          type="text"
+                          required="true"
+                          placeholder="First Name"
+                          value={firstName}
+                          onChange={(el) => setFirstName(el.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
-                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formBasicLastName"
+                      >
                         <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="text" placeholder="Last Name" />
+                        <Form.Control
+                          type="text"
+                          required="true"
+                          placeholder="Last Name"
+                          value={lastName}
+                          onChange={(el) => setLastName(el.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col md={12}>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control
+                          type="email"
+                          required="true"
+                          placeholder="Enter email"
+                          value={email}
+                          onChange={(el) => setEmail(el.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
@@ -36,18 +85,27 @@ const Register = () => {
                         controlId="formBasicPassword"
                       >
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Control
+                          type="password"
+                          required="true"
+                          placeholder="Password"
+                          value={password}
+                          onChange={(el) => setPassword(el.target.value)}
+                        />
                       </Form.Group>
                     </Col>
                     <Col md={6}>
                       <Form.Group
                         className="mb-3"
-                        controlId="formBasicPassword"
+                        controlId="formBasicVerifyPassword"
                       >
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control
                           type="password"
+                          required="true"
                           placeholder="Confirm Password"
+                          value={verifyPassword}
+                          onChange={(el) => setVerifyPassword(el.target.value)}
                         />
                       </Form.Group>
                     </Col>
