@@ -112,3 +112,9 @@ mutation {
 	}
 }
 ```
+
+#### Tip
+
+use concurrently to run frontend and backend simultenously
+
+- concurrently 'npm run dev --prefix client' 'npm run dev --prefix server'
