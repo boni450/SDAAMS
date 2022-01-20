@@ -10,8 +10,11 @@ const Default = ({ children, title }) => {
 	const { state, dispatch } = useContext(Context)
 
 	useEffect(() => {
-		if (!state?.user?.firstName && localStorage.getItem('payload'))
-			dispatch({ type: 'LOGIN', payload: localStorage.getItem('payload') })
+		if (!state?.user?.firstName)
+			dispatch({
+				type: 'AUTHENTICATE',
+				payload: JSON.parse(localStorage.getItem('payload')),
+			})
 	}, [])
 
 	return (

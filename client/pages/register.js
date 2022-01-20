@@ -21,8 +21,8 @@ const Register = () => {
       errorPolicy: 'all',
       onCompleted: (data) => {
         if (data?.register) {
-          localStorage.setItem('payload', data.register)
-          dispatch({ type: 'LOGIN', payload: data.register })
+          localStorage.setItem('payload', JSON.stringify(data.register))
+          dispatch({ type: 'AUTHENTICATE', payload: data.register })
           router.push('/dashboard')
         }
       },
@@ -62,7 +62,7 @@ const Register = () => {
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
                           type="text"
-                          required="true"
+                          required={true}
                           placeholder="First Name"
                           value={firstName}
                           onChange={(el) => setFirstName(el.target.value)}
@@ -77,7 +77,7 @@ const Register = () => {
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control
                           type="text"
-                          required="true"
+                          required={true}
                           placeholder="Last Name"
                           value={lastName}
                           onChange={(el) => setLastName(el.target.value)}
@@ -89,7 +89,7 @@ const Register = () => {
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
                           type="email"
-                          required="true"
+                          required={true}
                           placeholder="Enter email"
                           value={email}
                           onChange={(el) => setEmail(el.target.value)}
@@ -104,7 +104,7 @@ const Register = () => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                           type="password"
-                          required="true"
+                          required={true}
                           placeholder="Password"
                           value={password}
                           onChange={(el) => setPassword(el.target.value)}
@@ -119,7 +119,7 @@ const Register = () => {
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control
                           type="password"
-                          required="true"
+                          required={true}
                           placeholder="Confirm Password"
                           value={verifyPassword}
                           onChange={(el) => setVerifyPassword(el.target.value)}
