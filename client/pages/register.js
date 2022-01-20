@@ -1,17 +1,33 @@
-import { useState } from 'react'
-import DefaultLayout from '@/layouts/default'
+import { useRouter } from 'next/router'
+import { Context } from '@/lib/context'
 import { useMutation } from '@apollo/client'
+import { useState, useContext } from 'react'
+import DefaultLayout from '@/layouts/default'
 import { REGISTER } from '@/lib/graphql/mutations'
 import { Alert, Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
 
 const Register = () => {
+  const router = useRouter()
+  const { dispatch } = useContext(Context)
   const [alert, setAlert] = useState('')
   const [email, setEmail] = useState('')
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [verifyPassword, setVerifyPassword] = useState('')
-  const [attemptRegistration, { data, loading, error }] = useMutation(REGISTER)
+  const [attemptRegistration, { data, loading, error }] = useMutation(
+    REGISTER,
+    {
+      errorPolicy: 'all',
+      onCompleted: (data) => {
+        if (data?.register) {
+          localStorage.setItem('payload', data.register)
+          dispatch({ type: 'LOGIN', payload: data.register })
+          router.push('/dashboard')
+        }
+      },
+    }
+  )
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -19,11 +35,12 @@ const Register = () => {
       setAlert('Passwords do not match')
       return
     }
-    console.table({ email, lastName, firstName, password, verifyPassword })
 
     attemptRegistration({
       variables: { email, lastName, firstName, password },
     })
+
+    if (error) setAlert('Email is already taken')
   }
 
   return (

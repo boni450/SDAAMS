@@ -1,14 +1,17 @@
 import '@/styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { client } from '@/lib/graphql'
+import { Provider } from '@/lib/context'
 import { SSRProvider } from 'react-bootstrap'
 import { ApolloProvider } from '@apollo/client'
-import { client } from '@/lib/graphql'
 
 const MyApp = ({ Component, pageProps }) => {
   return (
     <ApolloProvider client={client}>
       <SSRProvider>
-        <Component {...pageProps} />
+        <Provider>
+          <Component {...pageProps} />
+        </Provider>
       </SSRProvider>
     </ApolloProvider>
   )
