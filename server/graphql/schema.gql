@@ -50,7 +50,7 @@ type Mutation {
     lastName: String!
     email: String!
     password: String!
-  ): User
+  ): String
 
   addAppointment(
     name: String!

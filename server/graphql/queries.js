@@ -24,9 +24,11 @@ module.exports = {
 			{
 				data: {
 					id: thisUser.id,
-					firstName: thisUser.firstName,
+					role: thisUser.role,
+					email: thisUser.email,
+					image: thisUser.image,
 					lastName: thisUser.lastName,
-					picture: thisUser.picture,
+					firstName: thisUser.firstName,
 				},
 			},
 			process.env.JWT_KEY,

@@ -7,8 +7,6 @@ const {
 } = require('apollo-server-core')
 const { ApolloServer, gql } = require('apollo-server-express')
 
-require('dotenv').config()
-
 async function startApolloServer() {
 	const app = express()
 	const httpServer = http.createServer(app)

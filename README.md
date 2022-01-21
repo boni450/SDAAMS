@@ -31,15 +31,7 @@ mutation {
 		lastName: "user"
 		email: "user@email.com"
 		password: "password"
-	) {
-		id
-		firstName
-		lastName
-		email
-		image
-		createdAt
-		updatedAt
-	}
+	)
 }
 ```
 
@@ -71,6 +63,14 @@ mutation {
 ```
 
 ### Queries
+
+- login
+
+```graphql
+{
+	login(email: "user@email.com", password: "password")
+}
+```
 
 - get users
 

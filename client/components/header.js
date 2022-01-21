@@ -11,7 +11,7 @@ const Header = () => {
 			<Container>
 				<Link href="/">
 					<a className="navbar-brand">
-						{typeof state?.user?.firstName !== 'undefined'
+						{typeof state?.user?.email !== 'undefined'
 							? state?.user?.firstName + ' ' + state?.user?.lastName
 							: process.env.title}
 					</a>
@@ -41,7 +41,7 @@ const Header = () => {
 							</Link>
 						</NavDropdown>
 					</Nav>
-					{state?.user?.firstName ? (
+					{state?.user?.email ? (
 						<button
 							className="btn btn-outline-light rounded-pill"
 							onClick={() => {

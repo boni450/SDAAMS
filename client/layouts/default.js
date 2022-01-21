@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import jwt_decode from 'jwt-decode'
 import { Context } from '@/lib/context'
 import { useRouter } from 'next/router'
 import Footer from '@/components/footer'
@@ -10,11 +11,21 @@ const Default = ({ children, title }) => {
 	const { state, dispatch } = useContext(Context)
 
 	useEffect(() => {
-		if (!state?.user?.firstName)
+		if (!state?.user?.email && localStorage.getItem('payload')) {
+			const token = jwt_decode(localStorage.getItem('payload'))
+			//FIXME: check token?.exp date
 			dispatch({
 				type: 'AUTHENTICATE',
-				payload: JSON.parse(localStorage.getItem('payload')),
+				payload: {
+					id: token?.data?.id,
+					role: token?.data?.role,
+					email: token?.data?.email,
+					image: token?.data?.image,
+					lastName: token?.data?.lastName,
+					firstName: token?.data?.firstName,
+				},
 			})
+		}
 	}, [])
 
 	return (

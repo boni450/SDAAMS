@@ -1,14 +1,12 @@
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Context } from '@/lib/context'
 import { useMutation } from '@apollo/client'
-import { useState, useContext } from 'react'
 import DefaultLayout from '@/layouts/default'
 import { REGISTER } from '@/lib/graphql/mutations'
 import { Alert, Container, Row, Col, Form, Button, Card } from 'react-bootstrap'
 
 const Register = () => {
   const router = useRouter()
-  const { dispatch } = useContext(Context)
   const [alert, setAlert] = useState('')
   const [email, setEmail] = useState('')
   const [lastName, setLastName] = useState('')
@@ -21,8 +19,7 @@ const Register = () => {
       errorPolicy: 'all',
       onCompleted: (data) => {
         if (data?.register) {
-          localStorage.setItem('payload', JSON.stringify(data.register))
-          dispatch({ type: 'AUTHENTICATE', payload: data.register })
+          localStorage.setItem('payload', data?.register)
           router.push('/dashboard')
         }
       },
@@ -39,7 +36,6 @@ const Register = () => {
     attemptRegistration({
       variables: { email, lastName, firstName, password },
     })
-
     if (error) setAlert('Email is already taken')
   }
 
@@ -63,7 +59,7 @@ const Register = () => {
                         <Form.Control
                           type="text"
                           required={true}
-                          placeholder="First Name"
+                          placeholder="Enter first name"
                           value={firstName}
                           onChange={(el) => setFirstName(el.target.value)}
                         />
@@ -78,7 +74,7 @@ const Register = () => {
                         <Form.Control
                           type="text"
                           required={true}
-                          placeholder="Last Name"
+                          placeholder="Enter last name"
                           value={lastName}
                           onChange={(el) => setLastName(el.target.value)}
                         />
@@ -105,7 +101,7 @@ const Register = () => {
                         <Form.Control
                           type="password"
                           required={true}
-                          placeholder="Password"
+                          placeholder="Enter password"
                           value={password}
                           onChange={(el) => setPassword(el.target.value)}
                         />
@@ -120,7 +116,7 @@ const Register = () => {
                         <Form.Control
                           type="password"
                           required={true}
-                          placeholder="Confirm Password"
+                          placeholder="Confirm password"
                           value={verifyPassword}
                           onChange={(el) => setVerifyPassword(el.target.value)}
                         />

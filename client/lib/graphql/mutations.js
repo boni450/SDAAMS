@@ -12,16 +12,7 @@ export const REGISTER = gql`
 			firstName: $firstName
 			email: $email
 			password: $password
-		) {
-			id
-			firstName
-			lastName
-			email
-			image
-			role
-			createdAt
-			updatedAt
-		}
+		)
 	}
 `
 
