@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { setCookie } from '@/lib/cookie'
 import { useMutation } from '@apollo/client'
 import DefaultLayout from '@/layouts/default'
 import { REGISTER } from '@/lib/graphql/mutations'
@@ -19,6 +20,7 @@ const Register = () => {
       errorPolicy: 'all',
       onCompleted: (data) => {
         if (data?.register) {
+          setCookie('payload', data?.register)
           localStorage.setItem('payload', data?.register)
           router.push('/dashboard')
         }

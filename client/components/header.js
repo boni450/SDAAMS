@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { useContext } from 'react'
+import { useRouter } from 'next/router'
 import { Context } from '@/lib/context'
+import { eraseCookie } from '@/lib/cookie'
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 
 const Header = () => {
+	const router = useRouter()
 	const { state, dispatch } = useContext(Context)
 
 	return (
@@ -11,7 +14,7 @@ const Header = () => {
 			<Container>
 				<Link href="/">
 					<a className="navbar-brand">
-						{typeof state?.user?.email !== 'undefined'
+						{typeof state?.user?.id !== 'undefined'
 							? state?.user?.firstName + ' ' + state?.user?.lastName
 							: process.env.title}
 					</a>
@@ -22,6 +25,11 @@ const Header = () => {
 						<Link href="/">
 							<a className="nav-link">Home</a>
 						</Link>
+						{state?.user?.id && (
+							<Link href="/dashboard">
+								<a className="nav-link">Dashboard</a>
+							</Link>
+						)}
 						<Link href="/about">
 							<a className="nav-link">About</a>
 						</Link>
@@ -41,12 +49,14 @@ const Header = () => {
 							</Link>
 						</NavDropdown>
 					</Nav>
-					{state?.user?.email ? (
+					{state?.user?.id ? (
 						<button
 							className="btn btn-outline-light rounded-pill"
 							onClick={() => {
+								eraseCookie('payload')
 								localStorage.removeItem('payload')
 								dispatch({ type: 'AUTHENTICATE', payload: null })
+								router.push('/')
 							}}
 						>
 							Logout

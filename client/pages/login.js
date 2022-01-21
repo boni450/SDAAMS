@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { setCookie } from '@/lib/cookie'
 import { useLazyQuery } from '@apollo/client'
 import DefaultLayout from '@/layouts/default'
 import { LOGIN } from '@/lib/graphql/queries'
@@ -14,6 +15,7 @@ const Login = () => {
     errorPolicy: 'all',
     onCompleted: (data) => {
       if (data?.login) {
+        setCookie('payload', data?.login)
         localStorage.setItem('payload', data?.login)
         router.push('/dashboard')
       }
@@ -23,7 +25,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     attemptLogin({ variables: { email, password } })
-    if (error) setAlert('Invalid credentials')
+    if (error) setAlert('Wrong email or password')
   }
 
   return (
