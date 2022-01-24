@@ -6,38 +6,38 @@ import Header from '@/components/header'
 import { useEffect, useContext } from 'react'
 
 const Default = ({ children, title }) => {
-	const { state, dispatch } = useContext(Context)
+  const { state, dispatch } = useContext(Context)
 
-	useEffect(() => {
-		if (!state?.user?.id && localStorage.getItem('payload')) {
-			const token = jwt_decode(localStorage.getItem('payload'))
-			//FIXME: check token?.exp date
-			dispatch({
-				type: 'AUTHENTICATE',
-				payload: {
-					id: token?.data?.id,
-					role: token?.data?.role,
-					email: token?.data?.email,
-					image: token?.data?.image,
-					lastName: token?.data?.lastName,
-					firstName: token?.data?.firstName,
-				},
-			})
-		}
-	}, [])
+  useEffect(() => {
+    if (!state?.user?.id && localStorage.getItem('payload')) {
+      const token = jwt_decode(localStorage.getItem('payload'))
+      //FIXME: check token?.exp date
+      dispatch({
+        type: 'AUTHENTICATE',
+        payload: {
+          id: token?.data?.id,
+          role: token?.data?.role,
+          email: token?.data?.email,
+          image: token?.data?.image,
+          lastName: token?.data?.lastName,
+          firstName: token?.data?.firstName,
+        },
+      })
+    }
+  }, [])
 
-	return (
-		<>
-			<Head>
-				<title>{title || process.env.title}</title>
-				<meta name="description" content={process.env.description} />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<Header />
-			<main>{children}</main>
-			<Footer />
-		</>
-	)
+  return (
+    <>
+      <Head>
+        <title>{title || process.env.TITLE}</title>
+        <meta name="description" content={process.env.DESCRIPTION} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
+  )
 }
 
 export default Default

@@ -9,7 +9,7 @@ const Home = () => {
         <Row>
           <Col md={12}>
             <section className="border-5 border-start border-info rounded rounded-3 bg-light shadow-sm p-3">
-              <h3>Welcome to {process.env.title}</h3>
+              <h3>Welcome to {process.env.TITLE}</h3>
               <p>
                 Lorem ipsum dolor sit, amet consectetur, adipisicing elit. Esse
                 doloribus hic ipsum fugit obcaecati eius odio, ipsam libero

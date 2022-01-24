@@ -15,14 +15,12 @@
   "author": "boni",
   "license": "MIT",
   "dependencies": {
-    "@apollo/client": "^3.5.7",
     "apollo-server-core": "^3.6.1",
     "apollo-server-express": "^3.6.1",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "graphql": "^16.2.0",
     "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "^3.1.2",
     "mysql2": "^2.3.3",
     "sequelize": "^7.0.0-alpha.3"
   },
