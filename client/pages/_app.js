@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import '@/styles/bootstrap.css'
 import { client } from '@/lib/graphql'
 import { Provider } from '@/lib/context'
 import { SSRProvider } from 'react-bootstrap'

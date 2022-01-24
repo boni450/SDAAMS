@@ -1,18 +1,21 @@
-import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
-import { Container, Table } from 'react-bootstrap'
+import { Context } from '@/lib/context'
+import { useMutation } from '@apollo/client'
 import styles from '@/styles/shared.module.css'
+import { useState, useEffect, useContext } from 'react'
+import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
 import AddEventModal from '@/components/calendar/add-event'
 import ShowEventModal from '@/components/calendar/show-event'
-import { useMutation } from '@apollo/client'
-import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
+import { Container, Table } from 'react-bootstrap'
 
 const Calendar = () => {
+	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
 	const monthWeeks = [0, 1, 2, 3, 4]
 	const weekDays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
+	// STATE
 	const [events, setEvents] = useState([])
 	const [currentEvent, setCurrentEvent] = useState({})
 	const [month, setMonth] = useState({
@@ -22,6 +25,9 @@ const Calendar = () => {
 	})
 	const [showModal, setShowModal] = useState(false)
 	const [showAddModal, setShowAddModal] = useState(false)
+
+	// CONTEXT & GRAPHQL
+	const { state } = useContext(Context)
 	const [attemptSavingEvent, { data, loading, error }] = useMutation(
 		ADD_APPOINTMENT,
 		{
@@ -35,7 +41,6 @@ const Calendar = () => {
 	)
 
 	useEffect(() => {
-		console.log("TODO: line 208 - get this month's events")
 		setEvents([
 			{
 				id: 0,
@@ -69,7 +74,7 @@ const Calendar = () => {
 
 	const getDayEvents = (day = 0) => {
 		let a, b, c, d
-		a = b = c = d = new Date() // FIX ME
+		a = b = c = d = new Date() // FIXME
 		a = new Date(c.setDate(day))
 		b = new Date(d.setDate(day - 1))
 		return events.filter(
@@ -79,8 +84,19 @@ const Calendar = () => {
 
 	const saveEvent = ({ name, description, start, end, color }) => {
 		let a, b
-		a = b = new Date() // FIX ME
-		console.log('TODO: line 240 - save new event via API')
+		a = b = new Date() // FIXME
+
+		attemptSavingEvent({
+			variables: {
+				name,
+				color,
+				description,
+				endDate: end,
+				startDate: start,
+				ownerId: state?.user?.id,
+			},
+		})
+
 		setEvents([
 			...events,
 			{

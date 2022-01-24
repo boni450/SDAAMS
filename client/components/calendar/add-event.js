@@ -100,22 +100,20 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 							<Form.Control
 								as="textarea"
 								rows={3}
+								className="mb-2"
 								placeholder="Description"
 								value={description}
 								onChange={(el) => setDescription(el.target.value)}
 							/>
 						</Col>
 					</Row>
+					<div className="d-grid">
+						<Button variant="primary" type="submit">
+							Submit
+						</Button>
+					</div>
 				</Form>
 			</Modal.Body>
-			<Modal.Footer>
-				<Button variant="secondary" onClick={toggle}>
-					Close
-				</Button>
-				<Button variant="primary" onClick={handleSubmit}>
-					Save Changes
-				</Button>
-			</Modal.Footer>
 		</Modal>
 	)
 }
