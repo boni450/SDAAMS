@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { format } from 'date-fns'
 import { Alert, Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
 const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
@@ -20,8 +21,8 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 			color,
 			name: name.trim(),
 			description: description.trim(),
-			end: new Date(month.today.getFullYear(), month.today.getMonth(), end), // FIXME
-			start: new Date(month.today.getFullYear(), month.today.getMonth(), start), // FIXME
+			end: format(new Date().setDate(end), 'yyyy-MM-dd'),
+			start: format(new Date().setDate(start), 'yyyy-MM-dd'),
 		})
 		setEnd('')
 		setName('')

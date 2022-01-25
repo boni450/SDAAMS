@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { Context } from '@/lib/context'
 import styles from '@/styles/shared.module.css'
 import { Container, Table } from 'react-bootstrap'
@@ -56,7 +55,8 @@ const Calendar = () => {
 
 		return events.filter((event) => {
 			console.log(new Date(event.startDate))
-			return new Date(event.startDate) < a && b < new Date(event.endDate)
+			// return new Date(event.startDate) < a && b < new Date(event.endDate)
+			return []
 		})
 	}
 
