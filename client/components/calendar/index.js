@@ -1,8 +1,9 @@
 import { format } from 'date-fns'
 import { Context } from '@/lib/context'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import styles from '@/styles/shared.module.css'
 import { useState, useEffect, useContext } from 'react'
+import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
 import AddEventModal from '@/components/calendar/add-event'
 import ShowEventModal from '@/components/calendar/show-event'
@@ -12,7 +13,7 @@ const Calendar = () => {
 	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
-	const monthWeeks = [0, 1, 2, 3, 4]
+	const monthWeeks = [0, 1, 2, 3, 4, 5]
 	const weekDays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 	// STATE
@@ -28,48 +29,23 @@ const Calendar = () => {
 
 	// CONTEXT & GRAPHQL
 	const { state } = useContext(Context)
+	const appointmentsQuery = useQuery(GET_APPOINTMENTS)
 	const [attemptSavingEvent, { data, loading, error }] = useMutation(
 		ADD_APPOINTMENT,
 		{
 			errorPolicy: 'all',
 			onCompleted: (data) => {
 				if (data?.addAppointment) {
-					console.log('Event saved ', data)
+					setEvents([...events, data?.addAppointment])
 				}
 			},
 		}
 	)
 
 	useEffect(() => {
-		setEvents([
-			{
-				id: 0,
-				name: 'Weekend',
-				description:
-					'Abel Makkonen Tesfaye (born February 16, 1990), known professionally as the Weeknd, ... to avoid trademark problems with Canadian pop-rock band the Weekend.',
-				start: '2022-01-28T08:00:51.948Z',
-				end: '2022-01-28T08:00:51.948Z',
-				color: 'warning',
-			},
-			{
-				id: 1,
-				name: 'Dentist',
-				description:
-					'As doctors of oral health, dentists are trained to diagnose, treat and prevent oral diseases; promote oral health; and create treatment plans to maintain or ...',
-				start: '2022-01-07T08:00:51.948Z',
-				end: '2022-01-09T08:00:51.948Z',
-				color: 'info',
-			},
-			{
-				id: 2,
-				name: 'Fundraising',
-				description:
-					'GoFundMe: The most trusted online fundraising platform for any need or dream. Start a crowdfunding fundraiser in 5 minutes. Get help. Give kindness.',
-				start: '2022-01-17T08:00:51.948Z',
-				end: '2022-01-20T08:00:51.948Z',
-				color: 'primary',
-			},
-		])
+		if (appointmentsQuery?.data) {
+			setEvents([...appointmentsQuery?.data?.appointments])
+		}
 	}, [])
 
 	const getDayEvents = (day = 0) => {
@@ -77,8 +53,9 @@ const Calendar = () => {
 		a = b = c = d = new Date() // FIXME
 		a = new Date(c.setDate(day))
 		b = new Date(d.setDate(day - 1))
+
 		return events.filter(
-			(event) => new Date(event.start) < a && b < new Date(event.end)
+			(event) => new Date(event.startDate) < a && b < new Date(event.endDate)
 		)
 	}
 
@@ -96,18 +73,6 @@ const Calendar = () => {
 				ownerId: state?.user?.id,
 			},
 		})
-
-		setEvents([
-			...events,
-			{
-				name,
-				color,
-				description,
-				id: events.length,
-				end: new Date(a.setDate(end)),
-				start: new Date(b.setDate(start)),
-			},
-		])
 	}
 
 	const showNext = () => {
@@ -150,7 +115,7 @@ const Calendar = () => {
 					className="btn btn-primary rounded-pill"
 					onClick={() => setShowAddModal(!showAddModal)}
 				>
-					Add
+					Add Event
 				</button>
 			</div>
 			<Table bordered responsive className="text-center">
@@ -165,9 +130,10 @@ const Calendar = () => {
 					{monthWeeks.map((week, index) => (
 						<tr key={index}>
 							{weekDays.map((day, id) => {
-								if (grid.day || month.firstDay.getDate() == grid.id) grid.day++
+								if (grid.day || month.firstDay.getDay() == grid.id) grid.day++
 								grid.id++
 								if (grid.day > month.lastDay.getDate()) grid.day = 0
+
 								return (
 									<td
 										key={id}
