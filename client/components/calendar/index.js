@@ -1,13 +1,13 @@
 import { format } from 'date-fns'
 import { Context } from '@/lib/context'
-import { useMutation, useQuery } from '@apollo/client'
 import styles from '@/styles/shared.module.css'
-import { useState, useEffect, useContext } from 'react'
+import { Container, Table } from 'react-bootstrap'
+import { useMutation, useQuery } from '@apollo/client'
+import { useState, useContext, useEffect } from 'react'
 import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
 import AddEventModal from '@/components/calendar/add-event'
 import ShowEventModal from '@/components/calendar/show-event'
-import { Container, Table } from 'react-bootstrap'
 
 const Calendar = () => {
 	// GRID
@@ -44,7 +44,7 @@ const Calendar = () => {
 
 	useEffect(() => {
 		if (appointmentsQuery?.data) {
-			setEvents([...appointmentsQuery?.data?.appointments])
+			setEvents(appointmentsQuery?.data?.appointments)
 		}
 	}, [])
 
@@ -54,15 +54,13 @@ const Calendar = () => {
 		a = new Date(c.setDate(day))
 		b = new Date(d.setDate(day - 1))
 
-		return events.filter(
-			(event) => new Date(event.startDate) < a && b < new Date(event.endDate)
-		)
+		return events.filter((event) => {
+			console.log(new Date(event.startDate))
+			return new Date(event.startDate) < a && b < new Date(event.endDate)
+		})
 	}
 
 	const saveEvent = ({ name, description, start, end, color }) => {
-		let a, b
-		a = b = new Date() // FIXME
-
 		attemptSavingEvent({
 			variables: {
 				name,

@@ -17,11 +17,11 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		saveEvent({
-			end,
-			start,
 			color,
 			name: name.trim(),
 			description: description.trim(),
+			end: new Date(month.today.getFullYear(), month.today.getMonth(), end), // FIXME
+			start: new Date(month.today.getFullYear(), month.today.getMonth(), start), // FIXME
 		})
 		setEnd('')
 		setName('')
@@ -56,7 +56,7 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 								className="mb-2"
 								onChange={(el) => setColor(el.target.value)}
 							>
-								<option>. . . choose color . . .</option>
+								<option value="">. . . choose color . . .</option>
 								{colors.map((item, id) => (
 									<option key={id} value={item.value}>
 										{item.name}
