@@ -49,13 +49,13 @@ const Header = () => {
               <Link href="/dashboard">
                 <a className="nav-link">Dashboard</a>
               </Link>
-              <Link href="/chat">
+              <Link href="/dashboard/chat">
                 <a className="nav-link">Inbox</a>
               </Link>
-              <Link href="/notifications">
+              <Link href="/dashboard/notifications">
                 <a className="nav-link">Notifications</a>
               </Link>
-              <Link href="/settings">
+              <Link href="/dashboard/settings">
                 <a className="nav-link">Settings</a>
               </Link>
               <button
@@ -72,12 +72,12 @@ const Header = () => {
             </Nav>
           ) : (
             <>
-              <Link href="/login">
+              <Link href="/guest/login">
                 <a className="btn btn-outline-light rounded-pill me-1">
                   Sign in
                 </a>
               </Link>
-              <Link href="/register">
+              <Link href="/guest/register">
                 <a className="btn btn-outline-light rounded-pill">Register</a>
               </Link>
             </>

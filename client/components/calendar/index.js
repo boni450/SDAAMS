@@ -1,12 +1,12 @@
 import { Context } from '@/lib/context'
 import styles from '@/styles/shared.module.css'
-import { Container, Table } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import { useMutation, useQuery } from '@apollo/client'
 import { useState, useContext, useEffect } from 'react'
 import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
-import AddEventModal from '@/components/calendar/add-event'
-import ShowEventModal from '@/components/calendar/show-event'
+import ShowEventModal from '@/components/calendar/show'
+import AddEventModal from '@/components/calendar/add'
 
 const Calendar = () => {
 	// GRID
@@ -82,7 +82,7 @@ const Calendar = () => {
 	}
 
 	return (
-		<Container>
+		<>
 			<AddEventModal
 				month={month}
 				saveEvent={saveEvent}
@@ -186,7 +186,7 @@ const Calendar = () => {
 					Next &raquo;
 				</button>
 			</div>
-		</Container>
+		</>
 	)
 }
 
