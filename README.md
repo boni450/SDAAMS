@@ -15,8 +15,7 @@ Smart Daily Activity Appointment Management System ??
 - [ ] authentication & authorization
 - [ ] chat
 - [ ] comments
-- [ ] notifications
-- [ ] reminder
+- [ ] notifications & reminder
 
 ## Grapqhl samples
 

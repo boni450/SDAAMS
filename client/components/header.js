@@ -25,11 +25,6 @@ const Header = () => {
             <Link href="/">
               <a className="nav-link">Home</a>
             </Link>
-            {state?.user?.id && (
-              <Link href="/dashboard">
-                <a className="nav-link">Dashboard</a>
-              </Link>
-            )}
             <Link href="/about">
               <a className="nav-link">About</a>
             </Link>
@@ -50,17 +45,31 @@ const Header = () => {
             </NavDropdown>
           </Nav>
           {state?.user?.id ? (
-            <button
-              className="btn btn-outline-light rounded-pill"
-              onClick={() => {
-                eraseCookie('payload')
-                localStorage.removeItem('payload')
-                dispatch({ type: 'AUTHENTICATE', payload: null })
-                router.push('/')
-              }}
-            >
-              Logout
-            </button>
+            <Nav>
+              <Link href="/dashboard">
+                <a className="nav-link">Dashboard</a>
+              </Link>
+              <Link href="/chat">
+                <a className="nav-link">Inbox</a>
+              </Link>
+              <Link href="/notifications">
+                <a className="nav-link">Notifications</a>
+              </Link>
+              <Link href="/settings">
+                <a className="nav-link">Settings</a>
+              </Link>
+              <button
+                className="btn btn-outline-light rounded-pill ms-1"
+                onClick={() => {
+                  eraseCookie('payload')
+                  localStorage.removeItem('payload')
+                  dispatch({ type: 'AUTHENTICATE', payload: null })
+                  router.push('/')
+                }}
+              >
+                Logout
+              </button>
+            </Nav>
           ) : (
             <>
               <Link href="/login">

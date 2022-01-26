@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap'
 
 const Dashboard = () => {
 	return (
-		<DefaultLayout>
+		<DefaultLayout title="Dashboard - SDAAMS">
 			<Container fluid>
 				<Calendar />
 			</Container>
