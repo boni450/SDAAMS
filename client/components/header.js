@@ -46,6 +46,11 @@ const Header = () => {
           </Nav>
           {state?.user?.id ? (
             <Nav>
+              {state?.user?.role === 'admin' && (
+                <Link href="/dashboard/admin">
+                  <a className="nav-link">Admin</a>
+                </Link>
+              )}
               <Link href="/dashboard">
                 <a className="nav-link">Dashboard</a>
               </Link>

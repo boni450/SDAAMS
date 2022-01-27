@@ -7,6 +7,7 @@ import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
 import ShowEventModal from '@/components/calendar/show'
 import AddEventModal from '@/components/calendar/add'
+import Loader from '@/components/loader'
 
 const Calendar = () => {
 	// GRID
@@ -42,21 +43,20 @@ const Calendar = () => {
 	)
 
 	useEffect(() => {
-		if (appointmentsQuery?.data) {
+		if (appointmentsQuery?.data)
 			setEvents(appointmentsQuery?.data?.appointments)
-		}
 	}, [])
 
 	const getDayEvents = (day = 0) => {
-		let a, b, c, d
-		a = b = c = d = new Date() // FIXME
+		let a, b, c, d, e, f, result
+		a = b = c = d = e = f = new Date() // FIXME
 		a = new Date(c.setDate(day))
 		b = new Date(d.setDate(day - 1))
 
 		return events.filter((event) => {
-			console.log(new Date(event.startDate))
-			// return new Date(event.startDate) < a && b < new Date(event.endDate)
-			return []
+			e.setTime(event.startDate)
+			f.setTime(event.endDate)
+			return e < a && b < f
 		})
 	}
 
@@ -81,78 +81,81 @@ const Calendar = () => {
 		console.log('go prev')
 	}
 
-	return (
-		<>
-			<AddEventModal
-				month={month}
-				saveEvent={saveEvent}
-				visible={showAddModal}
-				toggle={() => setShowAddModal(!showAddModal)}
-			/>
-			<ShowEventModal
-				visible={showModal}
-				event={currentEvent}
-				toggle={() => setShowModal(!showModal)}
-				erase={() => {
-					if (confirm('You are about to delete an event :(')) {
-						setShowModal(false)
-						setEvents([
-							...events.filter((event) => event.id != currentEvent.id),
-						])
-					}
-				}}
-			/>
-			<div className="d-flex justify-content-between mb-3">
-				<span className="badge bg-light text-dark fs-4">
-					{month.today.toLocaleString('default', {
-						month: 'long',
-						year: 'numeric',
-					})}
-				</span>
-				<button
-					className="btn btn-primary rounded-pill"
-					onClick={() => setShowAddModal(!showAddModal)}
-				>
-					Add Event
-				</button>
-			</div>
-			<Table bordered responsive className="text-center">
-				<thead>
-					<tr className="text-uppercase">
-						{weekDays.map((day, id) => (
-							<th key={id}>{day}</th>
-						))}
-					</tr>
-				</thead>
-				<tbody>
-					{monthWeeks.map((week, index) => (
-						<tr key={index}>
-							{weekDays.map((day, id) => {
-								if (grid.day || month.firstDay.getDay() == grid.id) grid.day++
-								grid.id++
-								if (grid.day > month.lastDay.getDate()) grid.day = 0
+	if (appointmentsQuery?.loading) return <Loader size={18} />
+	if (appointmentsQuery?.data) {
+		return (
+			<>
+				<AddEventModal
+					month={month}
+					saveEvent={saveEvent}
+					visible={showAddModal}
+					toggle={() => setShowAddModal(!showAddModal)}
+				/>
+				<ShowEventModal
+					visible={showModal}
+					event={currentEvent}
+					toggle={() => setShowModal(!showModal)}
+					erase={() => {
+						if (confirm('You are about to delete an event :(')) {
+							setShowModal(false)
+							setEvents([
+								...events.filter((event) => event.id != currentEvent.id),
+							])
+						}
+					}}
+				/>
+				<div className="d-flex justify-content-between mb-3">
+					<span className="badge bg-light text-dark fs-4">
+						{month.today.toLocaleString('default', {
+							month: 'long',
+							year: 'numeric',
+						})}
+					</span>
+					<button
+						className="btn btn-primary rounded-pill"
+						onClick={() => setShowAddModal(!showAddModal)}
+					>
+						Add Event
+					</button>
+				</div>
+				<Table bordered responsive className="text-center">
+					<thead>
+						<tr className="text-uppercase">
+							{weekDays.map((day, id) => (
+								<th key={id}>{day}</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{monthWeeks.map((week, index) => (
+							<tr key={index}>
+								{weekDays.map((day, id) => {
+									if (grid.day || month.firstDay.getDay() == grid.id) grid.day++
+									grid.id++
+									if (grid.day > month.lastDay.getDate()) grid.day = 0
 
-								return (
-									<td
-										key={id}
-										className={styles.box + ' ' + (!grid.day && 'bg-light')}
-									>
-										{grid.day != 0 && (
-											<span
-												className={
-													grid.day == new Date().getDate()
-														? 'text-primary fw-bold'
-														: ''
-												}
-											>
-												{grid.day}
-											</span>
-										)}
-										{getDayEvents(grid.day).map((event, count) => {
-											count < 3 ? (
+									return (
+										<td
+											key={id}
+											className={styles.box + ' ' + (!grid.day && 'bg-light')}
+										>
+											{grid.day != 0 && (
+												<span
+													className={
+														grid.day == new Date().getDate()
+															? 'text-primary fw-bold'
+															: ''
+													}
+												>
+													{grid.day}
+												</span>
+											)}
+											{getDayEvents(grid.day).map((event, count) => (
 												<button
 													key={event.id}
-													className={'btn btn-sm btn-' + event.color}
+													className={
+														'btn btn-sm d-block w-100 btn-' + event.color
+													}
 													onClick={() => {
 														setCurrentEvent(
 															events.find((item) => event.id == item.id)
@@ -162,32 +165,25 @@ const Calendar = () => {
 												>
 													{event.name}
 												</button>
-											) : (
-												<button
-													key={grid.day}
-													className="btn btn-sm btn-secondary"
-												>
-													more +
-												</button>
-											)
-										})}
-									</td>
-								)
-							})}
-						</tr>
-					))}
-				</tbody>
-			</Table>
-			<div className="d-flex justify-content-center">
-				<button className="btn btn-primary mx-1" onClick={showPrev}>
-					&laquo; Prev
-				</button>
-				<button className="btn btn-primary mx-1" onClick={showNext}>
-					Next &raquo;
-				</button>
-			</div>
-		</>
-	)
+											))}
+										</td>
+									)
+								})}
+							</tr>
+						))}
+					</tbody>
+				</Table>
+				<div className="d-flex justify-content-center">
+					<button className="btn btn-primary mx-1" onClick={showPrev}>
+						&laquo; Prev
+					</button>
+					<button className="btn btn-primary mx-1" onClick={showNext}>
+						Next &raquo;
+					</button>
+				</div>
+			</>
+		)
+	}
 }
 
 export default Calendar
