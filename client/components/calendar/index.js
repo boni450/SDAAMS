@@ -9,6 +9,7 @@ import ShowEventModal from '@/components/calendar/show'
 import AddEventModal from '@/components/calendar/add'
 import Loader from '@/components/loader'
 
+// TODO: let parent component fetch data
 const Calendar = () => {
 	// GRID
 	const today = new Date()
@@ -48,15 +49,18 @@ const Calendar = () => {
 	}, [])
 
 	const getDayEvents = (day = 0) => {
-		let a, b, c, d, e, f, result
-		a = b = c = d = e = f = new Date() // FIXME
-		a = new Date(c.setDate(day))
-		b = new Date(d.setDate(day - 1))
+		let a = new Date()
+		let b = new Date()
+		let c = new Date()
+		let d = new Date()
+
+		a.setDate(day)
+		b.setDate(day - 1)
 
 		return events.filter((event) => {
-			e.setTime(event.startDate)
-			f.setTime(event.endDate)
-			return e < a && b < f
+			c.setTime(event?.startDate)
+			d.setTime(event?.endDate)
+			return c < a && b < d
 		})
 	}
 
@@ -154,7 +158,7 @@ const Calendar = () => {
 												<button
 													key={event.id}
 													className={
-														'btn btn-sm d-block w-100 btn-' + event.color
+														'btn btn-sm d-block w-100 p-0 btn-' + event.color
 													}
 													onClick={() => {
 														setCurrentEvent(

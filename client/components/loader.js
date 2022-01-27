@@ -4,7 +4,7 @@ const Loader = ({ size = 5 }) => {
 	return (
 		<div className="my-5">
 			{[...Array(size)].map((item, id) => (
-				<Placeholder animation={id % 2 == 0 ? 'glow' : 'wave'} key={id} as="p">
+				<Placeholder animation={id % 3 == 0 ? 'glow' : 'wave'} key={id} as="p">
 					<Placeholder xs={12 - (id % 3)} />
 				</Placeholder>
 			))}
