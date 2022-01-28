@@ -48,7 +48,7 @@ const Header = () => {
             <Nav>
               {state?.user?.role === 'admin' && (
                 <Link href="/dashboard/admin">
-                  <a className="nav-link">Admin</a>
+                  <a className="nav-link">Admin Area</a>
                 </Link>
               )}
               <Link href="/dashboard">
