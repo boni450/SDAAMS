@@ -11,7 +11,7 @@ const Login = () => {
   const [alert, setAlert] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [attemptLogin, { data, loading, error }] = useLazyQuery(LOGIN, {
+  const [attemptLogin, { error }] = useLazyQuery(LOGIN, {
     errorPolicy: 'all',
     onCompleted: (data) => {
       if (data?.login) {

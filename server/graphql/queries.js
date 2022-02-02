@@ -48,4 +48,13 @@ module.exports = {
 			order: [[args.orderByCol || 'id', args.orderBy || 'ASC']],
 		})
 	},
+
+	analytics: async (parent, args, context) => {
+		return {
+			users: await User.count(),
+			appointments: await Appointment.count(),
+			bookings: await Appointment.count({ where: { isApproved: true } }),
+			comments: 0,
+		}
+	},
 }

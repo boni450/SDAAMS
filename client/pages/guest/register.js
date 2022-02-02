@@ -14,19 +14,16 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [verifyPassword, setVerifyPassword] = useState('')
-  const [attemptRegistration, { data, loading, error }] = useMutation(
-    REGISTER,
-    {
-      errorPolicy: 'all',
-      onCompleted: (data) => {
-        if (data?.register) {
-          setCookie('payload', data?.register)
-          localStorage.setItem('payload', data?.register)
-          router.push('/dashboard')
-        }
-      },
-    }
-  )
+  const [attemptRegistration, { error }] = useMutation(REGISTER, {
+    errorPolicy: 'all',
+    onCompleted: (data) => {
+      if (data?.register) {
+        setCookie('payload', data?.register)
+        localStorage.setItem('payload', data?.register)
+        router.push('/dashboard')
+      }
+    },
+  })
 
   const handleSubmit = (event) => {
     event.preventDefault()

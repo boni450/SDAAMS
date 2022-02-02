@@ -25,6 +25,13 @@ type Appointment {
   approver: User!
 }
 
+type Analytics {
+  users: Int
+  appointments: Int
+  comments: Int
+  bookings: Int
+}
+
 type Query {
   user(id: ID!): User
   users(offset: Int, limit: Int, orderBy: String, orderByCol: String): [User]
@@ -38,6 +45,8 @@ type Query {
     orderBy: String
     orderByCol: String
   ): [Appointment]
+
+  analytics: Analytics
 }
 
 type Mutation {

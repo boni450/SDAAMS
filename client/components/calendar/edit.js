@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { Alert, Modal, Button, Row, Col, Form } from 'react-bootstrap'
+import { Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
 const EditAppointmentModal = ({
 	month,
