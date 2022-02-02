@@ -53,3 +53,49 @@ export const ADD_APPOINTMENT = gql`
 		}
 	}
 `
+
+export const UPDATE_APPOINTMENT = gql`
+	mutation UpdateAppointment(
+		$id: Int!
+		$name: String!
+		$description: String
+		$endDate: String!
+		$startDate: String!
+		$color: String
+		$ownerId: Int!
+		$approverId: Int
+	) {
+		updateAppointment(
+			id: $id
+			name: $name
+			description: $description
+			endDate: $endDate
+			startDate: $startDate
+			color: $color
+			ownerId: $ownerId
+			approverId: $approverId
+		) {
+			id
+			name
+			description
+			color
+			endDate
+			startDate
+			ownerId
+			approverId
+			createdAt
+			updatedAt
+			owner {
+				id
+				firstName
+				lastName
+			}
+		}
+	}
+`
+
+export const DELETE_APPOINTMENT = gql`
+	mutation DeleteAppointment($id: Int!) {
+		deleteAppointment(id: $id)
+	}
+`

@@ -23,7 +23,16 @@ module.exports = {
 	},
 
 	addAppointment: async (parent, args, context) => {
-		const newAppointment = await Appointment.create({ ...args })
-		return newAppointment
+		return await Appointment.create({ ...args })
+	},
+
+	updateAppointment: async (parent, args, context) => {
+		await Appointment.update({ ...args }, { where: { id: args?.id } })
+		return await Appointment.findByPk(args?.id)
+	},
+
+	deleteAppointment: async (parent, { id }, context) => {
+		await Appointment.destroy({ where: { id } })
+		return 'ok'
 	},
 }

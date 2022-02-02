@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { Alert, Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
-const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
+const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 	const [end, setEnd] = useState('')
 	const [name, setName] = useState('')
 	const [color, setColor] = useState('')
@@ -17,7 +17,7 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		saveEvent({
+		saveAppointment({
 			color,
 			name: name.trim(),
 			description: description.trim(),
@@ -35,7 +35,7 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 	return (
 		<Modal show={visible} onHide={toggle}>
 			<Modal.Header closeButton>
-				<Modal.Title>Add Event</Modal.Title>
+				<Modal.Title>Add Appointment</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form onSubmit={handleSubmit}>
@@ -44,7 +44,7 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 							<Form.Control
 								type="text"
 								required={true}
-								placeholder="Event name"
+								placeholder="Name"
 								value={name}
 								className="mb-2"
 								onChange={(el) => setName(el.target.value)}
@@ -119,4 +119,4 @@ const AddEventModal = ({ toggle, visible, saveEvent, month }) => {
 	)
 }
 
-export default AddEventModal
+export default AddAppointmentModal

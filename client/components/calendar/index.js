@@ -1,16 +1,17 @@
 import { Context } from '@/lib/context'
 import styles from '@/styles/shared.module.css'
 import { Table } from 'react-bootstrap'
-import { useMutation, useQuery } from '@apollo/client'
-import { useState, useContext, useEffect } from 'react'
-import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
-import { ADD_APPOINTMENT } from '@/lib/graphql/mutations'
-import ShowEventModal from '@/components/calendar/show'
-import AddEventModal from '@/components/calendar/add'
-import Loader from '@/components/loader'
+import { useMutation } from '@apollo/client'
+import { useState, useContext } from 'react'
+import ShowAppointmentModal from '@/components/calendar/show'
+import AddAppointmentModal from '@/components/calendar/add'
+import {
+	ADD_APPOINTMENT,
+	DELETE_APPOINTMENT,
+	UPDATE_APPOINTMENT,
+} from '@/lib/graphql/mutations'
 
-// TODO: let parent component fetch data
-const Calendar = () => {
+const Calendar = ({ data }) => {
 	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
@@ -18,8 +19,8 @@ const Calendar = () => {
 	const weekDays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 	// STATE
-	const [events, setEvents] = useState([])
-	const [currentEvent, setCurrentEvent] = useState({})
+	const [appointments, setAppointments] = useState(data)
+	const [currentAppointment, setCurrentAppointment] = useState({})
 	const [month, setMonth] = useState({
 		today,
 		firstDay: new Date(today.getFullYear(), today.getMonth(), 1),
@@ -30,25 +31,35 @@ const Calendar = () => {
 
 	// CONTEXT & GRAPHQL
 	const { state } = useContext(Context)
-	const appointmentsQuery = useQuery(GET_APPOINTMENTS)
-	const [attemptSavingEvent, { data, loading, error }] = useMutation(
+	const [attemptSavingAppointment, saveAppointmentMutation] = useMutation(
 		ADD_APPOINTMENT,
 		{
 			errorPolicy: 'all',
 			onCompleted: (data) => {
 				if (data?.addAppointment) {
-					setEvents([...events, data?.addAppointment])
+					setAppointments([...appointments, data?.addAppointment])
+				}
+			},
+		}
+	)
+	const [attemptDeletingAppointment, deleteAppointmentMutation] = useMutation(
+		DELETE_APPOINTMENT,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				if (data?.deleteAppointment) {
+					setAppointments([
+						...appointments.filter(
+							(appointment) => appointment.id != currentAppointment.id
+						),
+					])
+					setShowModal(false)
 				}
 			},
 		}
 	)
 
-	useEffect(() => {
-		if (appointmentsQuery?.data)
-			setEvents(appointmentsQuery?.data?.appointments)
-	}, [])
-
-	const getDayEvents = (day = 0) => {
+	const getDayAppointments = (day = 0) => {
 		let a = new Date()
 		let b = new Date()
 		let c = new Date()
@@ -57,15 +68,15 @@ const Calendar = () => {
 		a.setDate(day)
 		b.setDate(day - 1)
 
-		return events.filter((event) => {
-			c.setTime(event?.startDate)
-			d.setTime(event?.endDate)
+		return appointments.filter((appointment) => {
+			c.setTime(appointment?.startDate)
+			d.setTime(appointment?.endDate)
 			return c < a && b < d
 		})
 	}
 
-	const saveEvent = ({ name, description, start, end, color }) => {
-		attemptSavingEvent({
+	const saveAppointment = ({ name, description, start, end, color }) => {
+		attemptSavingAppointment({
 			variables: {
 				name,
 				color,
@@ -77,6 +88,13 @@ const Calendar = () => {
 		})
 	}
 
+	const deleteAppointment = () => {
+		if (confirm('You are about to delete an event :('))
+			attemptDeletingAppointment({
+				variables: { id: Number.parseInt(currentAppointment.id) },
+			})
+	}
+
 	const showNext = () => {
 		console.log('go next')
 	}
@@ -85,109 +103,102 @@ const Calendar = () => {
 		console.log('go prev')
 	}
 
-	if (appointmentsQuery?.loading) return <Loader size={18} />
-	if (appointmentsQuery?.data) {
-		return (
-			<>
-				<AddEventModal
-					month={month}
-					saveEvent={saveEvent}
-					visible={showAddModal}
-					toggle={() => setShowAddModal(!showAddModal)}
-				/>
-				<ShowEventModal
-					visible={showModal}
-					event={currentEvent}
-					toggle={() => setShowModal(!showModal)}
-					erase={() => {
-						if (confirm('You are about to delete an event :(')) {
-							setShowModal(false)
-							setEvents([
-								...events.filter((event) => event.id != currentEvent.id),
-							])
-						}
-					}}
-				/>
-				<div className="d-flex justify-content-between mb-3">
-					<span className="badge bg-light text-dark fs-4">
-						{month.today.toLocaleString('default', {
-							month: 'long',
-							year: 'numeric',
-						})}
-					</span>
-					<button
-						className="btn btn-primary rounded-pill"
-						onClick={() => setShowAddModal(!showAddModal)}
-					>
-						Add Event
-					</button>
-				</div>
-				<Table bordered responsive className="text-center">
-					<thead>
-						<tr className="text-uppercase">
-							{weekDays.map((day, id) => (
-								<th key={id}>{day}</th>
-							))}
-						</tr>
-					</thead>
-					<tbody>
-						{monthWeeks.map((week, index) => (
-							<tr key={index}>
-								{weekDays.map((day, id) => {
-									if (grid.day || month.firstDay.getDay() == grid.id) grid.day++
-									grid.id++
-									if (grid.day > month.lastDay.getDate()) grid.day = 0
-
-									return (
-										<td
-											key={id}
-											className={styles.box + ' ' + (!grid.day && 'bg-light')}
-										>
-											{grid.day != 0 && (
-												<span
-													className={
-														grid.day == new Date().getDate()
-															? 'text-primary fw-bold'
-															: ''
-													}
-												>
-													{grid.day}
-												</span>
-											)}
-											{getDayEvents(grid.day).map((event, count) => (
-												<button
-													key={event.id}
-													className={
-														'btn btn-sm d-block w-100 p-0 btn-' + event.color
-													}
-													onClick={() => {
-														setCurrentEvent(
-															events.find((item) => event.id == item.id)
-														)
-														setShowModal(!showModal)
-													}}
-												>
-													{event.name}
-												</button>
-											))}
-										</td>
-									)
-								})}
-							</tr>
+	return (
+		<>
+			<AddAppointmentModal
+				month={month}
+				saveAppointment={saveAppointment}
+				visible={showAddModal}
+				toggle={() => setShowAddModal(!showAddModal)}
+			/>
+			<ShowAppointmentModal
+				visible={showModal}
+				appointment={currentAppointment}
+				toggle={() => setShowModal(!showModal)}
+				erase={deleteAppointment}
+			/>
+			<div className="d-flex justify-content-between mb-3">
+				<span className="badge bg-light text-dark fs-4">
+					{month.today.toLocaleString('default', {
+						month: 'long',
+						year: 'numeric',
+					})}
+				</span>
+				<button
+					className="btn btn-primary rounded-pill"
+					onClick={() => setShowAddModal(!showAddModal)}
+				>
+					+ Appointment
+				</button>
+			</div>
+			<Table bordered responsive className="text-center">
+				<thead>
+					<tr className="text-uppercase">
+						{weekDays.map((day, id) => (
+							<th key={id}>{day}</th>
 						))}
-					</tbody>
-				</Table>
-				<div className="d-flex justify-content-center">
-					<button className="btn btn-primary mx-1" onClick={showPrev}>
-						&laquo; Prev
-					</button>
-					<button className="btn btn-primary mx-1" onClick={showNext}>
-						Next &raquo;
-					</button>
-				</div>
-			</>
-		)
-	}
+					</tr>
+				</thead>
+				<tbody>
+					{monthWeeks.map((week, index) => (
+						<tr key={index}>
+							{weekDays.map((day, id) => {
+								if (grid.day || month.firstDay.getDay() == grid.id) grid.day++
+								grid.id++
+								if (grid.day > month.lastDay.getDate()) grid.day = 0
+
+								return (
+									<td
+										key={id}
+										className={styles.box + ' ' + (!grid.day && 'bg-light')}
+									>
+										{grid.day != 0 && (
+											<span
+												className={
+													grid.day == new Date().getDate()
+														? 'text-primary fw-bold'
+														: ''
+												}
+											>
+												{grid.day}
+											</span>
+										)}
+										{getDayAppointments(grid.day).map((appointment, count) => (
+											<button
+												key={appointment.id}
+												className={
+													'btn btn-sm d-block w-100 p-0 btn-' +
+													appointment.color
+												}
+												onClick={() => {
+													setCurrentAppointment(
+														appointments.find(
+															(item) => appointment.id == item.id
+														)
+													)
+													setShowModal(!showModal)
+												}}
+											>
+												{appointment.name}
+											</button>
+										))}
+									</td>
+								)
+							})}
+						</tr>
+					))}
+				</tbody>
+			</Table>
+			<div className="d-flex justify-content-center">
+				<button className="btn btn-primary mx-1" onClick={showPrev}>
+					&laquo; Prev
+				</button>
+				<button className="btn btn-primary mx-1" onClick={showNext}>
+					Next &raquo;
+				</button>
+			</div>
+		</>
+	)
 }
 
 export default Calendar

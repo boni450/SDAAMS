@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { Modal, Button, Badge } from 'react-bootstrap'
 
-const ShowEventModal = ({ visible, event, toggle, erase }) => {
+const ShowAppointmentModal = ({ visible, appointment, toggle, erase }) => {
 	let a = new Date()
 	let b = new Date()
-	a.setTime(event?.startDate)
-	b.setTime(event?.endDate)
+	a.setTime(appointment?.startDate)
+	b.setTime(appointment?.endDate)
 
 	return (
 		<Modal show={visible} onHide={toggle}>
 			<Modal.Header closeButton>
-				<Modal.Title>{event?.name}</Modal.Title>
+				<Modal.Title>{appointment?.name}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<p>{event?.description}</p>
+				<p>{appointment?.description}</p>
 				<h5 className="mb-0">
 					<Badge bg="secondary">
-						{event?.owner?.firstName} {event?.owner?.lastName}
+						{appointment?.owner?.firstName} {appointment?.owner?.lastName}
 					</Badge>{' '}
 					<Badge bg="secondary">Start: {a.toDateString()}</Badge>{' '}
 					<Badge bg="secondary">Stop: {b.toDateString()}</Badge>
@@ -32,4 +32,4 @@ const ShowEventModal = ({ visible, event, toggle, erase }) => {
 	)
 }
 
-export default ShowEventModal
+export default ShowAppointmentModal

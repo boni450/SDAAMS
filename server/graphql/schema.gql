@@ -25,22 +25,18 @@ type Appointment {
   approver: User!
 }
 
-input OrderByInput {
-  col: String
-  by: String
-}
-
 type Query {
   user(id: ID!): User
-  users(offset: Int, limit: Int, order: OrderByInput): [User]
+  users(offset: Int, limit: Int, orderBy: String, orderByCol: String): [User]
   login(email: String, password: String): String
 
   appointment(id: ID!): Appointment
   appointments(
     offset: Int
     limit: Int
-    order: OrderByInput
     ownerId: Int
+    orderBy: String
+    orderByCol: String
   ): [Appointment]
 }
 
@@ -52,6 +48,8 @@ type Mutation {
     password: String!
   ): String
 
+  deleteUser(id: Int!): String
+
   addAppointment(
     name: String!
     description: String
@@ -62,5 +60,16 @@ type Mutation {
     approverId: Int
   ): Appointment
 
-  #TODO: CRUD operation on all types
+  updateAppointment(
+    id: Int!
+    name: String
+    description: String
+    startDate: String
+    endDate: String
+    color: String
+    ownerId: Int
+    approverId: Int
+  ): Appointment
+
+  deleteAppointment(id: Int!): String
 }
