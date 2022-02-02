@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client'
 import { useState, useContext } from 'react'
 import ShowAppointmentModal from '@/components/calendar/show'
 import AddAppointmentModal from '@/components/calendar/add'
+import EditAppointmentModal from '@/components/calendar/edit'
 import {
 	ADD_APPOINTMENT,
 	DELETE_APPOINTMENT,
@@ -28,6 +29,7 @@ const Calendar = ({ data }) => {
 	})
 	const [showModal, setShowModal] = useState(false)
 	const [showAddModal, setShowAddModal] = useState(false)
+	const [showEditModal, setShowEditModal] = useState(false)
 
 	// CONTEXT & GRAPHQL
 	const { state } = useContext(Context)
@@ -38,6 +40,23 @@ const Calendar = ({ data }) => {
 			onCompleted: (data) => {
 				if (data?.addAppointment) {
 					setAppointments([...appointments, data?.addAppointment])
+				}
+			},
+		}
+	)
+	const [attemptUpdatingAppointment, updateAppointmentMutation] = useMutation(
+		UPDATE_APPOINTMENT,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				if (data?.updateAppointment) {
+					// FIXME: reduce this part
+					setAppointments([
+						...appointments.filter(
+							(appointment) => appointment.id != currentAppointment.id
+						),
+					])
+					setAppointments([...appointments, data?.updateAppointment])
 				}
 			},
 		}
@@ -88,6 +107,20 @@ const Calendar = ({ data }) => {
 		})
 	}
 
+	const updateAppointment = ({ id, name, description, start, end, color }) => {
+		attemptUpdatingAppointment({
+			variables: {
+				id,
+				name,
+				color,
+				description,
+				endDate: end,
+				startDate: start,
+				ownerId: state?.user?.id,
+			},
+		})
+	}
+
 	const deleteAppointment = () => {
 		if (confirm('You are about to delete an event :('))
 			attemptDeletingAppointment({
@@ -116,6 +149,17 @@ const Calendar = ({ data }) => {
 				appointment={currentAppointment}
 				toggle={() => setShowModal(!showModal)}
 				erase={deleteAppointment}
+				update={() => {
+					setShowModal(!showModal)
+					setShowEditModal(!showEditModal)
+				}}
+			/>
+			<EditAppointmentModal
+				month={month}
+				appointment={currentAppointment}
+				updateAppointment={updateAppointment}
+				visible={showEditModal}
+				toggle={() => setShowEditModal(!showEditModal)}
 			/>
 			<div className="d-flex justify-content-between mb-3">
 				<span className="badge bg-light text-dark fs-4">

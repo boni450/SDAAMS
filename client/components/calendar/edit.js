@@ -2,11 +2,22 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { Alert, Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
-const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
+const EditAppointmentModal = ({
+	month,
+	toggle,
+	visible,
+	appointment,
+	updateAppointment,
+}) => {
+	let a = new Date()
+	let b = new Date()
+	a.setTime(appointment?.startDate)
+	b.setTime(appointment?.endDate)
+
 	const [end, setEnd] = useState('')
 	const [name, setName] = useState('')
-	const [color, setColor] = useState('')
 	const [start, setStart] = useState('')
+	const [color, setColor] = useState('')
 	const [description, setDescription] = useState('')
 	const colors = [
 		{ name: 'green', value: 'success' },
@@ -18,10 +29,12 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		saveAppointment({
+		// FIXME: fix this
+		console.log({
 			color,
-			name: name.trim(),
-			description: description.trim(),
+			name: name?.trim(),
+			description: description?.trim(),
+			id: Number.parseInt(appointment?.id),
 			end: format(new Date().setDate(end), 'yyyy-MM-dd'),
 			start: format(new Date().setDate(start), 'yyyy-MM-dd'),
 		})
@@ -36,7 +49,7 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 	return (
 		<Modal show={visible} onHide={toggle}>
 			<Modal.Header closeButton>
-				<Modal.Title>Add Appointment</Modal.Title>
+				<Modal.Title>Edit Appointment</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form onSubmit={handleSubmit}>
@@ -46,16 +59,16 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 								type="text"
 								required={true}
 								placeholder="Name"
-								value={name}
 								className="mb-2"
+								defaultValue={appointment?.name}
 								onChange={(el) => setName(el.target.value)}
 							/>
 						</Col>
 						<Col md={6}>
 							<Form.Select
 								required={true}
-								value={color}
 								className="mb-2"
+								defaultValue={appointment?.color}
 								onChange={(el) => setColor(el.target.value)}
 							>
 								<option value="">. . . choose color . . .</option>
@@ -72,7 +85,7 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 								type="number"
 								required={true}
 								placeholder="Start"
-								value={start}
+								defaultValue={a.getDate()}
 								className="mb-2"
 								max={month.lastDay.getDate()}
 								onChange={(el) => setStart(el.target.value)}
@@ -80,11 +93,11 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 						</Col>
 						<Col md={3}>
 							<Form.Control
-								min={start}
+								min={start || 1}
 								type="number"
 								required={true}
 								placeholder="End"
-								value={end}
+								defaultValue={b.getDate()}
 								max={month.lastDay.getDate()}
 								className="mb-2"
 								onChange={(el) => setEnd(el.target.value)}
@@ -104,7 +117,7 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 								rows={3}
 								className="mb-2"
 								placeholder="Description"
-								value={description}
+								defaultValue={appointment?.description}
 								onChange={(el) => setDescription(el.target.value)}
 							/>
 						</Col>
@@ -120,4 +133,4 @@ const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
 	)
 }
 
-export default AddAppointmentModal
+export default EditAppointmentModal
