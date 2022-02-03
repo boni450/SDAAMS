@@ -99,3 +99,14 @@ export const DELETE_APPOINTMENT = gql`
 		deleteAppointment(id: $id)
 	}
 `
+
+export const ADD_CHAT = gql`
+	mutation AddChat($email: String!, $message: String!, $senderId: Int!) {
+		addChat(email: $email, message: $message, senderId: $senderId) {
+			id
+			message
+			senderId
+			receiverId
+		}
+	}
+`

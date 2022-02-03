@@ -1,60 +1,94 @@
 import { Context } from '@/lib/context'
 import { useMutation } from '@apollo/client'
 import { useState, useContext } from 'react'
-import { Nav, Tab, Row, Col, ListGroup, Badge } from 'react-bootstrap'
+import { ADD_CHAT } from '@/lib/graphql/mutations'
 import ComposeMessageForm from '@/components/chat/add'
+import {
+	Nav,
+	Tab,
+	Col,
+	Row,
+	Alert,
+	Badge,
+	Button,
+	ListGroup,
+} from 'react-bootstrap'
 
-const ChatBox = ({ data }) => {
+const ChatBox = ({ data, refetch }) => {
+	let contacts = []
+	const { state } = useContext(Context)
+	const [alert, setAlert] = useState('')
+	const [attemptSavingChat, saveChatMutation] = useMutation(ADD_CHAT, {
+		errorPolicy: 'all',
+		onCompleted: (data) => {
+			if (data?.addChat) {
+				setAlert('')
+				console.log(data?.addChat)
+			} else setAlert('Email not found')
+		},
+	})
+
+	const saveMessage = ({ email, message }) => {
+		attemptSavingChat({
+			variables: { email, message, senderId: state?.user?.id },
+		})
+	}
+
 	return (
-		<>
-			<Tab.Container defaultActiveKey="1">
-				<Nav variant="pills" className="mb-2">
-					<Nav.Item>
-						<Nav.Link eventKey="1">Chats</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link eventKey="2">Compose</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link onClick={() => alert('refresh')}>Refresh</Nav.Link>
-					</Nav.Item>
-				</Nav>
-				<Tab.Content>
-					<Tab.Pane eventKey="1">
-						<ListGroup>
-							<ListGroup.Item
-								action
-								className="d-flex justify-content-between align-items-start"
-							>
-								<div className="ms-2 me-auto">
-									<div className="fw-bold">Jane Doe</div>u ugly, ur mama say u
-									ugly
-								</div>
-								<Badge variant="primary" pill>
-									14
-								</Badge>
-							</ListGroup.Item>
-							<ListGroup.Item
-								action
-								className="d-flex justify-content-between align-items-start"
-							>
-								<div className="ms-2 me-auto">
-									<div className="fw-bold">John Doe</div>
-									Get a life, stop playing video games
-								</div>
-								<Badge variant="primary" pill>
-									14
-								</Badge>
-							</ListGroup.Item>
-						</ListGroup>
-					</Tab.Pane>
-					<Tab.Pane eventKey="2">
-						<ComposeMessageForm />
-					</Tab.Pane>
-					<Tab.Pane eventKey="3">3</Tab.Pane>
-				</Tab.Content>
-			</Tab.Container>
-		</>
+		<Tab.Container defaultActiveKey="1" id="chat-tab-container">
+			<Nav variant="pills" className="mb-2">
+				<Nav.Item>
+					<Nav.Link eventKey="1">Chats</Nav.Link>
+				</Nav.Item>
+				<Nav.Item>
+					<Nav.Link eventKey="2">Compose</Nav.Link>
+				</Nav.Item>
+				<Nav.Item>
+					<Nav.Link onClick={() => refetch()}>Refresh</Nav.Link>
+				</Nav.Item>
+			</Nav>
+			{alert && <Alert variant="warning">{alert}</Alert>}
+			<Tab.Content>
+				<Tab.Pane eventKey="1">
+					<ListGroup className="shadow-sm">
+						{data.map((a, id) => {
+							if (
+								!contacts.includes(`${a.senderId}-${a.receiverId}`) &&
+								!contacts.includes(`${a.receiverId}-${a.senderId}`)
+							) {
+								contacts.push(`${a.senderId}-${a.receiverId}`)
+
+								let d = new Date()
+								d.setTime(a?.createdAt)
+
+								return (
+									<ListGroup.Item
+										action
+										key={id}
+										className="d-flex justify-content-between align-items-start"
+									>
+										<div className="ms-2 me-auto">
+											<div className="fw-bold">
+												{a.sender.firstName} {a.sender.lastName} &rarr;{' '}
+												{a.receiver.firstName} {a.receiver.lastName}
+											</div>
+											{a.message}
+										</div>
+										<Badge bg="light" text="dark" pill>
+											{d.toDateString()} at {d.toLocaleTimeString()}
+										</Badge>
+									</ListGroup.Item>
+								)
+							}
+						})}
+					</ListGroup>
+				</Tab.Pane>
+				<Tab.Pane eventKey="2">
+					<ComposeMessageForm saveMessage={saveMessage} />
+				</Tab.Pane>
+				<Tab.Pane eventKey="3">3</Tab.Pane>
+			</Tab.Content>
+		</Tab.Container>
 	)
 }
 

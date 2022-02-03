@@ -15,4 +15,13 @@ module.exports = {
 			return await User.findByPk(approverId)
 		},
 	},
+
+	Chat: {
+		sender: async ({ senderId }, args, context) => {
+			return await User.findByPk(senderId)
+		},
+		receiver: async ({ receiverId }, args, context) => {
+			return await User.findByPk(receiverId)
+		},
+	},
 }

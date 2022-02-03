@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { User, Appointment } = require('../models')
+const { User, Appointment, Chat } = require('../models')
 
 require('dotenv').config()
 
@@ -33,6 +33,16 @@ module.exports = {
 
 	deleteAppointment: async (parent, { id }, context) => {
 		await Appointment.destroy({ where: { id } })
+		return 'ok'
+	},
+
+	addChat: async (parent, { email, message, senderId }, context) => {
+		const user = await User.findOne({ where: { email } })
+		return await Chat.create({ message, senderId, receiverId: user.id })
+	},
+
+	deleteChat: async (parent, { id }, context) => {
+		await Chat.destroy({ where: { id } })
 		return 'ok'
 	},
 }

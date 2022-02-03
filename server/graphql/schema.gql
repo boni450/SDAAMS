@@ -35,6 +35,8 @@ type Notification {
   link: String
   isSeen: Boolean
   userId: Int
+  createdAt: String
+  updatedAt: String
   user: User!
 }
 
@@ -43,6 +45,8 @@ type Comment {
   message: String
   appointmentId: Int
   userId: Int
+  createdAt: String
+  updatedAt: String
   appointment: Appointment!
   user: User!
 }
@@ -52,6 +56,8 @@ type Chat {
   message: String
   senderId: Int
   receiverId: Int
+  createdAt: String
+  updatedAt: String
   sender: User!
   receiver: User!
 }
@@ -159,7 +165,7 @@ type Mutation {
 
   deleteComment(id: Int!): String
 
-  addChat(message: String!, senderId: Int!, email: String!): Chat
+  addChat(email: String!, message: String!, senderId: Int!): Chat
 
   deleteChat(id: Int!): String
 }

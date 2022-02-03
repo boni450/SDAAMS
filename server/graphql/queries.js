@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
-const { User, Appointment } = require('../models')
+const { User, Appointment, Chat } = require('../models')
 
 require('dotenv').config()
 
@@ -9,11 +9,15 @@ module.exports = {
 		return await User.findByPk(id)
 	},
 
-	users: async (parent, args, context) => {
+	users: async (
+		parent,
+		{ offset, limit, userId, orderBy, orderCol },
+		context
+	) => {
 		return await User.findAll({
-			offset: args.offset || 0,
-			limit: args.limit || 100,
-			order: [[args.orderCol || 'id', args.orderBy || 'ASC']],
+			offset: offset || 0,
+			limit: limit || 100,
+			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},
 
@@ -40,21 +44,50 @@ module.exports = {
 		return await Appointment.findByPk(id)
 	},
 
-	appointments: async (parent, args, context) => {
+	appointments: async (
+		parent,
+		{ offset, limit, userId, orderBy, orderCol },
+		context
+	) => {
 		return await Appointment.findAll({
-			offset: args.offset || 0,
-			limit: args.limit || 100,
-			where: { ownerId: args.userId || { [Op.not]: null } },
-			order: [[args.orderCol || 'id', args.orderBy || 'ASC']],
+			offset: offset || 0,
+			limit: limit || 100,
+			where: {
+				[Op.or]: [
+					{ ownerId: userId || 0 },
+					{ approverId: userId || 0 },
+					{ ownerId: { [Op.ne]: null } },
+				],
+			},
+			order: [[orderCol || 'id', orderBy || 'ASC']],
+		})
+	},
+
+	chat: async (parent, { id }, context) => {
+		return await Chat.findByPk(id)
+	},
+
+	chats: async (
+		parent,
+		{ offset, limit, userId, orderBy, orderCol },
+		context
+	) => {
+		return await Chat.findAll({
+			offset: offset || 0,
+			limit: limit || 100,
+			where: {
+				[Op.or]: [{ senderId: userId || 0 }, { receiverId: userId || 0 }],
+			},
+			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},
 
 	analytics: async (parent, args, context) => {
 		return {
+			comments: 0,
 			users: await User.count(),
 			appointments: await Appointment.count(),
 			bookings: await Appointment.count({ where: { isApproved: true } }),
-			comments: 0,
 		}
 	},
 }

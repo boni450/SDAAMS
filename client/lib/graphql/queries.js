@@ -40,8 +40,20 @@ export const GET_APPOINTMENT = gql`
 `
 
 export const GET_APPOINTMENTS = gql`
-	query GetAppointments {
-		appointments {
+	query GetAppointments(
+		$limit: Int
+		$offset: Int
+		$userId: Int
+		$orderBy: String
+		$orderCol: String
+	) {
+		appointments(
+			limit: $limit
+			offset: $offset
+			userId: $userId
+			orderBy: $orderBy
+			orderCol: $orderCol
+		) {
 			id
 			name
 			description
@@ -87,6 +99,42 @@ export const GET_USERS = gql`
 			role
 			createdAt
 			updatedAt
+		}
+	}
+`
+
+export const GET_CHATS = gql`
+	query GetChats(
+		$limit: Int
+		$offset: Int
+		$userId: Int
+		$orderBy: String
+		$orderCol: String
+	) {
+		chats(
+			limit: $limit
+			offset: $offset
+			userId: $userId
+			orderBy: $orderBy
+			orderCol: $orderCol
+		) {
+			id
+			message
+			createdAt
+			senderId
+			sender {
+				id
+				email
+				lastName
+				firstName
+			}
+			receiverId
+			receiver {
+				id
+				email
+				lastName
+				firstName
+			}
 		}
 	}
 `

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 
-const ComposeMessageForm = () => {
+const ComposeMessageForm = ({ saveMessage }) => {
 	const [email, setEmail] = useState('')
 	const [message, setMessage] = useState('')
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		console.log(email, message)
+		saveMessage({ email: email.trim(), message: message.trim() })
 		setEmail('')
 		setMessage('')
 	}
