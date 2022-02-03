@@ -9,8 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Comment)
+      this.hasMany(models.Notification)
       this.hasMany(models.Appointment, {
         foreignKey: 'ownerId',
+        targetKey: 'id',
+      })
+      this.hasMany(models.Chat, {
+        foreignKey: 'senderId',
         targetKey: 'id',
       })
     }

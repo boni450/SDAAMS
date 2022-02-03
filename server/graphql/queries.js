@@ -13,7 +13,7 @@ module.exports = {
 		return await User.findAll({
 			offset: args.offset || 0,
 			limit: args.limit || 100,
-			order: [[args.orderByCol || 'id', args.orderBy || 'ASC']],
+			order: [[args.orderCol || 'id', args.orderBy || 'ASC']],
 		})
 	},
 
@@ -44,8 +44,8 @@ module.exports = {
 		return await Appointment.findAll({
 			offset: args.offset || 0,
 			limit: args.limit || 100,
-			where: { ownerId: args.ownerId || { [Op.not]: null } },
-			order: [[args.orderByCol || 'id', args.orderBy || 'ASC']],
+			where: { ownerId: args.userId || { [Op.not]: null } },
+			order: [[args.orderCol || 'id', args.orderBy || 'ASC']],
 		})
 	},
 

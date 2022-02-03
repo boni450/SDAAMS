@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User, { foreignKey: 'ownerId', sourceKey: 'id' })
+      this.hasMany(models.Notification)
     }
   }
   Appointment.init(
@@ -18,8 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       color: DataTypes.STRING,
       isApproved: DataTypes.BOOLEAN,
-      ownerId: DataTypes.INTEGER,
-      approverId: DataTypes.INTEGER,
+      ownerId: DataTypes.BIGINT,
+      approverId: DataTypes.BIGINT,
       endDate: DataTypes.DATE,
       startDate: DataTypes.DATE,
     },

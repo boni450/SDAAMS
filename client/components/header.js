@@ -55,7 +55,7 @@ const Header = () => {
                 <a className="nav-link">Dashboard</a>
               </Link>
               <Link href="/dashboard/chat">
-                <a className="nav-link">Inbox</a>
+                <a className="nav-link">Chat</a>
               </Link>
               <Link href="/dashboard/notifications">
                 <a className="nav-link">Notifications</a>

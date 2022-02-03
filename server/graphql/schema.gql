@@ -8,6 +8,9 @@ type User {
   createdAt: String
   updatedAt: String
   appointments: [Appointment!]
+  notifications: [Notification!]
+  comments: [Comment!]
+  chat: [Chat!]
 }
 
 type Appointment {
@@ -19,10 +22,38 @@ type Appointment {
   startDate: String
   ownerId: Int
   approverId: Int
+  isApproved: Boolean
   createdAt: String
   updatedAt: String
   owner: User!
   approver: User!
+}
+
+type Notification {
+  id: ID!
+  message: String
+  link: String
+  isSeen: Boolean
+  userId: Int
+  user: User!
+}
+
+type Comment {
+  id: ID!
+  message: String
+  appointmentId: Int
+  userId: Int
+  appointment: Appointment!
+  user: User!
+}
+
+type Chat {
+  id: ID!
+  message: String
+  senderId: Int
+  receiverId: Int
+  sender: User!
+  receiver: User!
 }
 
 type Analytics {
@@ -34,17 +65,44 @@ type Analytics {
 
 type Query {
   user(id: ID!): User
-  users(offset: Int, limit: Int, orderBy: String, orderByCol: String): [User]
+  users(offset: Int, limit: Int, orderBy: String, orderCol: String): [User]
   login(email: String, password: String): String
 
   appointment(id: ID!): Appointment
   appointments(
-    offset: Int
     limit: Int
-    ownerId: Int
+    offset: Int
+    userId: Int
     orderBy: String
-    orderByCol: String
+    orderCol: String
   ): [Appointment]
+
+  notification(id: ID!): Notification
+  notifications(
+    limit: Int
+    offset: Int
+    userId: Int
+    orderBy: String
+    orderCol: String
+  ): [Notification]
+
+  comment(id: ID!): Comment
+  comments(
+    limit: Int
+    offset: Int
+    userId: Int
+    orderBy: String
+    orderCol: String
+  ): [Comment]
+
+  chat(id: ID!): Chat
+  chats(
+    limit: Int
+    offset: Int
+    userId: Int
+    orderBy: String
+    orderCol: String
+  ): [Chat]
 
   analytics: Analytics
 }
@@ -81,4 +139,27 @@ type Mutation {
   ): Appointment
 
   deleteAppointment(id: Int!): String
+
+  updateNotification(
+    id: Int!
+    message: String
+    link: String
+    isSeen: Boolean
+    userId: Int
+  ): Notification
+
+  addComment(message: String!, appointmentId: Int!, userId: Int!): Comment
+
+  updateComment(
+    id: Int!
+    message: String
+    appointmentId: Int
+    userId: Int
+  ): Comment
+
+  deleteComment(id: Int!): String
+
+  addChat(message: String!, senderId: Int!, email: String!): Chat
+
+  deleteChat(id: Int!): String
 }
