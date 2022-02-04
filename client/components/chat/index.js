@@ -2,7 +2,7 @@ import { Context } from '@/lib/context'
 import { useMutation } from '@apollo/client'
 import { useState, useContext } from 'react'
 import { ADD_CHAT } from '@/lib/graphql/mutations'
-import ComposeMessageForm from '@/components/chat/add'
+import { ComposeMessageForm, ConversationBox } from '@/components/chat/add'
 import {
 	Nav,
 	Tab,
@@ -17,7 +17,9 @@ import {
 const ChatBox = ({ data, refetch }) => {
 	let contacts = []
 	const { state } = useContext(Context)
+	const [key, setKey] = useState('1')
 	const [alert, setAlert] = useState('')
+	const [currentChat, setCurrentChat] = useState({})
 	const [attemptSavingChat, saveChatMutation] = useMutation(ADD_CHAT, {
 		errorPolicy: 'all',
 		onCompleted: (data) => {
@@ -35,7 +37,11 @@ const ChatBox = ({ data, refetch }) => {
 	}
 
 	return (
-		<Tab.Container defaultActiveKey="1" id="chat-tab-container">
+		<Tab.Container
+			activeKey={key}
+			id="chat-tab-container"
+			onSelect={(k) => setKey(k)}
+		>
 			<Nav variant="pills" className="mb-2">
 				<Nav.Item>
 					<Nav.Link eventKey="1">Chats</Nav.Link>
@@ -65,6 +71,10 @@ const ChatBox = ({ data, refetch }) => {
 									<ListGroup.Item
 										action
 										key={id}
+										onClick={() => {
+											setKey('3')
+											setCurrentChat(a)
+										}}
 										className="d-flex justify-content-between align-items-start"
 									>
 										<div className="ms-2 me-auto">
@@ -86,7 +96,13 @@ const ChatBox = ({ data, refetch }) => {
 				<Tab.Pane eventKey="2">
 					<ComposeMessageForm saveMessage={saveMessage} />
 				</Tab.Pane>
-				<Tab.Pane eventKey="3">3</Tab.Pane>
+				<Tab.Pane eventKey="3">
+					<ConversationBox
+						chats={data}
+						saveMessage={saveMessage}
+						currentChat={currentChat}
+					/>
+				</Tab.Pane>
 			</Tab.Content>
 		</Tab.Container>
 	)

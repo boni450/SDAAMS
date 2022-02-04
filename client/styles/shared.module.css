@@ -8,3 +8,10 @@
   font-weight: bold;
   transition-duration: 0.1s;
 }
+
+.chatBox {
+  height: 320px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: whitesmoke;
+}
