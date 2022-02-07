@@ -70,11 +70,11 @@ type Analytics {
 }
 
 type Query {
-  user(id: ID!): User
+  user(id: Int!): User
   users(offset: Int, limit: Int, orderBy: String, orderCol: String): [User]
   login(email: String, password: String): String
 
-  appointment(id: ID!): Appointment
+  appointment(id: Int!): Appointment
   appointments(
     limit: Int
     offset: Int
@@ -83,7 +83,7 @@ type Query {
     orderCol: String
   ): [Appointment]
 
-  notification(id: ID!): Notification
+  notification(id: Int!): Notification
   notifications(
     limit: Int
     offset: Int
@@ -92,7 +92,7 @@ type Query {
     orderCol: String
   ): [Notification]
 
-  comment(id: ID!): Comment
+  comment(id: Int!): Comment
   comments(
     limit: Int
     offset: Int
@@ -101,7 +101,7 @@ type Query {
     orderCol: String
   ): [Comment]
 
-  chat(id: ID!): Chat
+  chat(id: Int!): Chat
   chats(
     limit: Int
     offset: Int
