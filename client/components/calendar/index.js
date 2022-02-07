@@ -1,8 +1,7 @@
-import { Context } from '@/lib/context'
 import styles from '@/styles/shared.module.css'
 import { Table } from 'react-bootstrap'
 import { useMutation } from '@apollo/client'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import ShowAppointmentModal from '@/components/calendar/show'
 import AddAppointmentModal from '@/components/calendar/add'
 import EditAppointmentModal from '@/components/calendar/edit'
@@ -12,7 +11,7 @@ import {
 	UPDATE_APPOINTMENT,
 } from '@/lib/graphql/mutations'
 
-const Calendar = ({ data }) => {
+const Calendar = ({ data, state }) => {
 	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
@@ -32,7 +31,6 @@ const Calendar = ({ data }) => {
 	const [showEditModal, setShowEditModal] = useState(false)
 
 	// CONTEXT & GRAPHQL
-	const { state } = useContext(Context)
 	const [attemptSavingAppointment, saveAppointmentMutation] = useMutation(
 		ADD_APPOINTMENT,
 		{
@@ -168,12 +166,14 @@ const Calendar = ({ data }) => {
 						year: 'numeric',
 					})}
 				</span>
-				<button
-					className="btn btn-primary rounded-pill"
-					onClick={() => setShowAddModal(!showAddModal)}
-				>
-					+ Appointment
-				</button>
+				{state?.user?.id && (
+					<button
+						className="btn btn-primary rounded-pill"
+						onClick={() => setShowAddModal(!showAddModal)}
+					>
+						+ Appointment
+					</button>
+				)}
 			</div>
 			<Table bordered responsive className="text-center">
 				<thead>

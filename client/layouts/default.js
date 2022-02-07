@@ -5,7 +5,7 @@ import Footer from '@/components/footer'
 import Header from '@/components/header'
 import { useEffect, useContext } from 'react'
 
-const Default = ({ children, title }) => {
+const Default = ({ children, title, fluid }) => {
   const { state, dispatch } = useContext(Context)
 
   useEffect(() => {
@@ -33,9 +33,9 @@ const Default = ({ children, title }) => {
         <meta name="description" content={process.env.DESCRIPTION} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
+      <Header fluid={fluid} />
       <main>{children}</main>
-      <Footer />
+      {!fluid && <Footer />}
     </>
   )
 }

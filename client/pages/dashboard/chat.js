@@ -31,7 +31,7 @@ const Chat = () => {
 				<Container>
 					<Row className="justify-content-center">
 						<Col md={9}>
-							<ChatBox data={data?.chats} refetch={refetch} />
+							<ChatBox state={state} data={data?.chats} refetch={refetch} />
 						</Col>
 					</Row>
 				</Container>

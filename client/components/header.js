@@ -5,13 +5,13 @@ import { Context } from '@/lib/context'
 import { eraseCookie } from '@/lib/cookie'
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 
-const Header = () => {
+const Header = ({ fluid }) => {
   const router = useRouter()
   const { state, dispatch } = useContext(Context)
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-4 shadow">
-      <Container>
+      <Container fluid={fluid}>
         <Link href="/">
           <a className="navbar-brand">
             {typeof state?.user?.id !== 'undefined'

@@ -1,22 +1,17 @@
-import { Context } from '@/lib/context'
 import { useMutation } from '@apollo/client'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { ADD_CHAT } from '@/lib/graphql/mutations'
 import { ComposeMessageForm, ConversationBox } from '@/components/chat/add'
 import {
 	Nav,
 	Tab,
-	Col,
-	Row,
 	Alert,
 	Badge,
-	Button,
 	ListGroup,
 } from 'react-bootstrap'
 
-const ChatBox = ({ data, refetch }) => {
+const ChatBox = ({ data, refetch, state }) => {
 	let contacts = []
-	const { state } = useContext(Context)
 	const [key, setKey] = useState('1')
 	const [alert, setAlert] = useState('')
 	const [currentChat, setCurrentChat] = useState({})

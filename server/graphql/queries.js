@@ -52,13 +52,11 @@ module.exports = {
 		return await Appointment.findAll({
 			offset: offset || 0,
 			limit: limit || 100,
-			where: {
-				[Op.or]: [
-					{ ownerId: userId || 0 },
-					{ approverId: userId || 0 },
-					{ ownerId: { [Op.ne]: null } },
-				],
-			},
+			where: userId
+				? {
+						[Op.or]: [{ ownerId: userId }, { approverId: userId }],
+				  }
+				: {},
 			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},
@@ -75,9 +73,11 @@ module.exports = {
 		return await Chat.findAll({
 			offset: offset || 0,
 			limit: limit || 100,
-			where: {
-				[Op.or]: [{ senderId: userId || 0 }, { receiverId: userId || 0 }],
-			},
+			where: userId
+				? {
+						[Op.or]: [{ senderId: userId }, { receiverId: userId }],
+				  }
+				: {},
 			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},

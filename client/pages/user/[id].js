@@ -12,24 +12,24 @@ import { Container, Row, Col, Tab, Nav } from 'react-bootstrap'
 import Calendar from '@/components/calendar'
 
 const User = () => {
-  const { id } = useRouter().query
+  const router = useRouter()
   const { state } = useContext(Context)
   const { data } = useQuery(GET_USER_WITH_APPOINTMENTS, {
-    variables: { id: Number.parseInt(id) || 0 },
+    variables: { id: Number.parseInt(router.query.id) || 0 },
     fetchPolicy: 'network-only',
   })
 
-  if (data)
+  if (data?.user)
     return (
-      <DefaultLayout title="User - SDAAMS">
-        <Container>
+      <DefaultLayout fluid={true} title="User - SDAAMS">
+        <Container fluid className="mb-4">
           <Tab.Container id="user-profile-tabs" defaultActiveKey="first">
             <Row className="justify-content-center">
-              <Col sm={2}>
-                <h4>
-                  {data.user.firstName} {data.user.lastName}
+              <Col md={2}>
+                <h4 className="text-truncate">
+                  {data?.user.firstName} {data?.user.lastName}
                 </h4>
-                <h6>{data.user.email}</h6>
+                <h6 className="text-truncate">{data?.user.email}</h6>
                 <hr />
                 <Nav variant="pills" className="flex-column">
                   <Nav.Item>
@@ -40,10 +40,10 @@ const User = () => {
                   </Nav.Item>
                 </Nav>
               </Col>
-              <Col sm={10}>
+              <Col md={10}>
                 <Tab.Content>
                   <Tab.Pane eventKey="first">
-                    <Calendar data={data?.appointments || []} />
+                    <Calendar state={state} data={data?.appointments || []} />
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">second</Tab.Pane>
                 </Tab.Content>
@@ -56,7 +56,7 @@ const User = () => {
   else
     return (
       <DefaultLayout title="User - SDAAMS">
-        <Container>
+        <Container fluid>
           <Loader size={16} />
         </Container>
       </DefaultLayout>
