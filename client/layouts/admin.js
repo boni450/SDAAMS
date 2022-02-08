@@ -1,6 +1,6 @@
 import DefaultLayout from '@/layouts/default'
-import { Container, Row, Col } from 'react-bootstrap'
 import Sidebar from '@/components/admin/sidebar'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const AdminLayout = ({ children, title }) => {
 	return (

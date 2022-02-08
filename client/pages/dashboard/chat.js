@@ -1,11 +1,11 @@
 import { useContext } from 'react'
 import { Context } from '@/lib/context'
 import ChatBox from '@/components/chat'
-import DefaultLayout from '@/layouts/default'
-import { Container, Row, Col } from 'react-bootstrap'
-import { useQuery } from '@apollo/client'
-import { GET_CHATS } from '@/lib/graphql/queries'
 import Loader from '@/components/loader'
+import { useQuery } from '@apollo/client'
+import DefaultLayout from '@/layouts/default'
+import { GET_CHATS } from '@/lib/graphql/queries'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const Chat = () => {
 	const { state } = useContext(Context)
@@ -31,7 +31,11 @@ const Chat = () => {
 				<Container>
 					<Row className="justify-content-center">
 						<Col md={9}>
-							<ChatBox state={state} data={data?.chats} refetch={refetch} />
+							<ChatBox
+								state={state}
+								refetch={refetch}
+								data={data?.chats || []}
+							/>
 						</Col>
 					</Row>
 				</Container>

@@ -1,15 +1,15 @@
-import styles from '@/styles/shared.module.css'
-import { Table } from 'react-bootstrap'
-import { useMutation } from '@apollo/client'
-import { useState } from 'react'
-import ShowAppointmentModal from '@/components/calendar/show'
-import AddAppointmentModal from '@/components/calendar/add'
-import EditAppointmentModal from '@/components/calendar/edit'
 import {
 	ADD_APPOINTMENT,
 	DELETE_APPOINTMENT,
 	UPDATE_APPOINTMENT,
 } from '@/lib/graphql/mutations'
+import { useState } from 'react'
+import { Table } from 'react-bootstrap'
+import { useMutation } from '@apollo/client'
+import styles from '@/styles/shared.module.css'
+import AddAppointmentModal from '@/components/calendar/add'
+import ShowAppointmentModal from '@/components/calendar/show'
+import EditAppointmentModal from '@/components/calendar/edit'
 
 const Calendar = ({ data, state }) => {
 	// GRID

@@ -1,5 +1,5 @@
-import DefaultLayout from '@/layouts/default'
 import { Container } from 'react-bootstrap'
+import DefaultLayout from '@/layouts/default'
 
 const Privacy = () => {
   return (

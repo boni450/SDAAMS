@@ -1,20 +1,14 @@
-import { useMutation } from '@apollo/client'
 import { useState } from 'react'
+import { useMutation } from '@apollo/client'
 import { ADD_CHAT } from '@/lib/graphql/mutations'
+import { Nav, Tab, Alert, Badge, ListGroup } from 'react-bootstrap'
 import { ComposeMessageForm, ConversationBox } from '@/components/chat/add'
-import {
-	Nav,
-	Tab,
-	Alert,
-	Badge,
-	ListGroup,
-} from 'react-bootstrap'
 
 const ChatBox = ({ data, refetch, state }) => {
 	let contacts = []
-	const [key, setKey] = useState('1')
 	const [alert, setAlert] = useState('')
 	const [currentChat, setCurrentChat] = useState({})
+	const [key, setKey] = useState(data.length ? '1' : '2')
 	const [attemptSavingChat, saveChatMutation] = useMutation(ADD_CHAT, {
 		errorPolicy: 'all',
 		onCompleted: (data) => {
