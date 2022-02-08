@@ -3,9 +3,9 @@ import {
   Col,
   Tab,
   Nav,
-  Badge,
   Alert,
-  ListGroup,
+  Table,
+  Button,
   Container,
 } from 'react-bootstrap'
 import { Context } from '@/lib/context'
@@ -81,24 +81,57 @@ const User = () => {
                       {data?.user.firstName} {data?.user.lastName}'s
                       appointments
                     </h2>
-                    <ListGroup as="ol" numbered>
-                      {data?.appointments.map((item, id) => (
-                        <ListGroup.Item
-                          action
-                          as="li"
-                          key={id}
-                          className="d-flex justify-content-between align-items-start"
-                        >
-                          <div className="ms-2 me-auto">
-                            <div className="fw-bold">{item.name}</div>
-                            {item.description}
-                          </div>
-                          <Badge bg="light" className="text-dark" pill>
-                            14
-                          </Badge>
-                        </ListGroup.Item>
-                      ))}
-                    </ListGroup>
+                    <Table
+                      hover
+                      striped
+                      bordered
+                      responsive
+                      className="shadow-sm"
+                    >
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Description</th>
+                          <th>Author</th>
+                          <th>Timespan</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data?.appointments.map((appointment, index) => {
+                          let a = new Date()
+                          let b = new Date()
+                          a.setTime(appointment?.startDate)
+                          b.setTime(appointment?.endDate)
+
+                          return (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{appointment?.name}</td>
+                              <td>{appointment?.description}</td>
+                              <td>
+                                {appointment?.owner?.firstName}{' '}
+                                {appointment?.owner?.lastName}
+                              </td>
+                              <td>
+                                Start: {a.toDateString()}
+                                <br />
+                                Stop: {b.toDateString()}
+                              </td>
+                              <td>
+                                <Button variant="primary" size="sm">
+                                  Approve
+                                </Button>{' '}
+                                <Button variant="warning" size="sm">
+                                  Cancel
+                                </Button>{' '}
+                              </td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </Table>
                   </Tab.Pane>
                   <Tab.Pane eventKey="3">
                     <h2>Leave a message</h2>
