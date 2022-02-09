@@ -20,9 +20,12 @@ const ChatBox = ({ data, refetch, state }) => {
 	})
 
 	const saveMessage = ({ email, message }) => {
-		attemptSavingChat({
-			variables: { email, message, senderId: state?.user?.id },
-		})
+		if (state?.user?.email === email)
+			setAlert('You can not send yourself a message')
+		else
+			attemptSavingChat({
+				variables: { email, message, senderId: state?.user?.id },
+			})
 	}
 
 	return (
@@ -88,6 +91,7 @@ const ChatBox = ({ data, refetch, state }) => {
 				<Tab.Pane eventKey="3">
 					<ConversationBox
 						chats={data}
+						state={state}
 						saveMessage={saveMessage}
 						currentChat={currentChat}
 					/>

@@ -41,7 +41,7 @@ export const ComposeMessageForm = ({ saveMessage }) => {
 	)
 }
 
-export const ConversationBox = ({ chats, saveMessage, currentChat }) => {
+export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 	const [message, setMessage] = useState('')
 
 	const handleSubmit = (event) => {
@@ -54,12 +54,23 @@ export const ConversationBox = ({ chats, saveMessage, currentChat }) => {
 		<>
 			<div className={styles.chatBox + ' rounded shadow-sm'}>
 				{chats.map((a, id) => {
+					const personId =
+						currentChat.senderId == state?.user?.id
+							? currentChat.receiverId
+							: currentChat.senderId
+
 					if (
-						a.senderId == a.receiverId &&
-						currentChat.senderId == currentChat.receiverId
+						(personId == a.senderId && personId != a.receiverId) ||
+						(personId == a.receiverId && personId != a.senderId)
 					)
 						return (
-							<div key={id} className="bg-white w-75 m-2 px-2 py-1 rounded">
+							<div
+								key={id}
+								className={
+									'bg-white w-75 m-2 px-2 py-1 rounded' +
+									(personId == a.receiverId && ' ms-auto')
+								}
+							>
 								<div className="fw-bold">
 									{a.sender.firstName} {a.sender.lastName} &rarr;{' '}
 									{a.receiver.firstName} {a.receiver.lastName}

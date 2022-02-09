@@ -38,9 +38,12 @@ const User = () => {
   })
 
   const saveMessage = ({ email, message }) => {
-    attemptSavingChat({
-      variables: { email, message, senderId: state?.user?.id },
-    })
+    if (state?.user?.email === email)
+      setAlert('You can not send yourself a message')
+    else
+      attemptSavingChat({
+        variables: { email, message, senderId: state?.user?.id },
+      })
   }
 
   if (data?.user)
