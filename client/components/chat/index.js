@@ -14,7 +14,7 @@ const ChatBox = ({ data, refetch, state }) => {
 		onCompleted: (data) => {
 			if (data?.addChat) {
 				setAlert('')
-				console.log(data?.addChat)
+				refetch()
 			} else setAlert('Email not found')
 		},
 	})

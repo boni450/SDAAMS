@@ -9,8 +9,8 @@ export const ComposeMessageForm = ({ saveMessage }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		saveMessage({ email: email.trim(), message: message.trim() })
-		setEmail('')
 		setMessage('')
+		setEmail('')
 	}
 
 	return (
@@ -18,19 +18,19 @@ export const ComposeMessageForm = ({ saveMessage }) => {
 			<Form.Group className="mb-2" controlId="formBasicEmail">
 				<Form.Control
 					type="email"
+					value={email}
 					required={true}
 					placeholder="Email address"
-					value={email}
 					onChange={(el) => setEmail(el.target.value)}
 				/>
 			</Form.Group>
 			<Form.Group className="mb-2" controlId="formBasicEmail">
 				<Form.Control
-					as="textarea"
 					rows={3}
 					required
-					placeholder="Compose a new message..."
+					as="textarea"
 					value={message}
+					placeholder="Compose a new message..."
 					onChange={(el) => setMessage(el.target.value)}
 				/>
 			</Form.Group>
@@ -44,9 +44,14 @@ export const ComposeMessageForm = ({ saveMessage }) => {
 export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 	const [message, setMessage] = useState('')
 
+	const person =
+		currentChat.senderId == state?.user?.id
+			? currentChat.receiver
+			: currentChat.sender
+
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		// saveMessage({email:email.trim(), message:message.trim()})
+		saveMessage({ email: person?.email, message: message.trim() })
 		setMessage('')
 	}
 
@@ -54,21 +59,16 @@ export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 		<>
 			<div className={styles.chatBox + ' rounded shadow-sm'}>
 				{chats.map((a, id) => {
-					const personId =
-						currentChat.senderId == state?.user?.id
-							? currentChat.receiverId
-							: currentChat.senderId
-
 					if (
-						(personId == a.senderId && personId != a.receiverId) ||
-						(personId == a.receiverId && personId != a.senderId)
+						(person?.id == a.senderId && person?.id != a.receiverId) ||
+						(person?.id == a.receiverId && person?.id != a.senderId)
 					)
 						return (
 							<div
 								key={id}
 								className={
 									'bg-white w-75 m-2 px-2 py-1 rounded' +
-									(personId == a.receiverId && ' ms-auto')
+									(person?.id == a.receiverId && ' ms-auto')
 								}
 							>
 								<div className="fw-bold">
