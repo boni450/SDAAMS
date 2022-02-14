@@ -72,6 +72,7 @@ const Calendar = ({ data, state, refetch }) => {
 						),
 					])
 					setShowModal(false)
+					refetch()
 				}
 			},
 		}
@@ -213,8 +214,10 @@ const Calendar = ({ data, state, refetch }) => {
 											<button
 												key={appointment.id}
 												className={
-													'btn btn-sm d-block w-100 p-0 btn-' +
-													appointment.color
+													'btn btn-sm d-block w-100 p-0 text-truncate mx-auto btn-' +
+													appointment.color +
+													' ' +
+													styles.eventBtn
 												}
 												onClick={() => {
 													setCurrentAppointment(

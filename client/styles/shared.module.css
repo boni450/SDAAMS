@@ -15,3 +15,7 @@
   overflow-y: auto;
   background: whitesmoke;
 }
+
+.eventBtn {
+  max-width: 160px;
+}

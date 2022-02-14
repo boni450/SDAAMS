@@ -7,7 +7,7 @@ import Loader from '@/components/loader'
 import { Table, Button } from 'react-bootstrap'
 
 const Users = () => {
-  const { data, error, loading } = useQuery(GET_USERS)
+  const { data, loading } = useQuery(GET_USERS)
 
   if (loading)
     return (

@@ -1,5 +1,11 @@
 import { gql } from '@apollo/client'
 
+export const LOGIN = gql`
+  query Login($email: String!, $password: String!) {
+    login(email: $email, password: $password)
+  }
+`
+
 export const ANALYTICS = gql`
   query Analytics {
     analytics {
@@ -8,12 +14,6 @@ export const ANALYTICS = gql`
       bookings
       users
     }
-  }
-`
-
-export const LOGIN = gql`
-  query Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
   }
 `
 
@@ -89,7 +89,11 @@ export const GET_USER = gql`
 `
 
 export const GET_USER_WITH_APPOINTMENTS = gql`
-  query GetUserWithAppointments($id: Int!) {
+  query GetUserWithAppointments(
+    $id: Int!
+    $orderBy: String
+    $orderCol: String
+  ) {
     user(id: $id) {
       id
       firstName
@@ -100,7 +104,7 @@ export const GET_USER_WITH_APPOINTMENTS = gql`
       createdAt
       updatedAt
     }
-    appointments(userId: $id, orderCol: "startDate", orderBy: "ASC") {
+    appointments(userId: $id, orderBy: $orderBy, orderCol: $orderCol) {
       id
       name
       description
@@ -123,6 +127,21 @@ export const GET_USER_WITH_APPOINTMENTS = gql`
 export const GET_USERS = gql`
   query GetUsers {
     users {
+      id
+      firstName
+      lastName
+      email
+      image
+      role
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+export const USER_SEARCH = gql`
+  query UserSearch($keyword: String!) {
+    userSearch(keyword: $keyword) {
       id
       firstName
       lastName

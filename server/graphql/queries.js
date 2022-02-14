@@ -21,6 +21,19 @@ module.exports = {
 		})
 	},
 
+	userSearch: async (parent, { keyword }, context) => {
+		return await User.findAll({
+			limit: 100,
+			where: {
+				[Op.or]: [
+					{ email: { [Op.like]: `%${keyword}%` } },
+					{ lastName: { [Op.like]: `%${keyword}%` } },
+					{ firstName: { [Op.like]: `%${keyword}%` } },
+				],
+			},
+		})
+	},
+
 	login: async (parent, args, context) => {
 		const thisUser = await User.findOne({ where: { ...args } })
 

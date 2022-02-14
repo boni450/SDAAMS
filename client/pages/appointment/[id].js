@@ -27,9 +27,10 @@ const Appointment = () => {
 				<Container>
 					<h2>{data?.appointment?.name}</h2>
 					<p>{data?.appointment?.description}</p>
+					Author:{' '}
 					<Link href={'/user/' + data?.appointment?.ownerId}>
 						<a>
-							Author: {data?.appointment?.owner?.firstName}{' '}
+							{data?.appointment?.owner?.firstName}{' '}
 							{data?.appointment?.owner?.lastName}
 						</a>
 					</Link>

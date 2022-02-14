@@ -7,7 +7,7 @@ import { Table, Button } from 'react-bootstrap'
 import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 
 const Appointments = () => {
-	const { data, error, loading } = useQuery(GET_APPOINTMENTS)
+	const { data, loading } = useQuery(GET_APPOINTMENTS)
 
 	if (loading)
 		return (

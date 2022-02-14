@@ -46,7 +46,7 @@ const ShowAppointmentModal = ({
         </h5>
         <p className="mb-0">{appointment?.description}</p>
       </Modal.Body>
-      {state?.user?.id && (
+      {state?.user?.id && state?.user?.id === appointment?.ownerId && (
         <Modal.Footer>
           <Button variant="primary" onClick={update}>
             Edit

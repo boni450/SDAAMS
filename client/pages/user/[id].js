@@ -1,22 +1,26 @@
-import { Row, Col, Tab, Nav, Alert, Container } from 'react-bootstrap'
 import { Context } from '@/lib/context'
 import { useRouter } from 'next/router'
 import Loader from '@/components/loader'
 import { useContext, useState } from 'react'
 import Calendar from '@/components/calendar'
-import AppointmentTable from '@/components/appointment/table'
 import DefaultLayout from '@/layouts/default'
 import { ADD_CHAT } from '@/lib/graphql/mutations'
-import { ComposeMessageForm } from '@/components/chat/add'
 import { useQuery, useMutation } from '@apollo/client'
+import { ComposeMessageForm } from '@/components/chat/add'
+import AppointmentTable from '@/components/appointment/table'
 import { GET_USER_WITH_APPOINTMENTS } from '@/lib/graphql/queries'
+import { Row, Col, Tab, Nav, Alert, Container } from 'react-bootstrap'
 
 const User = () => {
   const router = useRouter()
   const { state } = useContext(Context)
   const [alert, setAlert] = useState('')
   const { data, refetch } = useQuery(GET_USER_WITH_APPOINTMENTS, {
-    variables: { id: Number.parseInt(router.query.id) || 0 },
+    variables: {
+      id: Number.parseInt(router.query.id) || 0,
+      orderCol: 'startDate',
+      orderBy: 'ASC',
+    },
     fetchPolicy: 'network-only',
   })
   const [attemptSavingChat, saveChatMutation] = useMutation(ADD_CHAT, {
