@@ -11,7 +11,7 @@ import AddAppointmentModal from '@/components/calendar/add'
 import ShowAppointmentModal from '@/components/calendar/show'
 import EditAppointmentModal from '@/components/calendar/edit'
 
-const Calendar = ({ data, state }) => {
+const Calendar = ({ data, state, refetch }) => {
 	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
@@ -38,6 +38,7 @@ const Calendar = ({ data, state }) => {
 			onCompleted: (data) => {
 				if (data?.addAppointment) {
 					setAppointments([...appointments, data?.addAppointment])
+					refetch()
 				}
 			},
 		}
@@ -143,6 +144,7 @@ const Calendar = ({ data, state }) => {
 				toggle={() => setShowAddModal(!showAddModal)}
 			/>
 			<ShowAppointmentModal
+				state={state}
 				visible={showModal}
 				appointment={currentAppointment}
 				toggle={() => setShowModal(!showModal)}

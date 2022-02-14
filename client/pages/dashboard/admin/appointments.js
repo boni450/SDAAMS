@@ -1,9 +1,10 @@
+import Link from 'next/link'
+import Loader from '@/components/loader'
+import { useQuery } from '@apollo/client'
 import AdminLayout from '@/layouts/admin'
 import { Container } from 'react-bootstrap'
-import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
-import { useQuery } from '@apollo/client'
-import Loader from '@/components/loader'
 import { Table, Button } from 'react-bootstrap'
+import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 
 const Appointments = () => {
 	const { data, error, loading } = useQuery(GET_APPOINTMENTS)
@@ -49,14 +50,30 @@ const Appointments = () => {
 											{appointment?.owner?.lastName}
 										</td>
 										<td>
-											Start: {a.toDateString()}
-											<br />
-											Stop: {b.toDateString()}
+											<small>
+												Start:{' '}
+												{a.toLocaleString('en-US', {
+													day: 'numeric',
+													month: 'short',
+													year: 'numeric',
+													hour: 'numeric',
+													minute: '2-digit',
+												})}
+												<br />
+												Stop:{' '}
+												{b.toLocaleString('en-US', {
+													day: 'numeric',
+													month: 'short',
+													year: 'numeric',
+													hour: 'numeric',
+													minute: '2-digit',
+												})}
+											</small>
 										</td>
 										<td>
-											<Button variant="primary" size="sm">
-												View
-											</Button>{' '}
+											<Link href={'/appointment/' + appointment?.id}>
+												<a className="btn btn-sm btn-primary">View</a>
+											</Link>{' '}
 											<Button variant="success" size="sm">
 												Edit
 											</Button>{' '}
