@@ -132,6 +132,7 @@ type Mutation {
     color: String
     ownerId: Int!
     approverId: Int
+    isApproved: Boolean
   ): Appointment
 
   updateAppointment(
@@ -143,6 +144,7 @@ type Mutation {
     color: String
     ownerId: Int
     approverId: Int
+    isApproved: Boolean
   ): Appointment
 
   deleteAppointment(id: Int!): String

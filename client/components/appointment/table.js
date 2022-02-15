@@ -70,9 +70,15 @@ const AppointmentTable = ({ appointments, state }) => {
 								<td>
 									{state?.user?.id == appointment?.approverId && (
 										<>
-											<Button variant="primary" size="sm">
-												Approve
-											</Button>{' '}
+											{appointment?.isApproved ? (
+												<Button variant="secondary" size="sm">
+													Disapprove
+												</Button>
+											) : (
+												<Button variant="primary" size="sm">
+													Approve
+												</Button>
+											)}{' '}
 										</>
 									)}
 									{state?.user?.id === appointment?.ownerId && (

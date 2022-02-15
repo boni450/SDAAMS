@@ -62,7 +62,9 @@ const User = () => {
                     <Nav.Link eventKey="1">Calendar</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
-                    <Nav.Link eventKey="2">Activity</Nav.Link>
+                    <Nav.Link eventKey="2">
+                      Activity ({data?.appointments?.length})
+                    </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link eventKey="3">Contact</Nav.Link>

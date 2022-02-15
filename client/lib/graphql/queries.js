@@ -30,6 +30,7 @@ export const GET_APPOINTMENT = gql`
       approverId
       createdAt
       updatedAt
+      isApproved
       owner {
         id
         firstName
@@ -69,6 +70,7 @@ export const GET_APPOINTMENTS = gql`
       approverId
       createdAt
       updatedAt
+      isApproved
       owner {
         id
         firstName
@@ -125,6 +127,7 @@ export const GET_USER_WITH_APPOINTMENTS = gql`
       approverId
       createdAt
       updatedAt
+      isApproved
       owner {
         id
         firstName

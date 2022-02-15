@@ -25,6 +25,7 @@ export const ADD_APPOINTMENT = gql`
 		$color: String
 		$ownerId: Int!
 		$approverId: Int
+		$isApproved: Boolean
 	) {
 		addAppointment(
 			name: $name
@@ -34,6 +35,7 @@ export const ADD_APPOINTMENT = gql`
 			color: $color
 			ownerId: $ownerId
 			approverId: $approverId
+			isApproved: $isApproved
 		) {
 			id
 			name
@@ -64,6 +66,7 @@ export const UPDATE_APPOINTMENT = gql`
 		$color: String
 		$ownerId: Int!
 		$approverId: Int
+		$isApproved: Boolean
 	) {
 		updateAppointment(
 			id: $id
@@ -74,6 +77,7 @@ export const UPDATE_APPOINTMENT = gql`
 			color: $color
 			ownerId: $ownerId
 			approverId: $approverId
+			isApproved: $isApproved
 		) {
 			id
 			name

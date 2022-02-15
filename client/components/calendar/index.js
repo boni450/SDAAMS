@@ -88,6 +88,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
 		b.setDate(day - 1)
 
 		return appointments.filter((appointment) => {
+			if (!appointment?.isApproved) return
 			c.setTime(appointment?.startDate)
 			d.setTime(appointment?.endDate)
 			return c < a && b < d
@@ -104,6 +105,8 @@ const Calendar = ({ data, state, profile, refetch }) => {
 				startDate: start,
 				ownerId: state?.user?.id,
 				approverId: Number.parseInt(profile?.id),
+				isApproved:
+					state?.user?.id == Number.parseInt(profile?.id) ? true : false,
 			},
 		})
 	}

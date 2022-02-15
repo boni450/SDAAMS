@@ -52,7 +52,10 @@ const Dashboard = () => {
                 data={data?.appointments || []}
               />
             </Tab>
-            <Tab eventKey="2" title="My Activities">
+            <Tab
+              eventKey="2"
+              title={'My Activities (' + data?.appointments?.length + ')'}
+            >
               <AppointmentTable
                 state={state}
                 appointments={data?.appointments || []}
