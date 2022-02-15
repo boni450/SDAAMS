@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Table, Button } from 'react-bootstrap'
 
 const AppointmentTable = ({ appointments, state }) => {
@@ -9,7 +10,7 @@ const AppointmentTable = ({ appointments, state }) => {
 					<th>Name</th>
 					<th>Description</th>
 					<th>Author</th>
-					<th>Timespan</th>
+					<th>Time Span</th>
 					{state?.user?.id && <th>Action</th>}
 				</tr>
 			</thead>
@@ -26,7 +27,23 @@ const AppointmentTable = ({ appointments, state }) => {
 							<td>{appointment?.name}</td>
 							<td>{appointment?.description}</td>
 							<td>
-								{appointment?.owner?.firstName} {appointment?.owner?.lastName}
+								<small>
+									Owner:{' '}
+									<Link href={'/user/' + appointment?.ownerId}>
+										<a>
+											{appointment?.owner?.firstName}{' '}
+											{appointment?.owner?.lastName}
+										</a>
+									</Link>
+									<br />
+									Approver:{' '}
+									<Link href={'/user/' + appointment?.approverId}>
+										<a>
+											{appointment?.approver?.firstName}{' '}
+											{appointment?.approver?.lastName}
+										</a>
+									</Link>
+								</small>
 							</td>
 							<td>
 								<small>
@@ -52,9 +69,11 @@ const AppointmentTable = ({ appointments, state }) => {
 							{state?.user?.id && (
 								<td>
 									{state?.user?.id == appointment?.approverId && (
-										<Button variant="primary" size="sm">
-											Approve
-										</Button>
+										<>
+											<Button variant="primary" size="sm">
+												Approve
+											</Button>{' '}
+										</>
 									)}
 									{state?.user?.id === appointment?.ownerId && (
 										<Button variant="warning" size="sm">

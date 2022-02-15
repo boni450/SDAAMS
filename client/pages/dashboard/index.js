@@ -13,7 +13,11 @@ const Dashboard = () => {
   const { state } = useContext(Context)
   const [keyword, setKeyword] = useState('')
   const { loading, data, refetch } = useQuery(GET_APPOINTMENTS, {
-    variables: { orderCol: 'startDate', orderBy: 'ASC' },
+    variables: {
+      userId: state?.user?.id,
+      orderCol: 'startDate',
+      orderBy: 'ASC',
+    },
     fetchPolicy: 'network-only',
   })
   const [searchUser, userSearchQuery] = useLazyQuery(USER_SEARCH)
@@ -44,6 +48,7 @@ const Dashboard = () => {
               <Calendar
                 state={state}
                 refetch={refetch}
+                profile={state?.user}
                 data={data?.appointments || []}
               />
             </Tab>

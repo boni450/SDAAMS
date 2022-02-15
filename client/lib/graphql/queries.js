@@ -35,6 +35,11 @@ export const GET_APPOINTMENT = gql`
         firstName
         lastName
       }
+      approver {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `
@@ -65,6 +70,11 @@ export const GET_APPOINTMENTS = gql`
       createdAt
       updatedAt
       owner {
+        id
+        firstName
+        lastName
+      }
+      approver {
         id
         firstName
         lastName

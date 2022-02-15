@@ -17,7 +17,7 @@ const User = () => {
   const [alert, setAlert] = useState('')
   const { data, refetch } = useQuery(GET_USER_WITH_APPOINTMENTS, {
     variables: {
-      id: Number.parseInt(router.query.id) || 0,
+      id: Number.parseInt(router.query.id),
       orderCol: 'startDate',
       orderBy: 'ASC',
     },
@@ -76,6 +76,7 @@ const User = () => {
                     <Calendar
                       state={state}
                       refetch={refetch}
+                      profile={data?.user}
                       data={data?.appointments || []}
                     />
                   </Tab.Pane>

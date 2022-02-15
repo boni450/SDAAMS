@@ -11,7 +11,7 @@ import AddAppointmentModal from '@/components/calendar/add'
 import ShowAppointmentModal from '@/components/calendar/show'
 import EditAppointmentModal from '@/components/calendar/edit'
 
-const Calendar = ({ data, state, refetch }) => {
+const Calendar = ({ data, state, profile, refetch }) => {
 	// GRID
 	const today = new Date()
 	let grid = { id: 0, day: 0 }
@@ -103,6 +103,7 @@ const Calendar = ({ data, state, refetch }) => {
 				endDate: end,
 				startDate: start,
 				ownerId: state?.user?.id,
+				approverId: Number.parseInt(profile?.id),
 			},
 		})
 	}
