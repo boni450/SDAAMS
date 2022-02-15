@@ -130,6 +130,11 @@ export const GET_USER_WITH_APPOINTMENTS = gql`
         firstName
         lastName
       }
+      approver {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `
