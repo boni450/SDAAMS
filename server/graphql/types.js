@@ -24,4 +24,10 @@ module.exports = {
 			return await User.findByPk(receiverId)
 		},
 	},
+
+	Notification: {
+		user: async ({ userId }, args, context) => {
+			return await User.findByPk(userId)
+		},
+	},
 }

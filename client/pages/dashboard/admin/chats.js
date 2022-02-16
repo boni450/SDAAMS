@@ -1,9 +1,8 @@
-import AdminLayout from '@/layouts/admin'
-import { Container } from 'react-bootstrap'
-import { GET_CHATS } from '@/lib/graphql/queries'
-import { useQuery } from '@apollo/client'
 import Loader from '@/components/loader'
-import { Table, Button } from 'react-bootstrap'
+import AdminLayout from '@/layouts/admin'
+import { useQuery } from '@apollo/client'
+import { GET_CHATS } from '@/lib/graphql/queries'
+import { Container, Table, Button } from 'react-bootstrap'
 
 const Chats = () => {
   const { data, loading } = useQuery(GET_CHATS)

@@ -17,7 +17,7 @@ const User = () => {
   const [alert, setAlert] = useState('')
   const { data, refetch } = useQuery(GET_USER_WITH_APPOINTMENTS, {
     variables: {
-      id: Number.parseInt(router.query.id),
+      id: Number.parseInt(router.query.id) || 0,
       orderCol: 'startDate',
       orderBy: 'ASC',
     },
@@ -66,9 +66,11 @@ const User = () => {
                       Activity ({data?.appointments?.length})
                     </Nav.Link>
                   </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="3">Contact</Nav.Link>
-                  </Nav.Item>
+                  {state?.user?.id && (
+                    <Nav.Item>
+                      <Nav.Link eventKey="3">Contact</Nav.Link>
+                    </Nav.Item>
+                  )}
                 </Nav>
               </Col>
               <Col md={10}>
@@ -92,10 +94,12 @@ const User = () => {
                       appointments={data?.appointments || []}
                     />
                   </Tab.Pane>
-                  <Tab.Pane eventKey="3">
-                    <h2>Leave a message</h2>
-                    <ComposeMessageForm saveMessage={saveMessage} />
-                  </Tab.Pane>
+                  {state?.user?.id && (
+                    <Tab.Pane eventKey="3">
+                      <h2>Leave a message</h2>
+                      <ComposeMessageForm saveMessage={saveMessage} />
+                    </Tab.Pane>
+                  )}
                 </Tab.Content>
               </Col>
             </Row>

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { User, Appointment, Chat } = require('../models')
+const { User, Appointment, Chat, Notification } = require('../models')
 
 require('dotenv').config()
 
@@ -23,7 +23,20 @@ module.exports = {
 	},
 
 	addAppointment: async (parent, args, context) => {
-		return await Appointment.create({ ...args })
+		const appointment = await Appointment.create({ ...args })
+		if (args?.ownerId != args?.approverId) {
+			const owner = await User.findByPk(args?.ownerId)
+			await Notification.create({
+				userId: args?.approverId,
+				message:
+					owner.firstName +
+					' ' +
+					owner.lastName +
+					' - requested an appointment',
+				link: '/appointment/' + appointment.id,
+			})
+		}
+		return appointment
 	},
 
 	updateAppointment: async (parent, args, context) => {
@@ -32,6 +45,7 @@ module.exports = {
 	},
 
 	deleteAppointment: async (parent, { id }, context) => {
+		await Notification.destroy({ where: { link: '/appointment/' + id } })
 		await Appointment.destroy({ where: { id } })
 		return 'ok'
 	},

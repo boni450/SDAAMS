@@ -207,3 +207,22 @@ export const GET_CHATS = gql`
     }
   }
 `
+
+export const GET_NOTIFICATIONS = gql`
+  query GetNotifications($userId: Int) {
+    notifications(userId: $userId) {
+      id
+      message
+      link
+      isSeen
+      userId
+      createdAt
+      updatedAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`

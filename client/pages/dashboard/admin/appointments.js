@@ -2,9 +2,8 @@ import Link from 'next/link'
 import Loader from '@/components/loader'
 import { useQuery } from '@apollo/client'
 import AdminLayout from '@/layouts/admin'
-import { Container } from 'react-bootstrap'
-import { Table, Button } from 'react-bootstrap'
 import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
+import { Container, Table, Button } from 'react-bootstrap'
 
 const Appointments = () => {
   const { data, loading } = useQuery(GET_APPOINTMENTS)
@@ -25,7 +24,6 @@ const Appointments = () => {
           <Table striped bordered hover responsive className="shadow-sm">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Author</th>
@@ -42,12 +40,29 @@ const Appointments = () => {
 
                 return (
                   <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{appointment?.name}</td>
+                    <td>
+                      {appointment?.isApproved ? <>&#9989;</> : <>&#10060;</>}{' '}
+                      {appointment?.name}
+                    </td>
                     <td>{appointment?.description}</td>
                     <td>
-                      {appointment?.owner?.firstName}{' '}
-                      {appointment?.owner?.lastName}
+                      <small>
+                        Owner:{' '}
+                        <Link href={'/user/' + appointment?.ownerId}>
+                          <a>
+                            {appointment?.owner?.firstName}{' '}
+                            {appointment?.owner?.lastName}
+                          </a>
+                        </Link>
+                        <br />
+                        Approver:{' '}
+                        <Link href={'/user/' + appointment?.approverId}>
+                          <a>
+                            {appointment?.approver?.firstName}{' '}
+                            {appointment?.approver?.lastName}
+                          </a>
+                        </Link>
+                      </small>
                     </td>
                     <td>
                       <small>

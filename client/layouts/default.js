@@ -11,7 +11,7 @@ const Default = ({ children, title, fluid }) => {
   useEffect(() => {
     if (!state?.user?.id && localStorage.getItem('payload')) {
       const token = jwt_decode(localStorage.getItem('payload'))
-      //FIXME: check token?.exp date
+      // FIXME: check token?.exp date
       dispatch({
         type: 'AUTHENTICATE',
         payload: {
@@ -24,7 +24,7 @@ const Default = ({ children, title, fluid }) => {
         },
       })
     }
-  }, [])
+  }, [state])
 
   return (
     <>
