@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { format } from 'date-fns'
+import { useState, useEffect } from 'react'
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
 const EditAppointmentModal = ({
@@ -9,11 +9,6 @@ const EditAppointmentModal = ({
 	appointment,
 	updateAppointment,
 }) => {
-	let a = new Date()
-	let b = new Date()
-	a.setTime(appointment?.startDate)
-	b.setTime(appointment?.endDate)
-
 	const [end, setEnd] = useState('')
 	const [name, setName] = useState('')
 	const [start, setStart] = useState('')
@@ -27,10 +22,22 @@ const EditAppointmentModal = ({
 		{ name: 'black', value: 'secondary' },
 	]
 
+	useEffect(() => {
+		let a = new Date()
+		let b = new Date()
+		a.setTime(appointment?.startDate)
+		b.setTime(appointment?.endDate)
+
+		setEnd(b.getDate())
+		setStart(a.getDate())
+		setName(appointment?.name)
+		setColor(appointment?.color)
+		setDescription(appointment?.description)
+	}, [appointment])
+
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		// FIXME: fix this
-		console.log({
+		updateAppointment({
 			color,
 			name: name?.trim(),
 			description: description?.trim(),
@@ -57,18 +64,18 @@ const EditAppointmentModal = ({
 						<Col md={6}>
 							<Form.Control
 								type="text"
+								value={name}
 								required={true}
 								placeholder="Name"
 								className="mb-2"
-								defaultValue={appointment?.name}
 								onChange={(el) => setName(el.target.value)}
 							/>
 						</Col>
 						<Col md={6}>
 							<Form.Select
+								value={color}
 								required={true}
 								className="mb-2"
-								defaultValue={appointment?.color}
 								onChange={(el) => setColor(el.target.value)}
 							>
 								<option value="">. . . choose color . . .</option>
@@ -83,23 +90,23 @@ const EditAppointmentModal = ({
 							<Form.Control
 								min="1"
 								type="number"
+								value={start}
 								required={true}
-								placeholder="Start"
-								defaultValue={a.getDate()}
 								className="mb-2"
+								placeholder="Start"
 								max={month.lastDay.getDate()}
 								onChange={(el) => setStart(el.target.value)}
 							/>
 						</Col>
 						<Col md={3}>
 							<Form.Control
-								min={start || 1}
+								value={end}
 								type="number"
 								required={true}
-								placeholder="End"
-								defaultValue={b.getDate()}
-								max={month.lastDay.getDate()}
 								className="mb-2"
+								min={start || 1}
+								placeholder="End"
+								max={month.lastDay.getDate()}
 								onChange={(el) => setEnd(el.target.value)}
 							/>
 						</Col>
@@ -113,11 +120,11 @@ const EditAppointmentModal = ({
 						</Col>
 						<Col md={12}>
 							<Form.Control
-								as="textarea"
 								rows={3}
+								as="textarea"
 								className="mb-2"
+								value={description}
 								placeholder="Description"
-								defaultValue={appointment?.description}
 								onChange={(el) => setDescription(el.target.value)}
 							/>
 						</Col>

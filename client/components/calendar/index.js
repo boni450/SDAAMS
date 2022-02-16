@@ -49,13 +49,12 @@ const Calendar = ({ data, state, profile, refetch }) => {
 			errorPolicy: 'all',
 			onCompleted: (data) => {
 				if (data?.updateAppointment) {
-					// FIXME: reduce this part
 					setAppointments([
+						data?.updateAppointment,
 						...appointments.filter(
 							(appointment) => appointment.id != currentAppointment.id
 						),
 					])
-					setAppointments([...appointments, data?.updateAppointment])
 				}
 			},
 		}
@@ -148,16 +147,16 @@ const Calendar = ({ data, state, profile, refetch }) => {
 		<>
 			<AddAppointmentModal
 				month={month}
-				saveAppointment={saveAppointment}
 				visible={showAddModal}
+				saveAppointment={saveAppointment}
 				toggle={() => setShowAddModal(!showAddModal)}
 			/>
 			<ShowAppointmentModal
 				state={state}
 				visible={showModal}
+				erase={deleteAppointment}
 				appointment={currentAppointment}
 				toggle={() => setShowModal(!showModal)}
-				erase={deleteAppointment}
 				update={() => {
 					setShowModal(!showModal)
 					setShowEditModal(!showEditModal)
@@ -165,9 +164,9 @@ const Calendar = ({ data, state, profile, refetch }) => {
 			/>
 			<EditAppointmentModal
 				month={month}
+				visible={showEditModal}
 				appointment={currentAppointment}
 				updateAppointment={updateAppointment}
-				visible={showEditModal}
 				toggle={() => setShowEditModal(!showEditModal)}
 			/>
 			<div className="d-flex justify-content-between mb-3">
