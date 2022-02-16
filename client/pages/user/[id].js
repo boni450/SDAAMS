@@ -88,6 +88,7 @@ const User = () => {
                     </h2>
                     <AppointmentTable
                       state={state}
+                      refetch={refetch}
                       appointments={data?.appointments || []}
                     />
                   </Tab.Pane>

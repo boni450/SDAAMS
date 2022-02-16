@@ -58,6 +58,7 @@ const Dashboard = () => {
             >
               <AppointmentTable
                 state={state}
+                refetch={refetch}
                 appointments={data?.appointments || []}
               />
             </Tab>

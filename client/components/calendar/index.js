@@ -3,8 +3,8 @@ import {
 	DELETE_APPOINTMENT,
 	UPDATE_APPOINTMENT,
 } from '@/lib/graphql/mutations'
-import { useState } from 'react'
 import { Table } from 'react-bootstrap'
+import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import styles from '@/styles/shared.module.css'
 import AddAppointmentModal from '@/components/calendar/add'
@@ -30,7 +30,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
 	const [showAddModal, setShowAddModal] = useState(false)
 	const [showEditModal, setShowEditModal] = useState(false)
 
-	// CONTEXT & GRAPHQL
+	// MUTATIONS
 	const [attemptSavingAppointment, saveAppointmentMutation] = useMutation(
 		ADD_APPOINTMENT,
 		{
@@ -77,6 +77,10 @@ const Calendar = ({ data, state, profile, refetch }) => {
 			},
 		}
 	)
+
+	useEffect(() => {
+		setAppointments(data)
+	}, [data])
 
 	const getDayAppointments = (day = 0) => {
 		let a = new Date()

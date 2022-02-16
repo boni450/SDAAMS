@@ -1,7 +1,37 @@
 import Link from 'next/link'
+import { useMutation } from '@apollo/client'
 import { Table, Button } from 'react-bootstrap'
+import { DELETE_APPOINTMENT, UPDATE_APPOINTMENT } from '@/lib/graphql/mutations'
 
-const AppointmentTable = ({ appointments, state }) => {
+const AppointmentTable = ({ state, refetch, appointments }) => {
+	const [attemptUpdatingAppointment, updateAppointmentMutation] = useMutation(
+		UPDATE_APPOINTMENT,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				if (data?.updateAppointment) refetch()
+			},
+		}
+	)
+	const [attemptDeletingAppointment, deleteAppointmentMutation] = useMutation(
+		DELETE_APPOINTMENT,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				if (data?.deleteAppointment) refetch()
+			},
+		}
+	)
+	const deleteAppointment = (id) => {
+		if (confirm('You are about to delete an event :('))
+			attemptDeletingAppointment({ variables: { id: Number.parseInt(id) } })
+	}
+	const approveAppointment = (id, isApproved = true) => {
+		attemptUpdatingAppointment({
+			variables: { id: Number.parseInt(id), isApproved },
+		})
+	}
+
 	return (
 		<Table hover bordered responsive className="shadow-sm">
 			<thead>
@@ -71,18 +101,32 @@ const AppointmentTable = ({ appointments, state }) => {
 									{state?.user?.id == appointment?.approverId && (
 										<>
 											{appointment?.isApproved ? (
-												<Button variant="secondary" size="sm">
+												<Button
+													size="sm"
+													variant="secondary"
+													onClick={() =>
+														approveAppointment(appointment?.id, false)
+													}
+												>
 													Disapprove
 												</Button>
 											) : (
-												<Button variant="primary" size="sm">
+												<Button
+													size="sm"
+													variant="primary"
+													onClick={() => approveAppointment(appointment?.id)}
+												>
 													Approve
 												</Button>
 											)}{' '}
 										</>
 									)}
 									{state?.user?.id === appointment?.ownerId && (
-										<Button variant="warning" size="sm">
+										<Button
+											size="sm"
+											variant="warning"
+											onClick={() => deleteAppointment(appointment?.id)}
+										>
 											Cancel
 										</Button>
 									)}

@@ -59,12 +59,12 @@ export const ADD_APPOINTMENT = gql`
 export const UPDATE_APPOINTMENT = gql`
 	mutation UpdateAppointment(
 		$id: Int!
-		$name: String!
+		$name: String
 		$description: String
-		$endDate: String!
-		$startDate: String!
+		$endDate: String
+		$startDate: String
 		$color: String
-		$ownerId: Int!
+		$ownerId: Int
 		$approverId: Int
 		$isApproved: Boolean
 	) {
