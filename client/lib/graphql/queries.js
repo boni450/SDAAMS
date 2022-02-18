@@ -17,6 +17,12 @@ export const ANALYTICS = gql`
   }
 `
 
+export const PRINT_ACTIVITY = gql`
+  query PrintActivity($range: String!, $userId: Int!) {
+    printActivity(range: $range, userId: $userId)
+  }
+`
+
 export const GET_APPOINTMENT = gql`
   query GetAppointment($id: Int!) {
     appointment(id: $id) {

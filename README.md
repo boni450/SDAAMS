@@ -25,12 +25,12 @@ Smart Daily Activity Appointment Management System ??
 
 ```graphql
 mutation {
-	register(
-		firstName: "mr"
-		lastName: "user"
-		email: "user@email.com"
-		password: "password"
-	)
+  register(
+    firstName: "mr"
+    lastName: "user"
+    email: "user@email.com"
+    password: "password"
+  )
 }
 ```
 
@@ -38,26 +38,26 @@ mutation {
 
 ```graphql
 mutation {
-	addAppointment(
-		name: "birthday"
-		description: "I need this"
-		endDate: "2021-12-21"
-		startDate: "2021-12-22"
-		ownerId: 1
-	) {
-		id
-		name
-		description
-		endDate
-		startDate
-		createdAt
-		updatedAt
-		owner {
-			id
-			firstName
-			lastName
-		}
-	}
+  addAppointment(
+    name: "birthday"
+    description: "I need this"
+    endDate: "2021-12-21"
+    startDate: "2021-12-22"
+    ownerId: 1
+  ) {
+    id
+    name
+    description
+    endDate
+    startDate
+    createdAt
+    updatedAt
+    owner {
+      id
+      firstName
+      lastName
+    }
+  }
 }
 ```
 
@@ -67,7 +67,7 @@ mutation {
 
 ```graphql
 {
-	login(email: "user@email.com", password: "password")
+  login(email: "user@email.com", password: "password")
 }
 ```
 
@@ -75,14 +75,14 @@ mutation {
 
 ```graphql
 {
-	users {
-		id
-		firstName
-		lastName
-		email
-		image
-		role
-	}
+  users {
+    id
+    firstName
+    lastName
+    email
+    image
+    role
+  }
 }
 ```
 
@@ -90,25 +90,25 @@ mutation {
 
 ```graphql
 {
-	appointments {
-		id
-		name
-		description
-		endDate
-		startDate
-		createdAt
-		updatedAt
-		owner {
-			id
-			firstName
-			lastName
-		}
-		approver {
-			id
-			firstName
-			lastName
-		}
-	}
+  appointments {
+    id
+    name
+    description
+    endDate
+    startDate
+    createdAt
+    updatedAt
+    owner {
+      id
+      firstName
+      lastName
+    }
+    approver {
+      id
+      firstName
+      lastName
+    }
+  }
 }
 ```
 

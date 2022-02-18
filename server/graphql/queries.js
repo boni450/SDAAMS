@@ -120,4 +120,22 @@ module.exports = {
 			bookings: await Appointment.count({ where: { isApproved: true } }),
 		}
 	},
+
+	printActivity: async (parent, { userId, range }, context) => {
+		// FIXME: range, get owner & approver
+		const json = await Appointment.findAll({
+			raw: true,
+			limit: 100,
+			where: { [Op.or]: [{ ownerId: userId }, { approverId: userId }] },
+			order: [['id', 'ASC']],
+		})
+
+		require('fs').writeFileSync(
+			process.cwd() + '/public/report.xlsx',
+			require('json2xls')(json),
+			'binary'
+		)
+
+		return '/downloads/report.xlsx'
+	},
 }

@@ -1,3 +1,8 @@
+import {
+  USER_SEARCH,
+  PRINT_ACTIVITY,
+  GET_APPOINTMENTS,
+} from '@/lib/graphql/queries'
 import Link from 'next/link'
 import { Context } from '@/lib/context'
 import Loader from '@/components/loader'
@@ -6,11 +11,11 @@ import Calendar from '@/components/calendar'
 import DefaultLayout from '@/layouts/default'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import AppointmentTable from '@/components/appointment/table'
-import { GET_APPOINTMENTS, USER_SEARCH } from '@/lib/graphql/queries'
-import { Tab, Tabs, Container, Form, Button, Table } from 'react-bootstrap'
+import { Tab, Tabs, Form, Table, Button, Container } from 'react-bootstrap'
 
 const Dashboard = () => {
   const { state } = useContext(Context)
+  const [range, setRange] = useState('all')
   const [keyword, setKeyword] = useState('')
   const { loading, data, refetch } = useQuery(GET_APPOINTMENTS, {
     variables: {
@@ -21,10 +26,20 @@ const Dashboard = () => {
     fetchPolicy: 'network-only',
   })
   const [searchUser, userSearchQuery] = useLazyQuery(USER_SEARCH)
+  const [printActivity, printActivityQuery] = useLazyQuery(PRINT_ACTIVITY, {
+    onCompleted: (data) => {
+      window.open(process.env.API + data?.printActivity)
+    },
+  })
 
-  const handleSubmit = (event) => {
+  const searchSubmit = (event) => {
     event.preventDefault()
     searchUser({ variables: { keyword: keyword.trim() } })
+  }
+
+  const rangeSubmit = (event) => {
+    event.preventDefault()
+    printActivity({ variables: { userId: state?.user?.id, range } })
   }
 
   if (loading)
@@ -56,6 +71,21 @@ const Dashboard = () => {
               eventKey="2"
               title={'My Activities (' + data?.appointments?.length + ')'}
             >
+              <Form onSubmit={rangeSubmit} className="d-flex mb-2">
+                <Form.Select
+                  value={range}
+                  className="me-2 ms-auto w-25"
+                  onChange={(el) => setRange(el.target.value)}
+                >
+                  <option value="all">All Activities</option>
+                  <option value="today">Today</option>
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                </Form.Select>
+                <Button variant="secondary" type="submit">
+                  Print
+                </Button>
+              </Form>
               <AppointmentTable
                 state={state}
                 refetch={refetch}
@@ -63,16 +93,18 @@ const Dashboard = () => {
               />
             </Tab>
             <Tab eventKey="3" title="Request Appointment">
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-2" controlId="formBasicEmail">
-                  <Form.Control
-                    type="text"
-                    value={keyword}
-                    required={true}
-                    placeholder="Search person by name, email..."
-                    onChange={(el) => setKeyword(el.target.value)}
-                  />
-                </Form.Group>
+              <Form onSubmit={searchSubmit} className="d-flex mb-2">
+                <Form.Control
+                  type="text"
+                  value={keyword}
+                  required={true}
+                  className="w-50 me-2"
+                  placeholder="Search person by name, email..."
+                  onChange={(el) => setKeyword(el.target.value)}
+                />
+                <Button variant="primary" type="submit" className="me-auto">
+                  Search
+                </Button>
               </Form>
               {userSearchQuery?.data?.userSearch.length && (
                 <Table
@@ -100,7 +132,7 @@ const Dashboard = () => {
                         <td>{user?.email}</td>
                         <td>
                           <Link href={'/user/' + user?.id}>
-                            <a className="btn btn-sm btn-primary">
+                            <a className="btn btn-sm btn-secondary">
                               Book Appointment
                             </a>
                           </Link>

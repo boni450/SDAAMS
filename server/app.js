@@ -9,6 +9,8 @@ const { ApolloServer, gql } = require('apollo-server-express')
 
 async function startApolloServer() {
 	const app = express()
+	app.use('/downloads', express.static('public'))
+
 	const httpServer = http.createServer(app)
 
 	const server = new ApolloServer({

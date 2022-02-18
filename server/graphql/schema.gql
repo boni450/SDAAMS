@@ -112,6 +112,7 @@ type Query {
   ): [Chat]
 
   analytics: Analytics
+  printActivity(range: String!, userId: Int!): String
 }
 
 type Mutation {

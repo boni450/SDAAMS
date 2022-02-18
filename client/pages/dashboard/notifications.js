@@ -56,11 +56,8 @@ const Notifications = () => {
 											</small>
 										</td>
 										<td>
-											<Link href={notification?.link}>
-												<a className="btn btn-sm btn-primary">View</a>
-											</Link>{' '}
 											{!notification?.isSeen && (
-												<Button variant="success" size="sm">
+												<Button variant="primary" size="sm">
 													Mark As Read
 												</Button>
 											)}
