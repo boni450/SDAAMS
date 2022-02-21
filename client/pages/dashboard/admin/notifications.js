@@ -80,6 +80,7 @@ const Notifications = () => {
 				</Container>
 			</AdminLayout>
 		)
+	return <>loading...</>
 }
 
 export default Notifications

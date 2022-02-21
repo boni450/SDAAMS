@@ -70,6 +70,7 @@ const Chats = () => {
         </Container>
       </AdminLayout>
     )
+  return <>loading...</>
 }
 
 export default Chats

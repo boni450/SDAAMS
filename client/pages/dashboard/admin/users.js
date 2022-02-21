@@ -58,6 +58,7 @@ const Users = () => {
         </Container>
       </AdminLayout>
     )
+  return <>loading...</>
 }
 
 export default Users

@@ -53,6 +53,7 @@ const AdminArea = () => {
 				</Row>
 			</AdminLayout>
 		)
+	return <>loading...</>
 }
 
 export default AdminArea

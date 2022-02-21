@@ -1,7 +1,7 @@
 import {
   USER_SEARCH,
   PRINT_ACTIVITY,
-  GET_APPOINTMENTS,
+  GET_DASHBOARD_DATA,
 } from '@/lib/graphql/queries'
 import Link from 'next/link'
 import { Context } from '@/lib/context'
@@ -17,7 +17,7 @@ const Dashboard = () => {
   const { state } = useContext(Context)
   const [range, setRange] = useState('all')
   const [keyword, setKeyword] = useState('')
-  const { loading, data, refetch } = useQuery(GET_APPOINTMENTS, {
+  const { loading, data, refetch } = useQuery(GET_DASHBOARD_DATA, {
     variables: {
       userId: state?.user?.id,
       orderCol: 'startDate',
@@ -52,7 +52,10 @@ const Dashboard = () => {
     )
   if (data)
     return (
-      <DefaultLayout title="Dashboard - SDAAMS">
+      <DefaultLayout
+        title="Dashboard - SDAAMS"
+        notifications={data?.notificationCount}
+      >
         <Container>
           <Tabs
             defaultActiveKey="1"
@@ -92,7 +95,10 @@ const Dashboard = () => {
                 appointments={data?.appointments || []}
               />
             </Tab>
-            <Tab eventKey="3" title="Request Appointment">
+            <Tab eventKey="3" title="Notice Board">
+              <h2>Show Announcements...</h2>
+            </Tab>
+            <Tab eventKey="4" title="Request Appointment">
               <Form onSubmit={searchSubmit} className="d-flex mb-2">
                 <Form.Control
                   type="text"
@@ -147,6 +153,7 @@ const Dashboard = () => {
         </Container>
       </DefaultLayout>
     )
+  return <>loading...</>
 }
 
 export default Dashboard

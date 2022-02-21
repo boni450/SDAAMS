@@ -232,3 +232,44 @@ export const GET_NOTIFICATIONS = gql`
     }
   }
 `
+
+export const GET_DASHBOARD_DATA = gql`
+  query GetDashboardData(
+    $limit: Int
+    $offset: Int
+    $userId: Int
+    $orderBy: String
+    $orderCol: String
+  ) {
+    appointments(
+      limit: $limit
+      offset: $offset
+      userId: $userId
+      orderBy: $orderBy
+      orderCol: $orderCol
+    ) {
+      id
+      name
+      description
+      color
+      endDate
+      startDate
+      ownerId
+      approverId
+      createdAt
+      updatedAt
+      isApproved
+      owner {
+        id
+        firstName
+        lastName
+      }
+      approver {
+        id
+        firstName
+        lastName
+      }
+    }
+    notificationCount(userId: $userId)
+  }
+`

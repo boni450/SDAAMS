@@ -70,6 +70,7 @@ const Notifications = () => {
 				</Container>
 			</DefaultLayout>
 		)
+	return <>loading...</>
 }
 
 export default Notifications

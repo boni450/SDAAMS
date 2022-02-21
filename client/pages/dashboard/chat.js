@@ -41,6 +41,7 @@ const Chat = () => {
 				</Container>
 			</DefaultLayout>
 		)
+	return <>loading...</>
 }
 
 export default Chat

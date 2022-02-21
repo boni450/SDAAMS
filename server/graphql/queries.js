@@ -78,6 +78,19 @@ module.exports = {
 		return await Notification.findByPk(id)
 	},
 
+	notificationCount: async (
+		parent,
+		{ offset, limit, userId, orderBy, orderCol },
+		context
+	) => {
+		return await Notification.count({
+			offset: offset || 0,
+			limit: limit || 100,
+			where: userId ? { userId } : {},
+			order: [[orderCol || 'id', orderBy || 'ASC']],
+		})
+	},
+
 	notifications: async (
 		parent,
 		{ offset, limit, userId, orderBy, orderCol },

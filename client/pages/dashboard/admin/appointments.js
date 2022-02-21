@@ -104,6 +104,7 @@ const Appointments = () => {
         </Container>
       </AdminLayout>
     )
+  return <>loading...</>
 }
 
 export default Appointments

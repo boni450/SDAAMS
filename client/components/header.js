@@ -3,9 +3,9 @@ import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { Context } from '@/lib/context'
 import { eraseCookie } from '@/lib/cookie'
-import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Container, Nav, NavDropdown, Badge } from 'react-bootstrap'
 
-const Header = ({ fluid }) => {
+const Header = ({ fluid, notifications }) => {
   const router = useRouter()
   const { state, dispatch } = useContext(Context)
 
@@ -58,7 +58,10 @@ const Header = ({ fluid }) => {
                 <a className="nav-link">Chat</a>
               </Link>
               <Link href="/dashboard/notifications">
-                <a className="nav-link">Notifications</a>
+                <a className="nav-link">
+                  Notifications{' '}
+                  {notifications != 0 && <Badge pill>{notifications}</Badge>}
+                </a>
               </Link>
               <Link href="/dashboard/settings">
                 <a className="nav-link">Settings</a>
