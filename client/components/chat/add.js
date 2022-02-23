@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import styles from '@/styles/shared.module.css'
 
@@ -43,11 +43,23 @@ export const ComposeMessageForm = ({ saveMessage }) => {
 
 export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 	const [message, setMessage] = useState('')
+	const [reversedChats, setReversedChats] = useState([])
 
 	const person =
 		currentChat.senderId == state?.user?.id
 			? currentChat.receiver
 			: currentChat.sender
+
+	useEffect(() => {
+		let items = [] // FIXME
+		chats?.map((chat) => items.push(chat))
+		setReversedChats(items?.reverse())
+
+		setTimeout(() => {
+			const chatBox = document.getElementById('chat-box')
+			chatBox.scrollTop = chatBox.scrollHeight
+		}, 1000)
+	}, [chats])
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
@@ -57,8 +69,8 @@ export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 
 	return (
 		<>
-			<div className={styles.chatBox + ' rounded shadow-sm'}>
-				{chats.map((a, id) => {
+			<div id="chat-box" className={styles.chatBox + ' rounded shadow-sm'}>
+				{reversedChats.map((a, id) => {
 					if (
 						(person?.id == a.senderId && person?.id != a.receiverId) ||
 						(person?.id == a.receiverId && person?.id != a.senderId)
