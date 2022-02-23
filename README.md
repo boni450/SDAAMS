@@ -1,6 +1,6 @@
 # SDAAMS
 
-Smart Daily Activity Appointment Management System ??
+Smart Daily Activities Planning and Appointment Management System
 
 ## Installation
 

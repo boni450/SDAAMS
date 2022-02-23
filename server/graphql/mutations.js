@@ -22,6 +22,25 @@ module.exports = {
 		)
 	},
 
+	updateUser: async (parent, args, context) => {
+		await User.update({ ...args }, { where: { id: args?.id } })
+		const user = await User.findByPk(args?.id) // FIXME
+		return jwt.sign(
+			{
+				data: {
+					id: user?.id,
+					role: user?.role,
+					email: user?.email,
+					image: user?.image,
+					lastName: user?.lastName,
+					firstName: user?.firstName,
+				},
+			},
+			process.env.JWT_KEY,
+			{ expiresIn: '30d' }
+		)
+	},
+
 	addAppointment: async (parent, args, context) => {
 		const appointment = await Appointment.create({ ...args })
 		if (args?.ownerId != args?.approverId) {
@@ -41,13 +60,18 @@ module.exports = {
 
 	updateAppointment: async (parent, args, context) => {
 		await Appointment.update({ ...args }, { where: { id: args?.id } })
-		return await Appointment.findByPk(args?.id)
+		return await Appointment.findByPk(args?.id) // FIXME
 	},
 
 	deleteAppointment: async (parent, { id }, context) => {
 		await Notification.destroy({ where: { link: '/appointment/' + id } })
 		await Appointment.destroy({ where: { id } })
 		return 'ok'
+	},
+
+	updateNotification: async (parent, args, context) => {
+		await Notification.update({ ...args }, { where: { id: args?.id } })
+		return await Notification.findByPk(args?.id) // FIXME
 	},
 
 	addChat: async (parent, { email, message, senderId }, context) => {

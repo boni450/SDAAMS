@@ -86,7 +86,7 @@ module.exports = {
 		return await Notification.count({
 			offset: offset || 0,
 			limit: limit || 100,
-			where: userId ? { userId } : {},
+			where: userId ? { userId, isSeen: false } : { isSeen: false },
 			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},

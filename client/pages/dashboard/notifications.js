@@ -1,17 +1,35 @@
 import Link from 'next/link'
 import { useContext } from 'react'
+import { useRouter } from 'next/router'
 import { Context } from '@/lib/context'
 import Loader from '@/components/loader'
-import { useQuery } from '@apollo/client'
 import DefaultLayout from '@/layouts/default'
+import { useQuery, useMutation } from '@apollo/client'
 import { GET_NOTIFICATIONS } from '@/lib/graphql/queries'
 import { Container, Table, Button } from 'react-bootstrap'
+import { UPDATE_NOTIFICATION } from '@/lib/graphql/mutations'
 
 const Notifications = () => {
+	const router = useRouter()
 	const { state } = useContext(Context)
 	const { data, loading } = useQuery(GET_NOTIFICATIONS, {
 		variables: { orderBy: 'DESC', userId: state?.user?.id },
 	})
+	const [attemptUpdatingNotification, updateNotificationMutation] = useMutation(
+		UPDATE_NOTIFICATION,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				router.push(data?.updateNotification?.link)
+			},
+		}
+	)
+
+	const viewNotification = (id) => {
+		attemptUpdatingNotification({
+			variables: { id: Number.parseInt(id), isSeen: true },
+		})
+	}
 
 	if (loading)
 		return (
@@ -57,8 +75,12 @@ const Notifications = () => {
 										</td>
 										<td>
 											{!notification?.isSeen && (
-												<Button variant="primary" size="sm">
-													Mark As Read
+												<Button
+													variant="primary"
+													size="sm"
+													onClick={() => viewNotification(notification?.id)}
+												>
+													View
 												</Button>
 											)}
 										</td>

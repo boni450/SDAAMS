@@ -124,6 +124,15 @@ type Mutation {
     password: String!
   ): String
 
+  updateUser(
+    id: Int!
+    firstName: String
+    lastName: String
+    role: String
+    email: String
+    password: String
+  ): String
+
   deleteUser(id: Int!): String
 
   addAppointment(
