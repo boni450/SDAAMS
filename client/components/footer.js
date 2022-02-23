@@ -10,7 +10,7 @@ const Footer = () => {
 					<Col md={6} sm={12}>
 						<h3>Why work with us</h3>
 						<p>
-							BBBBBB 
+							
 						</p>
 					</Col>
 					<Col md={3} sm={6}>

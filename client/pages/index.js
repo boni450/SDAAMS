@@ -21,7 +21,7 @@ const Home = () => {
           <Col md={3} sm={6} className="mt-4">
             <h5>Schedule Appointments</h5>
             <p className="text-muted">
-              Appointment schedular
+              we understand that respect is earned, through empathy, compassion, and trust. 
             </p>
           </Col>
           <Col md={3} sm={6}>
@@ -30,7 +30,7 @@ const Home = () => {
           <Col md={3} sm={6} className="mt-4">
             <h5>Attend Events</h5>
             <p className="text-muted">
-              Eventt 
+              it was nice to meet you. i hope we can see each other sometime again 
             </p>
           </Col>
         </Row>
