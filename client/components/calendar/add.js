@@ -2,7 +2,13 @@ import { useState } from 'react'
 import { format } from 'date-fns'
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
-const AddAppointmentModal = ({ toggle, visible, saveAppointment, month }) => {
+const AddAppointmentModal = ({
+  toggle,
+  visible,
+  saveAppointment,
+  monthDifference,
+  month,
+}) => {
   const [end, setEnd] = useState('')
   const [name, setName] = useState('')
   const [color, setColor] = useState('')
