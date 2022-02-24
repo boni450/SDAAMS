@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { format } from 'date-fns'
+import { format } from 'date-fns' // FIXME: replace
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
 const AddAppointmentModal = ({

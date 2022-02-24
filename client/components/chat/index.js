@@ -42,7 +42,7 @@ const ChatBox = ({ data, refetch, state }) => {
 					<Nav.Link eventKey="2">Compose</Nav.Link>
 				</Nav.Item>
 				<Nav.Item>
-					<Nav.Link onClick={() => refetch()}>Refresh</Nav.Link>
+					<Nav.Link onClick={() => refetch()}>&#10227; Refresh</Nav.Link>
 				</Nav.Item>
 			</Nav>
 			{alert && <Alert variant="warning">{alert}</Alert>}

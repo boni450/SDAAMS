@@ -193,7 +193,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
             className="btn btn-secondary rounded-pill ms-1"
             onClick={() => setMonthDifference(monthDifference - 1)}
           >
-            &#9754;
+            &#8617;
           </button>
           <button
             title="next month"
@@ -201,14 +201,14 @@ const Calendar = ({ data, state, profile, refetch }) => {
             className="btn btn-secondary rounded-pill ms-1"
             onClick={() => setMonthDifference(monthDifference + 1)}
           >
-            &#9755;
+            &#8618;
           </button>
           {state?.user?.id && (
             <button
               className="btn btn-primary rounded-pill ms-1"
               onClick={() => setShowAddModal(!showAddModal)}
             >
-              + Appointment
+              &#8889; Appointment
             </button>
           )}
         </div>

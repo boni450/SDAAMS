@@ -57,7 +57,7 @@ export const ConversationBox = ({ chats, state, saveMessage, currentChat }) => {
 
 		setTimeout(() => {
 			const chatBox = document.getElementById('chat-box')
-			chatBox.scrollTop = chatBox.scrollHeight
+			if (chatBox) chatBox.scrollTop = chatBox.scrollHeight
 		}, 1000)
 	}, [chats])
 
