@@ -38,13 +38,19 @@ const EditAppointmentModal = ({
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    let a = new Date()
+    let b = new Date()
+
+    a.setMonth(a.getMonth() + monthDifference)
+    b.setMonth(b.getMonth() + monthDifference)
+
     updateAppointment({
       color,
       name: name?.trim(),
       description: description?.trim(),
       id: Number.parseInt(appointment?.id),
-      end: format(new Date().setDate(end), 'yyyy-MM-dd'),
-      start: format(new Date().setDate(start), 'yyyy-MM-dd'),
+      end: format(a.setDate(end), 'yyyy-MM-dd'),
+      start: format(b.setDate(start), 'yyyy-MM-dd'),
     })
     setEnd('')
     setName('')
