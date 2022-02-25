@@ -273,20 +273,6 @@ const Calendar = ({ data, state, profile, refetch }) => {
           ))}
         </tbody>
       </Table>
-      <div className="d-flex justify-content-center">
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => setMonthDifference(monthDifference - 1)}
-        >
-          &laquo; Prev
-        </button>
-        <button
-          className="btn btn-primary mx-1"
-          onClick={() => setMonthDifference(monthDifference + 1)}
-        >
-          Next &raquo;
-        </button>
-      </div>
     </>
   )
 }
