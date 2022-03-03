@@ -1,6 +1,12 @@
+const {
+	User,
+	Chat,
+	Appointment,
+	Notification,
+	Announcement,
+} = require('../models')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
-const { User, Appointment, Chat, Notification } = require('../models')
 
 require('dotenv').config()
 
@@ -100,6 +106,22 @@ module.exports = {
 			offset: offset || 0,
 			limit: limit || 100,
 			where: userId ? { userId } : {},
+			order: [[orderCol || 'id', orderBy || 'ASC']],
+		})
+	},
+
+	announcement: async (parent, { id }, context) => {
+		return await Announcement.findByPk(id)
+	},
+
+	announcements: async (
+		parent,
+		{ offset, limit, orderBy, orderCol },
+		context
+	) => {
+		return await Announcement.findAll({
+			offset: offset || 0,
+			limit: limit || 100,
 			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},

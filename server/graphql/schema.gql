@@ -40,6 +40,13 @@ type Notification {
   user: User!
 }
 
+type Announcement {
+  id: ID!
+  message: String
+  userId: Int
+  user: User!
+}
+
 type Comment {
   id: ID!
   message: String
@@ -93,6 +100,14 @@ type Query {
     orderBy: String
     orderCol: String
   ): [Notification]
+
+  announcement(id: Int!): Announcement
+  announcements(
+    limit: Int
+    offset: Int
+    orderBy: String
+    orderCol: String
+  ): [Announcement]
 
   comment(id: Int!): Comment
   comments(
@@ -167,6 +182,10 @@ type Mutation {
     isSeen: Boolean
     userId: Int
   ): Notification
+
+  addAnnouncement(message: String!, userId: Int!): Announcement
+  updateAnnouncement(message: String!, userId: Int): Announcement
+  deleteAnnouncement(id: Int!): String
 
   addComment(message: String!, appointmentId: Int!, userId: Int!): Comment
 

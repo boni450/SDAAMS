@@ -30,4 +30,10 @@ module.exports = {
 			return await User.findByPk(userId)
 		},
 	},
+
+	Announcement: {
+		user: async ({ userId }, args, context) => {
+			return await User.findByPk(userId)
+		},
+	},
 }
