@@ -159,6 +159,8 @@ const Calendar = ({ data, state, profile, refetch }) => {
         monthDifference={monthDifference}
         saveAppointment={saveAppointment}
         toggle={() => setShowAddModal(!showAddModal)}
+        next={() => setMonthDifference(monthDifference + 1)}
+        previous={() => setMonthDifference(monthDifference - 1)}
       />
       <ShowAppointmentModal
         state={state}
@@ -178,6 +180,8 @@ const Calendar = ({ data, state, profile, refetch }) => {
         monthDifference={monthDifference}
         updateAppointment={updateAppointment}
         toggle={() => setShowEditModal(!showEditModal)}
+        next={() => setMonthDifference(monthDifference + 1)}
+        previous={() => setMonthDifference(monthDifference - 1)}
       />
       <div className="d-flex justify-content-between mb-3">
         <span className="badge bg-light text-dark fs-4">

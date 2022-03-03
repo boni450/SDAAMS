@@ -1,18 +1,23 @@
 import { useState } from 'react'
-import { format } from 'date-fns' // FIXME: replace
 import { Modal, Button, Row, Col, Form } from 'react-bootstrap'
 
 const AddAppointmentModal = ({
+  next,
+  month,
   toggle,
   visible,
+  previous,
   saveAppointment,
   monthDifference,
-  month,
 }) => {
-  const [end, setEnd] = useState('')
   const [name, setName] = useState('')
   const [color, setColor] = useState('')
-  const [start, setStart] = useState('')
+  const [endDay, setEndDay] = useState('')
+  const [endHour, setEndHour] = useState('')
+  const [endMinute, setEndMinute] = useState('')
+  const [startDay, setStartDay] = useState('')
+  const [startHour, setStartHour] = useState('')
+  const [startMinute, setStartMinute] = useState('')
   const [description, setDescription] = useState('')
   const colors = [
     { name: 'green', value: 'success' },
@@ -28,21 +33,42 @@ const AddAppointmentModal = ({
     let b = new Date()
 
     a.setMonth(a.getMonth() + monthDifference)
+    a.setDate(endDay)
+    a.setHours(endHour)
+    a.setMinutes(endMinute)
+
     b.setMonth(b.getMonth() + monthDifference)
+    b.setDate(startDay)
+    b.setHours(startHour)
+    b.setMinutes(startMinute)
 
     saveAppointment({
       color,
       name: name.trim(),
       description: description.trim(),
-      end: format(a.setDate(end), 'yyyy-MM-dd'),
-      start: format(b.setDate(start), 'yyyy-MM-dd'),
+      end: a.toISOString(),
+      start: b.toISOString(),
     })
-    setEnd('')
+    setEndDay('')
+    setEndHour('')
+    setEndMinute('')
     setName('')
-    setStart('')
+    setStartDay('')
+    setStartHour('')
+    setStartMinute('')
     setColor('')
     setDescription('')
     toggle()
+  }
+
+  const nextMonth = (event) => {
+    event.preventDefault()
+    next()
+  }
+
+  const previousMonth = (event) => {
+    event.preventDefault()
+    previous()
   }
 
   return (
@@ -78,37 +104,105 @@ const AddAppointmentModal = ({
                 ))}
               </Form.Select>
             </Col>
-            <Col md={3}>
-              <Form.Control
-                min="1"
-                type="number"
-                required={true}
-                placeholder="Start"
-                value={start}
-                className="mb-2"
-                max={month.lastDay.getDate()}
-                onChange={(el) => setStart(el.target.value)}
-              />
-            </Col>
-            <Col md={3}>
-              <Form.Control
-                min={start}
-                type="number"
-                required={true}
-                placeholder="End"
-                value={end}
-                max={month.lastDay.getDate()}
-                className="mb-2"
-                onChange={(el) => setEnd(el.target.value)}
-              />
-            </Col>
-            <Col md={6}>
-              <span className="badge bg-light text-dark w-100 fs-5">
+            <Col md={8}>
+              <span className="badge bg-light text-dark w-100 fs-4 mb-2">
                 {month.today.toLocaleString('default', {
                   month: 'long',
                   year: 'numeric',
                 })}
               </span>
+            </Col>
+            <Col md={3}>
+              <button
+                title="next month"
+                data-bs-toggle="tooltip"
+                className="btn btn-secondary rounded-pill mx-1"
+                onClick={previousMonth}
+              >
+                &#8617;
+              </button>
+              <button
+                title="previous month"
+                data-bs-toggle="tooltip"
+                className="btn btn-secondary rounded-pill mx-1"
+                onClick={nextMonth}
+              >
+                &#8618;
+              </button>
+            </Col>
+            <Col md={2}>
+              <h5 className="text-center fw-normal mt-2">Start</h5>
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min="1"
+                type="number"
+                required={true}
+                placeholder="Day"
+                value={startDay}
+                className="mb-2"
+                max={month.lastDay.getDate()}
+                onChange={(el) => setStartDay(el.target.value)}
+              />
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min="0"
+                max="24"
+                type="number"
+                placeholder="Hour"
+                value={startHour}
+                className="mb-2"
+                onChange={(el) => setStartHour(el.target.value)}
+              />
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min="0"
+                max="60"
+                type="number"
+                placeholder="Min"
+                value={startMinute}
+                className="mb-2"
+                onChange={(el) => setStartMinute(el.target.value)}
+              />
+            </Col>
+            <Col md={2}>
+              <h5 className="text-center fw-normal mt-1">Stop</h5>
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min={startDay}
+                type="number"
+                required={true}
+                placeholder="Day"
+                value={endDay}
+                max={month.lastDay.getDate()}
+                className="mb-2"
+                onChange={(el) => setEndDay(el.target.value)}
+              />
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min="0"
+                max="24"
+                type="number"
+                placeholder="Hour"
+                value={endHour}
+                className="mb-2"
+                onChange={(el) => setEndHour(el.target.value)}
+              />
+            </Col>
+            <Col md={3}>
+              <Form.Control
+                min="0"
+                max="24"
+                type="number"
+                placeholder="Min"
+                value={endMinute}
+                className="mb-2"
+                onChange={(el) => setEndMinute(el.target.value)}
+              />
             </Col>
             <Col md={12}>
               <Form.Control
