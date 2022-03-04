@@ -91,6 +91,48 @@ export const GET_APPOINTMENTS = gql`
   }
 `
 
+export const GET_ANNOUNCEMENT = gql`
+  query GetAnnouncement($id: Int!) {
+    announcement(id: $id) {
+      id
+      message
+      userId
+      createdAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
+export const GET_ANNOUNCEMENTS = gql`
+  query GetAnnouncements(
+    $limit: Int
+    $offset: Int
+    $orderBy: String
+    $orderCol: String
+  ) {
+    announcements(
+      limit: $limit
+      offset: $offset
+      orderBy: $orderBy
+      orderCol: $orderCol
+    ) {
+      id
+      message
+      userId
+      createdAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
 export const GET_USER = gql`
   query GetUser($id: Int!) {
     user(id: $id) {
@@ -271,5 +313,16 @@ export const GET_DASHBOARD_DATA = gql`
       }
     }
     notificationCount(userId: $userId)
+    announcements(limit: $limit, offset: $offset) {
+      id
+      message
+      userId
+      createdAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
   }
 `

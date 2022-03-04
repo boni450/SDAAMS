@@ -124,6 +124,44 @@ export const DELETE_APPOINTMENT = gql`
   }
 `
 
+export const ADD_ANNOUNCEMENT = gql`
+  mutation AddAnnouncement($message: String!, $userId: Int!) {
+    addAnnouncement(message: $message, userId: $userId) {
+      id
+      userId
+      message
+      createdAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
+export const UPDATE_ANNOUNCEMENT = gql`
+  mutation UpdateAnnouncement($id: Int!, $message: String, $userId: Int) {
+    updateAnnouncement(id: $id, message: $message, userId: $userId) {
+      id
+      userId
+      message
+      createdAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`
+
+export const DELETE_ANNOUNCEMENT = gql`
+  mutation DeleteAnnouncement($id: Int!) {
+    deleteAnnouncement(id: $id)
+  }
+`
+
 export const UPDATE_NOTIFICATION = gql`
   mutation UpdateNotification(
     $id: Int!

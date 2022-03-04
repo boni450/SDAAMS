@@ -32,6 +32,11 @@ const Sidebar = () => {
 							Chats &rarr;
 						</a>
 					</Link>
+					<Link href="/dashboard/admin/announcement">
+						<a className="list-group-item list-group-item-action">
+							Announcement &rarr;
+						</a>
+					</Link>
 					<Link href="/dashboard/admin/settings">
 						<a className="list-group-item list-group-item-action">
 							Site Settings &rarr;

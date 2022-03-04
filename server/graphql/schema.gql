@@ -45,6 +45,8 @@ type Announcement {
   message: String
   userId: Int
   user: User!
+  createdAt: String
+  updatedAt: String
 }
 
 type Comment {

@@ -11,7 +11,17 @@ import Calendar from '@/components/calendar'
 import DefaultLayout from '@/layouts/default'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import AppointmentTable from '@/components/appointment/table'
-import { Tab, Tabs, Form, Table, Button, Container } from 'react-bootstrap'
+import {
+  Tab,
+  Tabs,
+  Form,
+  Table,
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+} from 'react-bootstrap'
 
 const Dashboard = () => {
   const { state } = useContext(Context)
@@ -96,7 +106,28 @@ const Dashboard = () => {
               />
             </Tab>
             <Tab eventKey="3" title="Notice Board">
-              <h2>Show Announcements...</h2>
+              <Row className="justify-content-center">
+                {data?.announcements.map((item, index) => {
+                  let a = new Date()
+                  a.setTime(item?.createdAt)
+
+                  return (
+                    <Col md={4} key={index}>
+                      <Card className="shadow-sm mb-2">
+                        <Card.Header className="text-truncate">
+                          {item?.user?.firstName} {item?.user?.lastName} -{' '}
+                          {a.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </Card.Header>
+                        <Card.Body>{item?.message}</Card.Body>
+                      </Card>
+                    </Col>
+                  )
+                })}
+              </Row>
             </Tab>
             <Tab eventKey="4" title="Request Appointment">
               <Form onSubmit={searchSubmit} className="d-flex mb-2">
