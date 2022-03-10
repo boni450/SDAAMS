@@ -1,11 +1,23 @@
 import Loader from '@/components/loader'
 import AdminLayout from '@/layouts/admin'
-import { useQuery } from '@apollo/client'
 import { GET_CHATS } from '@/lib/graphql/queries'
+import { DELETE_CHAT } from '@/lib/graphql/mutations'
+import { useQuery, useMutation } from '@apollo/client'
 import { Container, Table, Button } from 'react-bootstrap'
 
 const Chats = () => {
-  const { data, loading } = useQuery(GET_CHATS)
+  const { data, loading, refetch } = useQuery(GET_CHATS)
+  const [attemptDeletingChat, deleteChatMutation] = useMutation(DELETE_CHAT, {
+    errorPolicy: 'all',
+    onCompleted: (data) => {
+      if (data?.deleteChat) refetch()
+    },
+  })
+
+  const deleteChat = (id) => {
+    if (confirm('You are about to delete a chat message :('))
+      attemptDeletingChat({ variables: { id: Number.parseInt(id) } })
+  }
 
   if (loading)
     return (
@@ -58,7 +70,11 @@ const Chats = () => {
                       </small>
                     </td>
                     <td>
-                      <Button variant="warning" size="sm">
+                      <Button
+                        size="sm"
+                        variant="warning"
+                        onClick={() => deleteChat(chat?.id)}
+                      >
                         Delete
                       </Button>
                     </td>

@@ -47,6 +47,11 @@ module.exports = {
     )
   },
 
+  deleteUser: async (parent, { id }, context) => {
+    await User.destroy({ where: { id } })
+    return 'ok'
+  },
+
   addAppointment: async (parent, args, context) => {
     const appointment = await Appointment.create({ ...args })
     if (args?.ownerId != args?.approverId) {
@@ -78,6 +83,11 @@ module.exports = {
   updateNotification: async (parent, args, context) => {
     await Notification.update({ ...args }, { where: { id: args?.id } })
     return await Notification.findByPk(args?.id) // FIXME
+  },
+
+  deleteNotification: async (parent, { id }, context) => {
+    await Notification.destroy({ where: { id } })
+    return 'ok'
   },
 
   addAnnouncement: async (parent, args, context) => {

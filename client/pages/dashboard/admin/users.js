@@ -1,12 +1,24 @@
 import Link from 'next/link'
 import Loader from '@/components/loader'
 import AdminLayout from '@/layouts/admin'
-import { useQuery } from '@apollo/client'
 import { GET_USERS } from '@/lib/graphql/queries'
+import { DELETE_USER } from '@/lib/graphql/mutations'
+import { useQuery, useMutation } from '@apollo/client'
 import { Container, Table, Button } from 'react-bootstrap'
 
 const Users = () => {
-  const { data, loading } = useQuery(GET_USERS)
+  const { data, loading, refetch } = useQuery(GET_USERS)
+  const [attemptDeletingUser, deleteUserMutation] = useMutation(DELETE_USER, {
+    errorPolicy: 'all',
+    onCompleted: (data) => {
+      if (data?.deleteUser) refetch()
+    },
+  })
+
+  const deleteUser = (id) => {
+    if (confirm('You are about to delete a chat message :('))
+      attemptDeletingUser({ variables: { id: Number.parseInt(id) } })
+  }
 
   if (loading)
     return (
@@ -47,9 +59,13 @@ const Users = () => {
                     <Button variant="success" size="sm">
                       Edit
                     </Button>{' '}
-                    <Button variant="warning" size="sm">
+                    <Button
+                      size="sm"
+                      variant="warning"
+                      onClick={() => deleteUser(user?.id)}
+                    >
                       Delete
-                    </Button>{' '}
+                    </Button>
                   </td>
                 </tr>
               ))}

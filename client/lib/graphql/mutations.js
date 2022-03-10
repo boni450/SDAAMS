@@ -36,6 +36,12 @@ export const UPDATE_USER = gql`
   }
 `
 
+export const DELETE_USER = gql`
+  mutation DeleteUser($id: Int!) {
+    deleteUser(id: $id)
+  }
+`
+
 export const ADD_APPOINTMENT = gql`
   mutation AddAppointment(
     $name: String!
@@ -193,6 +199,12 @@ export const UPDATE_NOTIFICATION = gql`
   }
 `
 
+export const DELETE_NOTIFICATION = gql`
+  mutation DeleteNotification($id: Int!) {
+    deleteNotification(id: $id)
+  }
+`
+
 export const ADD_CHAT = gql`
   mutation AddChat($email: String!, $message: String!, $senderId: Int!) {
     addChat(email: $email, message: $message, senderId: $senderId) {
@@ -201,5 +213,11 @@ export const ADD_CHAT = gql`
       senderId
       receiverId
     }
+  }
+`
+
+export const DELETE_CHAT = gql`
+  mutation DeleteChat($id: Int!) {
+    deleteChat(id: $id)
   }
 `

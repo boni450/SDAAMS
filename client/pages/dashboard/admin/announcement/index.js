@@ -1,12 +1,27 @@
 import Link from 'next/link'
 import Loader from '@/components/loader'
 import AdminLayout from '@/layouts/admin'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { GET_ANNOUNCEMENTS } from '@/lib/graphql/queries'
 import { Container, Table, Button } from 'react-bootstrap'
+import { DELETE_ANNOUNCEMENT } from '@/lib/graphql/mutations'
 
 const Announcements = () => {
-  const { data, loading } = useQuery(GET_ANNOUNCEMENTS)
+  const { data, loading, refetch } = useQuery(GET_ANNOUNCEMENTS) // ! FETCH every time you visit page
+  const [attemptDeletingAnnouncement, deleteAnnouncementMutation] = useMutation(
+    DELETE_ANNOUNCEMENT,
+    {
+      errorPolicy: 'all',
+      onCompleted: (data) => {
+        if (data?.deleteAnnouncement) refetch()
+      },
+    }
+  )
+
+  const deleteAnnouncement = (id) => {
+    if (confirm('You are about to delete an announcement :('))
+      attemptDeletingAnnouncement({ variables: { id: Number.parseInt(id) } })
+  }
 
   if (loading)
     return (
@@ -65,12 +80,18 @@ const Announcements = () => {
                       <Link href="#">
                         <a className="btn btn-sm btn-primary">View</a>
                       </Link>{' '}
-                      <Button variant="success" size="sm">
-                        Edit
-                      </Button>{' '}
-                      <Button variant="warning" size="sm">
+                      <Link
+                        href={'/dashboard/admin/announcement/edit/' + item.id}
+                      >
+                        <a className="btn btn-sm btn-success">Edit</a>
+                      </Link>{' '}
+                      <Button
+                        size="sm"
+                        variant="warning"
+                        onClick={() => deleteAnnouncement(item?.id)}
+                      >
                         Delete
-                      </Button>{' '}
+                      </Button>
                     </td>
                   </tr>
                 )

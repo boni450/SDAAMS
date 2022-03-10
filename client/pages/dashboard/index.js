@@ -12,15 +12,15 @@ import DefaultLayout from '@/layouts/default'
 import { useQuery, useLazyQuery } from '@apollo/client'
 import AppointmentTable from '@/components/appointment/table'
 import {
+  Row,
+  Col,
   Tab,
   Tabs,
+  Card,
   Form,
   Table,
   Button,
   Container,
-  Row,
-  Col,
-  Card,
 } from 'react-bootstrap'
 
 const Dashboard = () => {
@@ -68,7 +68,7 @@ const Dashboard = () => {
       >
         <Container>
           <Tabs
-            defaultActiveKey="1"
+            defaultActiveKey={data?.announcements?.length ? '3' : '1'}
             id="uncontrolled-tab-example"
             className="mb-3"
           >
@@ -105,14 +105,17 @@ const Dashboard = () => {
                 appointments={data?.appointments || []}
               />
             </Tab>
-            <Tab eventKey="3" title="Notice Board">
+            <Tab
+              eventKey="3"
+              title={'Notice Board (' + data?.announcements?.length + ')'}
+            >
               <Row className="justify-content-center">
                 {data?.announcements.map((item, index) => {
                   let a = new Date()
                   a.setTime(item?.createdAt)
 
                   return (
-                    <Col md={4} key={index}>
+                    <Col md={6} key={index}>
                       <Card className="shadow-sm mb-2">
                         <Card.Header className="text-truncate">
                           {item?.user?.firstName} {item?.user?.lastName} -{' '}

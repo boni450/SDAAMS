@@ -11,7 +11,7 @@ import { GET_APPOINTMENT } from '@/lib/graphql/queries'
 const Appointment = () => {
 	const router = useRouter()
 	const { state } = useContext(Context)
-	const { data, refetch } = useQuery(GET_APPOINTMENT, {
+	const { data } = useQuery(GET_APPOINTMENT, {
 		variables: { id: Number.parseInt(router.query.id) || 0 },
 		fetchPolicy: 'network-only',
 	})

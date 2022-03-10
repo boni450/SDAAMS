@@ -1,12 +1,27 @@
 import Link from 'next/link'
 import Loader from '@/components/loader'
 import AdminLayout from '@/layouts/admin'
-import { useQuery } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { GET_NOTIFICATIONS } from '@/lib/graphql/queries'
 import { Container, Table, Button } from 'react-bootstrap'
+import { DELETE_NOTIFICATION } from '@/lib/graphql/mutations'
 
 const Notifications = () => {
-	const { data, loading } = useQuery(GET_NOTIFICATIONS)
+	const { data, loading, refetch } = useQuery(GET_NOTIFICATIONS)
+	const [attemptDeletingNotification, deleteNotificationMutation] = useMutation(
+		DELETE_NOTIFICATION,
+		{
+			errorPolicy: 'all',
+			onCompleted: (data) => {
+				if (data?.deleteNotification) refetch()
+			},
+		}
+	)
+
+	const deleteNotification = (id) => {
+		if (confirm('You are about to delete a notification :('))
+			attemptDeletingNotification({ variables: { id: Number.parseInt(id) } })
+	}
 
 	if (loading)
 		return (
@@ -68,9 +83,13 @@ const Notifications = () => {
 											<Button variant="success" size="sm">
 												Edit
 											</Button>{' '}
-											<Button variant="warning" size="sm">
+											<Button
+												size="sm"
+												variant="warning"
+												onClick={() => deleteNotification(notification?.id)}
+											>
 												Delete
-											</Button>{' '}
+											</Button>
 										</td>
 									</tr>
 								)

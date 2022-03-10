@@ -185,8 +185,10 @@ type Mutation {
     userId: Int
   ): Notification
 
+  deleteNotification(id: Int!): String
+
   addAnnouncement(message: String!, userId: Int!): Announcement
-  updateAnnouncement(message: String!, userId: Int): Announcement
+  updateAnnouncement(id: Int!, message: String, userId: Int): Announcement
   deleteAnnouncement(id: Int!): String
 
   addComment(message: String!, appointmentId: Int!, userId: Int!): Comment

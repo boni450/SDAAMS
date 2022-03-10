@@ -50,7 +50,7 @@ module.exports = {
     await queryInterface.addColumn('Appointments', 'approverId', {
       type: Sequelize.BIGINT,
       onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
+      onDelete: 'CASCADE',
       references: { model: 'Users', key: 'id' },
     })
   },

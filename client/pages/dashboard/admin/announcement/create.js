@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Context } from '@/lib/context'
 import { useRouter } from 'next/router'
 import AdminLayout from '@/layouts/admin'
@@ -28,7 +27,7 @@ const Create = () => {
   }
 
   return (
-    <AdminLayout title="Create Announcements - SDAAMS">
+    <AdminLayout title="Create Announcement - SDAAMS">
       <Container>
         <Card className="shadow-sm">
           <Card.Header className="bg-dark text-white">

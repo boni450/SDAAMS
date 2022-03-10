@@ -1,12 +1,27 @@
 import Link from 'next/link'
 import Loader from '@/components/loader'
-import { useQuery } from '@apollo/client'
 import AdminLayout from '@/layouts/admin'
+import { useQuery, useMutation } from '@apollo/client'
 import { GET_APPOINTMENTS } from '@/lib/graphql/queries'
 import { Container, Table, Button } from 'react-bootstrap'
+import { DELETE_APPOINTMENT } from '@/lib/graphql/mutations'
 
 const Appointments = () => {
-  const { data, loading } = useQuery(GET_APPOINTMENTS)
+  const { data, loading, refetch } = useQuery(GET_APPOINTMENTS)
+  const [attemptDeletingAppointment, deleteAppointmentMutation] = useMutation(
+    DELETE_APPOINTMENT,
+    {
+      errorPolicy: 'all',
+      onCompleted: (data) => {
+        if (data?.deleteAppointment) refetch()
+      },
+    }
+  )
+
+  const deleteAppointment = (id) => {
+    if (confirm('You are about to delete an appointment :('))
+      attemptDeletingAppointment({ variables: { id: Number.parseInt(id) } })
+  }
 
   if (loading)
     return (
@@ -92,9 +107,13 @@ const Appointments = () => {
                       <Button variant="success" size="sm">
                         Edit
                       </Button>{' '}
-                      <Button variant="warning" size="sm">
+                      <Button
+                        size="sm"
+                        variant="warning"
+                        onClick={() => deleteAppointment(appointment?.id)}
+                      >
                         Delete
-                      </Button>{' '}
+                      </Button>
                     </td>
                   </tr>
                 )
