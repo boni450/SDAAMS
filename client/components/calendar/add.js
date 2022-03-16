@@ -119,7 +119,7 @@ const AddAppointmentModal = ({
                 className="btn btn-secondary rounded-pill mx-1"
                 onClick={previousMonth}
               >
-                &#8617;
+                &#8647;
               </button>
               <button
                 title="previous month"
@@ -127,7 +127,7 @@ const AddAppointmentModal = ({
                 className="btn btn-secondary rounded-pill mx-1"
                 onClick={nextMonth}
               >
-                &#8618;
+                &#8649;
               </button>
             </Col>
             <Col md={2}>

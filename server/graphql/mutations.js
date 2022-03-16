@@ -6,6 +6,7 @@ const {
   Announcement,
 } = require('../models')
 const jwt = require('jsonwebtoken')
+const { Op } = require('sequelize')
 
 require('dotenv').config()
 
@@ -49,6 +50,9 @@ module.exports = {
 
   deleteUser: async (parent, { id }, context) => {
     await User.destroy({ where: { id } })
+    await Appointment.destroy({
+      where: { [Op.or]: [{ onwerId: id }, { approverId: id }] },
+    })
     return 'ok'
   },
 

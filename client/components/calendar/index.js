@@ -197,7 +197,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
             className="btn btn-secondary rounded-pill ms-1"
             onClick={() => setMonthDifference(monthDifference - 1)}
           >
-            &#8617;
+            &#8647;
           </button>
           <button
             title="next month"
@@ -205,7 +205,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
             className="btn btn-secondary rounded-pill ms-1"
             onClick={() => setMonthDifference(monthDifference + 1)}
           >
-            &#8618;
+            &#8649;
           </button>
           {state?.user?.id && (
             <button
