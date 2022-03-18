@@ -82,9 +82,6 @@ const Notifications = () => {
 											<Link href={notification?.link}>
 												<a className="btn btn-sm btn-primary">View</a>
 											</Link>{' '}
-											<Button variant="success" size="sm">
-												Edit
-											</Button>{' '}
 											<Button
 												size="sm"
 												variant="warning"

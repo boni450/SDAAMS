@@ -13,7 +13,6 @@ const Edit = () => {
   const [role, setRole] = useState('')
   const [email, setEmail] = useState('')
   const [lastName, setLastName] = useState('')
-  const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const { data } = useQuery(GET_USER, {
     variables: { id: Number.parseInt(router.query.id) || 0 },

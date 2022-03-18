@@ -33,7 +33,7 @@ const Dashboard = () => {
       orderCol: 'startDate',
       orderBy: 'ASC',
     },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'no-cache',
   })
   const [searchUser, userSearchQuery] = useLazyQuery(USER_SEARCH)
   const [printActivity, printActivityQuery] = useLazyQuery(PRINT_ACTIVITY, {

@@ -94,7 +94,7 @@ const AdminArea = () => {
 						<Card bg="light" className="shadow-sm">
 							<Card.Body>
 								<h1>{data?.analytics?.bookings}</h1>
-								Bookings
+								Approved Appointments
 							</Card.Body>
 						</Card>
 					</Col>

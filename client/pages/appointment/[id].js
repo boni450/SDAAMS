@@ -4,14 +4,16 @@ import { Context } from '@/lib/context'
 import { useRouter } from 'next/router'
 import Loader from '@/components/loader'
 import { useQuery } from '@apollo/client'
-import { Container } from 'react-bootstrap'
+import Calendar from '@/components/calendar'
 import DefaultLayout from '@/layouts/default'
+import { Container, Tabs, Tab } from 'react-bootstrap'
 import { GET_APPOINTMENT } from '@/lib/graphql/queries'
+import AppointmentTable from '@/components/appointment/table'
 
 const Appointment = () => {
 	const router = useRouter()
 	const { state } = useContext(Context)
-	const { data } = useQuery(GET_APPOINTMENT, {
+	const { data, refetch } = useQuery(GET_APPOINTMENT, {
 		variables: { id: Number.parseInt(router.query.id) || 0 },
 		fetchPolicy: 'network-only',
 	})
@@ -25,33 +27,27 @@ const Appointment = () => {
 		return (
 			<DefaultLayout title="Appointment - SDAAMS">
 				<Container>
-					<h2>{data?.appointment?.name}</h2>
-					<p>{data?.appointment?.description}</p>
-					Author:{' '}
-					<Link href={'/user/' + data?.appointment?.ownerId}>
-						<a>
-							{data?.appointment?.owner?.firstName}{' '}
-							{data?.appointment?.owner?.lastName}
-						</a>
-					</Link>
-					<br />
-					Start:{' '}
-					{a.toLocaleString('en-US', {
-						day: 'numeric',
-						month: 'short',
-						year: 'numeric',
-						hour: 'numeric',
-						minute: '2-digit',
-					})}
-					<br />
-					Stop:{' '}
-					{b.toLocaleString('en-US', {
-						day: 'numeric',
-						month: 'short',
-						year: 'numeric',
-						hour: 'numeric',
-						minute: '2-digit',
-					})}
+					<Tabs
+						defaultActiveKey="1"
+						id="uncontrolled-tab-example"
+						className="mb-3"
+					>
+						<Tab eventKey="1" title="Activity / Appointment">
+							<AppointmentTable
+								state={state}
+								refetch={refetch}
+								appointments={[data?.appointment] || []}
+							/>
+						</Tab>
+						<Tab eventKey="2" title="Calendar">
+							<Calendar
+								state={state}
+								refetch={refetch}
+								profile={state?.user}
+								data={[data?.appointment] || []}
+							/>
+						</Tab>
+					</Tabs>
 				</Container>
 			</DefaultLayout>
 		)
