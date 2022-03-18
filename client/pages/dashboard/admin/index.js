@@ -15,7 +15,9 @@ import {
 } from 'recharts'
 
 const AdminArea = () => {
-	const { loading, data } = useQuery(ANALYTICS)
+	const { loading, data } = useQuery(ANALYTICS, {
+		fetchPolicy: 'no-cache',
+	})
 	const chartData = [
 		{
 			name: 'Page A',

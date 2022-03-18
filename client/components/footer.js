@@ -7,13 +7,14 @@ const Footer = () => {
 			<hr />
 			<Container>
 				<Row>
-					<Col md={6} sm={12}>
+					<Col md={4} sm={12}>
 						<h3>Why work with us</h3>
 						<p>
-							
+							We help you schedule (organize) you daily activites; so as to
+							focus on what is really important to you.
 						</p>
 					</Col>
-					<Col md={3} sm={6}>
+					<Col md={{ span: 3, offset: 1 }} sm={6}>
 						<h3>Quick links</h3>
 						<ul>
 							<li>
@@ -38,7 +39,7 @@ const Footer = () => {
 							</li>
 						</ul>
 					</Col>
-					<Col md={3} sm={6}>
+					<Col md={{ span: 3, offset: 1 }} sm={6}>
 						<h3>Get in touch</h3>
 						<ul className="text-truncate">
 							<li>Phone : +250 787065183</li>

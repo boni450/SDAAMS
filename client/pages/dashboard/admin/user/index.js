@@ -7,7 +7,9 @@ import { useQuery, useMutation } from '@apollo/client'
 import { Container, Table, Button } from 'react-bootstrap'
 
 const Users = () => {
-  const { data, loading, refetch } = useQuery(GET_USERS)
+  const { data, loading, refetch } = useQuery(GET_USERS, {
+    fetchPolicy: 'no-cache',
+  })
   const [attemptDeletingUser, deleteUserMutation] = useMutation(DELETE_USER, {
     errorPolicy: 'all',
     onCompleted: (data) => {
@@ -16,7 +18,7 @@ const Users = () => {
   })
 
   const deleteUser = (id) => {
-    if (confirm('You are about to delete a chat message :('))
+    if (confirm('You are about to delete a user :('))
       attemptDeletingUser({ variables: { id: Number.parseInt(id) } })
   }
 
@@ -56,9 +58,9 @@ const Users = () => {
                     <Link href={'/user/' + user?.id}>
                       <a className="btn btn-sm btn-primary">View</a>
                     </Link>{' '}
-                    <Button variant="success" size="sm">
-                      Edit
-                    </Button>{' '}
+                    <Link href={'/dashboard/admin/user/' + user?.id}>
+                      <a className="btn btn-sm btn-success">Edit</a>
+                    </Link>{' '}
                     <Button
                       size="sm"
                       variant="warning"

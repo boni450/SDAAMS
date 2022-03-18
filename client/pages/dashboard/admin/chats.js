@@ -6,7 +6,9 @@ import { useQuery, useMutation } from '@apollo/client'
 import { Container, Table, Button } from 'react-bootstrap'
 
 const Chats = () => {
-  const { data, loading, refetch } = useQuery(GET_CHATS)
+  const { data, loading, refetch } = useQuery(GET_CHATS, {
+    fetchPolicy: 'no-cache',
+  })
   const [attemptDeletingChat, deleteChatMutation] = useMutation(DELETE_CHAT, {
     errorPolicy: 'all',
     onCompleted: (data) => {

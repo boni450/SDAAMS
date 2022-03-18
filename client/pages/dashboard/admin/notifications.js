@@ -7,7 +7,9 @@ import { Container, Table, Button } from 'react-bootstrap'
 import { DELETE_NOTIFICATION } from '@/lib/graphql/mutations'
 
 const Notifications = () => {
-	const { data, loading, refetch } = useQuery(GET_NOTIFICATIONS)
+	const { data, loading, refetch } = useQuery(GET_NOTIFICATIONS, {
+		fetchPolicy: 'no-cache',
+	})
 	const [attemptDeletingNotification, deleteNotificationMutation] = useMutation(
 		DELETE_NOTIFICATION,
 		{

@@ -51,7 +51,7 @@ module.exports = {
   deleteUser: async (parent, { id }, context) => {
     await User.destroy({ where: { id } })
     await Appointment.destroy({
-      where: { [Op.or]: [{ onwerId: id }, { approverId: id }] },
+      where: { [Op.or]: [{ ownerId: id }, { approverId: id }] },
     })
     return 'ok'
   },

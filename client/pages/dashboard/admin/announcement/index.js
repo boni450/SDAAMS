@@ -7,7 +7,9 @@ import { Container, Table, Button } from 'react-bootstrap'
 import { DELETE_ANNOUNCEMENT } from '@/lib/graphql/mutations'
 
 const Announcements = () => {
-  const { data, loading, refetch } = useQuery(GET_ANNOUNCEMENTS) // ! FETCH every time you visit page
+  const { data, loading, refetch } = useQuery(GET_ANNOUNCEMENTS, {
+    fetchPolicy: 'no-cache',
+  })
   const [attemptDeletingAnnouncement, deleteAnnouncementMutation] = useMutation(
     DELETE_ANNOUNCEMENT,
     {
@@ -80,9 +82,7 @@ const Announcements = () => {
                       <Link href="#">
                         <a className="btn btn-sm btn-primary">View</a>
                       </Link>{' '}
-                      <Link
-                        href={'/dashboard/admin/announcement/edit/' + item.id}
-                      >
+                      <Link href={'/dashboard/admin/announcement/' + item.id}>
                         <a className="btn btn-sm btn-success">Edit</a>
                       </Link>{' '}
                       <Button

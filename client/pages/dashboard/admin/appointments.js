@@ -7,7 +7,9 @@ import { Container, Table, Button } from 'react-bootstrap'
 import { DELETE_APPOINTMENT } from '@/lib/graphql/mutations'
 
 const Appointments = () => {
-  const { data, loading, refetch } = useQuery(GET_APPOINTMENTS)
+  const { data, loading, refetch } = useQuery(GET_APPOINTMENTS, {
+    fetchPolicy: 'no-cache',
+  })
   const [attemptDeletingAppointment, deleteAppointmentMutation] = useMutation(
     DELETE_APPOINTMENT,
     {
