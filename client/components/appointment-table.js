@@ -101,23 +101,33 @@ const AppointmentTable = ({ state, refetch, appointments }) => {
 									{state?.user?.id == appointment?.approverId && (
 										<>
 											{appointment?.isApproved ? (
-												<Button
-													size="sm"
-													variant="secondary"
-													onClick={() =>
-														approveAppointment(appointment?.id, false)
-													}
-												>
-													Disapprove
-												</Button>
+												<>
+													<Button
+														size="sm"
+														variant="secondary"
+														onClick={() =>
+															approveAppointment(appointment?.id, false)
+														}
+													>
+														Disapprove
+													</Button>{' '}
+													<Button size="sm" variant="primary" disabled>
+														Approve
+													</Button>
+												</>
 											) : (
-												<Button
-													size="sm"
-													variant="primary"
-													onClick={() => approveAppointment(appointment?.id)}
-												>
-													Approve
-												</Button>
+												<>
+													<Button size="sm" variant="secondary" disabled>
+														Disapprove
+													</Button>{' '}
+													<Button
+														size="sm"
+														variant="primary"
+														onClick={() => approveAppointment(appointment?.id)}
+													>
+														Approve
+													</Button>
+												</>
 											)}{' '}
 										</>
 									)}

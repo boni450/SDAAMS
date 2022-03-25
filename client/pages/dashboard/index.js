@@ -10,7 +10,7 @@ import { useContext, useState } from 'react'
 import Calendar from '@/components/calendar'
 import DefaultLayout from '@/layouts/default'
 import { useQuery, useLazyQuery } from '@apollo/client'
-import AppointmentTable from '@/components/appointment/table'
+import AppointmentTable from '@/components/appointment-table'
 import {
   Row,
   Col,

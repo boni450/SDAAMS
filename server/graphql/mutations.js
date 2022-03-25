@@ -4,6 +4,7 @@ const {
   Appointment,
   Notification,
   Announcement,
+  Comment,
 } = require('../models')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
@@ -115,6 +116,20 @@ module.exports = {
 
   deleteChat: async (parent, { id }, context) => {
     await Chat.destroy({ where: { id } })
+    return 'ok'
+  },
+
+  addComment: async (parent, args, context) => {
+    return await Comment.create({ ...args })
+  },
+
+  updateComment: async (parent, args, context) => {
+    await Comment.update({ ...args }, { where: { id: args?.id } })
+    return await Comment.findByPk(args?.id) // FIXME
+  },
+
+  deleteComment: async (parent, { id }, context) => {
+    await Comment.destroy({ where: { id } })
     return 'ok'
   },
 }

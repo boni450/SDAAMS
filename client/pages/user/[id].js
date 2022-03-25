@@ -7,7 +7,7 @@ import DefaultLayout from '@/layouts/default'
 import { ADD_CHAT } from '@/lib/graphql/mutations'
 import { useQuery, useMutation } from '@apollo/client'
 import { ComposeMessageForm } from '@/components/chat/add'
-import AppointmentTable from '@/components/appointment/table'
+import AppointmentTable from '@/components/appointment-table'
 import { GET_USER_WITH_APPOINTMENTS } from '@/lib/graphql/queries'
 import { Row, Col, Tab, Nav, Alert, Container } from 'react-bootstrap'
 

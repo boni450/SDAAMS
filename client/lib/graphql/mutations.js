@@ -221,3 +221,18 @@ export const DELETE_CHAT = gql`
     deleteChat(id: $id)
   }
 `
+
+export const ADD_COMMENT = gql`
+  mutation AddComment($message: String!, $appointmentId: Int!, $userId: Int!) {
+    addComment(
+      userId: $userId
+      message: $message
+      appointmentId: $appointmentId
+    ) {
+      id
+      userId
+      message
+      appointmentId
+    }
+  }
+`

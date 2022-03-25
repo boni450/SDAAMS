@@ -21,3 +21,8 @@
 .eventBtn {
   max-width: 160px;
 }
+
+.commentList {
+  max-height: 250px;
+  overflow-y: auto;
+}

@@ -36,4 +36,13 @@ module.exports = {
 			return await User.findByPk(userId)
 		},
 	},
+
+	Comment: {
+		user: async ({ userId }, args, context) => {
+			return await User.findByPk(userId)
+		},
+		appointment: async ({ appointmentId }, args, context) => {
+			return await Appointment.findByPk(appointmentId)
+		},
+	},
 }

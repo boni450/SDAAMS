@@ -1,4 +1,5 @@
 import { Modal, Button, Badge } from 'react-bootstrap'
+import Comment from '@/components/comment'
 
 const ShowAppointmentModal = ({
   visible,
@@ -19,6 +20,7 @@ const ShowAppointmentModal = ({
         <Modal.Title>{appointment?.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <p>{appointment?.description}</p>
         <h5>
           <Badge bg={appointment?.color}>
             {appointment?.owner?.firstName} {appointment?.owner?.lastName}
@@ -44,11 +46,11 @@ const ShowAppointmentModal = ({
             })}
           </Badge>
         </h5>
-        <p className="mb-0">{appointment?.description}</p>
+        <Comment state={state} appointment={appointment} />
       </Modal.Body>
       {state?.user?.id && state?.user?.id === appointment?.ownerId && (
         <Modal.Footer>
-          <Button variant="primary" onClick={update}>
+          <Button variant="success" onClick={update}>
             Edit
           </Button>
           <Button variant="warning" onClick={erase}>

@@ -113,6 +113,7 @@ type Query {
 
   comment(id: Int!): Comment
   comments(
+    id: Int
     limit: Int
     offset: Int
     userId: Int

@@ -275,6 +275,38 @@ export const GET_NOTIFICATIONS = gql`
   }
 `
 
+export const GET_COMMENTS = gql`
+  query GetComments(
+    $id: Int
+    $limit: Int
+    $offset: Int
+    $userId: Int
+    $orderBy: String
+    $orderCol: String
+  ) {
+    comments(
+      id: $id
+      limit: $limit
+      offset: $offset
+      userId: $userId
+      orderBy: $orderBy
+      orderCol: $orderCol
+    ) {
+      id
+      message
+      createdAt
+      userId
+      user {
+        id
+        email
+        lastName
+        firstName
+      }
+      appointmentId
+    }
+  }
+`
+
 export const GET_DASHBOARD_DATA = gql`
   query GetDashboardData(
     $limit: Int

@@ -8,7 +8,7 @@ import Calendar from '@/components/calendar'
 import DefaultLayout from '@/layouts/default'
 import { Container, Tabs, Tab } from 'react-bootstrap'
 import { GET_APPOINTMENT } from '@/lib/graphql/queries'
-import AppointmentTable from '@/components/appointment/table'
+import AppointmentTable from '@/components/appointment-table'
 
 const Appointment = () => {
 	const router = useRouter()

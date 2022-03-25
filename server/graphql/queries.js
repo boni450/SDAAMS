@@ -4,6 +4,7 @@ const {
 	Appointment,
 	Notification,
 	Announcement,
+	Comment,
 } = require('../models')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
@@ -143,6 +144,23 @@ module.exports = {
 						[Op.or]: [{ senderId: userId }, { receiverId: userId }],
 				  }
 				: {},
+			order: [[orderCol || 'id', orderBy || 'ASC']],
+		})
+	},
+
+	comment: async (parent, { id }, context) => {
+		return await Comment.findByPk(id)
+	},
+
+	comments: async (
+		parent,
+		{ id, offset, limit, orderBy, orderCol },
+		context
+	) => {
+		return await Comment.findAll({
+			offset: offset || 0,
+			limit: limit || 100,
+			where: id ? { appointmentId: id } : {},
 			order: [[orderCol || 'id', orderBy || 'ASC']],
 		})
 	},
