@@ -76,7 +76,22 @@ module.exports = {
 
   updateAppointment: async (parent, args, context) => {
     await Appointment.update({ ...args }, { where: { id: args?.id } })
-    return await Appointment.findByPk(args?.id) // FIXME
+    const appointment = await Appointment.findByPk(args?.id) // FIXME
+
+    if (args?.isApproved && appointment?.ownerId != appointment?.approverId) {
+      const approver = await User.findByPk(appointment?.approverId)
+      await Notification.create({
+        userId: appointment?.ownerId,
+        message:
+          approver.firstName +
+          ' ' +
+          approver.lastName +
+          ' - approved your appointment',
+        link: '/appointment/' + appointment.id,
+      })
+    }
+
+    return appointment
   },
 
   deleteAppointment: async (parent, { id }, context) => {

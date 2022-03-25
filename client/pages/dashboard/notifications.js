@@ -12,6 +12,7 @@ const Notifications = () => {
   const router = useRouter()
   const { state } = useContext(Context)
   const { data, loading } = useQuery(GET_NOTIFICATIONS, {
+    fetchPolicy: 'no-cache',
     variables: { orderBy: 'DESC', userId: state?.user?.id },
   })
   const [attemptUpdatingNotification, updateNotificationMutation] = useMutation(
