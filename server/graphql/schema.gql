@@ -1,5 +1,6 @@
 type User {
   id: ID!
+  name: String
   firstName: String
   lastName: String
   email: String
@@ -11,6 +12,8 @@ type User {
   notifications: [Notification!]
   comments: [Comment!]
   chat: [Chat!]
+  appointmentCount: Int
+  commentCount: Int
 }
 
 type Appointment {

@@ -4,13 +4,13 @@ import { useQuery } from '@apollo/client'
 import { Card, Row, Col } from 'react-bootstrap'
 import { ANALYTICS } from '@/lib/graphql/queries'
 import {
-	LineChart,
 	Line,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
 	Legend,
+	Tooltip,
+	LineChart,
+	CartesianGrid,
 	ResponsiveContainer,
 } from 'recharts'
 
@@ -18,51 +18,6 @@ const AdminArea = () => {
 	const { loading, data } = useQuery(ANALYTICS, {
 		fetchPolicy: 'no-cache',
 	})
-	const chartData = [
-		{
-			name: 'Page A',
-			uv: 4000,
-			pv: 2400,
-			amt: 2400,
-		},
-		{
-			name: 'Page B',
-			uv: 3000,
-			pv: 1398,
-			amt: 2210,
-		},
-		{
-			name: 'Page C',
-			uv: 2000,
-			pv: 9800,
-			amt: 2290,
-		},
-		{
-			name: 'Page D',
-			uv: 2780,
-			pv: 3908,
-			amt: 2000,
-		},
-		{
-			name: 'Page E',
-			uv: 1890,
-			pv: 4800,
-			amt: 2181,
-		},
-		{
-			name: 'Page F',
-			uv: 2390,
-			pv: 3800,
-			amt: 2500,
-		},
-		{
-			name: 'Page G',
-			uv: 3490,
-			pv: 4300,
-			amt: 2100,
-		},
-	]
-
 	if (loading)
 		return (
 			<AdminLayout title="Admin Area - SDAAMS">
@@ -107,14 +62,14 @@ const AdminArea = () => {
 						</Card>
 					</Col>
 					<Col md={12}>
-						<ResponsiveContainer width="100%" height={400} className="my-4">
+						<ResponsiveContainer width="100%" height={500} className="my-4">
 							<LineChart
 								width={500}
-								height={300}
-								data={chartData}
+								height={500}
+								data={data?.users}
 								margin={{
 									top: 5,
-									right: 30,
+									right: 20,
 									left: 20,
 									bottom: 5,
 								}}
@@ -126,11 +81,11 @@ const AdminArea = () => {
 								<Legend />
 								<Line
 									type="monotone"
-									dataKey="pv"
+									dataKey="comments"
 									stroke="#8884d8"
 									activeDot={{ r: 8 }}
 								/>
-								<Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+								<Line type="monotone" dataKey="appointments" stroke="#82ca9d" />
 							</LineChart>
 						</ResponsiveContainer>
 					</Col>

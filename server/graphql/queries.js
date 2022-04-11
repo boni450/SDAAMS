@@ -1,10 +1,10 @@
 const {
 	User,
 	Chat,
+	Comment,
 	Appointment,
 	Notification,
 	Announcement,
-	Comment,
 } = require('../models')
 const jwt = require('jsonwebtoken')
 const { Op } = require('sequelize')
@@ -167,8 +167,8 @@ module.exports = {
 
 	analytics: async (parent, args, context) => {
 		return {
-			comments: 0,
 			users: await User.count(),
+			comments: await Comment.count(),
 			appointments: await Appointment.count(),
 			bookings: await Appointment.count({ where: { isApproved: true } }),
 		}

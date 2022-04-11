@@ -14,6 +14,12 @@ export const ANALYTICS = gql`
       bookings
       users
     }
+    users(limit: 20, orderBy: "DESC") {
+      id
+      name
+      comments: commentCount
+      appointments: appointmentCount
+    }
   }
 `
 

@@ -1,9 +1,19 @@
-const { User, Appointment } = require('../models')
+const { User, Comment, Appointment } = require('../models')
 
 module.exports = {
 	User: {
 		appointments: async ({ id }, args, context) => {
 			return await Appointment.findAll({ where: { ownerId: id } })
+		},
+		appointmentCount: async ({ id }, args, context) => {
+			return await Appointment.count({ where: { ownerId: id } })
+		},
+		commentCount: async ({ id }, args, context) => {
+			return await Comment.count({ where: { userId: id } })
+		},
+		name: async ({ id }, args, context) => {
+			const user = await User.findByPk(id)
+			return user?.firstName + ' ' + user?.lastName
 		},
 	},
 

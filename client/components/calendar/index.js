@@ -105,6 +105,8 @@ const Calendar = ({ data, state, profile, refetch }) => {
 
     a.setDate(day)
     b.setDate(day - 1)
+    a.setHours(23)
+    b.setHours(0)
 
     return appointments.filter((appointment) => {
       if (!appointment?.isApproved) return
