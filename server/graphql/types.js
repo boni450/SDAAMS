@@ -1,4 +1,5 @@
-const { User, Comment, Appointment } = require('../models')
+const { Op } = require('sequelize')
+const { User, Chat, Comment, Appointment } = require('../models')
 
 module.exports = {
 	User: {
@@ -10,6 +11,11 @@ module.exports = {
 		},
 		commentCount: async ({ id }, args, context) => {
 			return await Comment.count({ where: { userId: id } })
+		},
+		chatCount: async ({ id }, args, context) => {
+			return await Chat.count({
+				where: { [Op.or]: [{ senderId: id }, { receiverId: id }] },
+			})
 		},
 		name: async ({ id }, args, context) => {
 			const user = await User.findByPk(id)

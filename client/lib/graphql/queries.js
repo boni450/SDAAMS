@@ -17,6 +17,7 @@ export const ANALYTICS = gql`
     users(limit: 20, orderBy: "DESC") {
       id
       name
+      chats: chatCount
       comments: commentCount
       appointments: appointmentCount
     }

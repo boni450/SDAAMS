@@ -14,6 +14,7 @@ type User {
   chat: [Chat!]
   appointmentCount: Int
   commentCount: Int
+  chatCount: Int
 }
 
 type Appointment {
