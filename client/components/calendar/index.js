@@ -95,23 +95,28 @@ const Calendar = ({ data, state, profile, refetch }) => {
   const getDayAppointments = (day = 0) => {
     let a = new Date() // FIXME: loop this
     let b = new Date()
-    let c = new Date()
-    let d = new Date()
 
     a.setMonth(a.getMonth() + monthDifference)
     b.setMonth(b.getMonth() + monthDifference)
-    c.setMonth(c.getMonth() + monthDifference)
-    d.setMonth(d.getMonth() + monthDifference)
 
     a.setDate(day)
     b.setDate(day - 1)
+
     a.setHours(23)
     b.setHours(0)
 
     return appointments.filter((appointment) => {
       if (!appointment?.isApproved) return
+
+      let c = new Date();
+      let d = new Date();
+
       c.setTime(appointment?.startDate)
       d.setTime(appointment?.endDate)
+      
+      c.setHours(23);
+      d.setHours(0);
+
       return c < a && b < d
     })
   }
@@ -209,7 +214,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
           >
             &#8649;
           </button>
-          {state?.user?.id && (
+          {(state?.user?.id && monthDifference >= 0) && (
             <button
               className="btn btn-primary rounded-pill ms-1"
               onClick={() => setShowAddModal(!showAddModal)}

@@ -4,6 +4,7 @@ import {
   GET_DASHBOARD_DATA,
 } from '@/lib/graphql/queries'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Context } from '@/lib/context'
 import Loader from '@/components/loader'
 import { useContext, useState } from 'react'
@@ -51,6 +52,8 @@ const Dashboard = () => {
     event.preventDefault()
     printActivity({ variables: { userId: state?.user?.id, range } })
   }
+
+  if (state?.user?.role == 'admin') useRouter().push('/dashboard/admin')
 
   if (loading)
     return (
@@ -132,6 +135,7 @@ const Dashboard = () => {
                 })}
               </Row>
             </Tab>
+            {state?.user?.role !== 'staff' && (
             <Tab eventKey="4" title="Request Appointment">
               <Form onSubmit={searchSubmit} className="d-flex mb-2">
                 <Form.Control
@@ -182,7 +186,7 @@ const Dashboard = () => {
                   </tbody>
                 </Table>
               )}
-            </Tab>
+            </Tab>)}
           </Tabs>
         </Container>
       </DefaultLayout>

@@ -33,9 +33,9 @@ module.exports = {
 			limit: 100,
 			where: {
 				[Op.or]: [
-					{ email: { [Op.like]: `%${keyword}%` } },
-					{ lastName: { [Op.like]: `%${keyword}%` } },
-					{ firstName: { [Op.like]: `%${keyword}%` } },
+					{ email: { [Op.like]: `%${keyword}%` }, role: 'staff' },
+					{ lastName: { [Op.like]: `%${keyword}%` }, role: 'staff' },
+					{ firstName: { [Op.like]: `%${keyword}%` }, role: 'staff' },
 				],
 			},
 		})

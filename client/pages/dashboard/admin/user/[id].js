@@ -100,6 +100,7 @@ const Edit = () => {
                         onChange={(el) => setRole(el.target.value)}
                       >
                         <option value="user">User</option>
+                        <option value="staff">Staff</option>
                         <option value="admin">Admin</option>
                       </Form.Select>
                     </Form.Group>

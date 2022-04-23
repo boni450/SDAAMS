@@ -46,11 +46,7 @@ const Header = ({ fluid, notifications }) => {
           </Nav>
           {state?.user?.id ? (
             <Nav>
-              {state?.user?.role === 'admin' && (
-                <Link href="/dashboard/admin">
-                  <a className="nav-link">Admin Area</a>
-                </Link>
-              )}
+              {state?.user?.role !== 'admin' && (<>
               <Link href="/dashboard">
                 <a className="nav-link">Dashboard</a>
               </Link>
@@ -65,7 +61,8 @@ const Header = ({ fluid, notifications }) => {
               </Link>
               <Link href="/dashboard/settings">
                 <a className="nav-link">Settings</a>
-              </Link>
+              </Link></>
+              )}
               <button
                 className="btn btn-outline-light rounded-pill ms-1"
                 onClick={() => {
