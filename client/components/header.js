@@ -46,22 +46,30 @@ const Header = ({ fluid, notifications }) => {
           </Nav>
           {state?.user?.id ? (
             <Nav>
-              {state?.user?.role !== 'admin' && (<>
-              <Link href="/dashboard">
-                <a className="nav-link">Dashboard</a>
-              </Link>
-              <Link href="/dashboard/chat">
-                <a className="nav-link">Chat</a>
-              </Link>
-              <Link href="/dashboard/notifications">
-                <a className="nav-link">
-                  Notifications{' '}
-                  {notifications != 0 && <Badge pill>{notifications}</Badge>}
-                </a>
-              </Link>
-              <Link href="/dashboard/settings">
-                <a className="nav-link">Settings</a>
-              </Link></>
+              {state?.user?.role !== 'admin' ? (
+                <>
+                  <Link href="/dashboard">
+                    <a className="nav-link">Dashboard</a>
+                  </Link>
+                  <Link href="/dashboard/chat">
+                    <a className="nav-link">Chat</a>
+                  </Link>
+                  <Link href="/dashboard/notifications">
+                    <a className="nav-link">
+                      Notifications{' '}
+                      {notifications != 0 && (
+                        <Badge pill>{notifications}</Badge>
+                      )}
+                    </a>
+                  </Link>
+                  <Link href="/dashboard/settings">
+                    <a className="nav-link">Settings</a>
+                  </Link>
+                </>
+              ) : (
+                <Link href="/dashboard">
+                  <a className="nav-link">Dashboard</a>
+                </Link>
               )}
               <button
                 className="btn btn-outline-light rounded-pill ms-1"

@@ -49,7 +49,7 @@ const Announcements = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Message</th>
+                <th style={{ width: '40%' }}>Message</th>
                 <th>Author</th>
                 <th>Time</th>
                 <th>Action</th>

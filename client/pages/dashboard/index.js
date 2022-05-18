@@ -53,6 +53,11 @@ const Dashboard = () => {
     printActivity({ variables: { userId: state?.user?.id, range } })
   }
 
+  const printPDF = (event) => {
+    event.preventDefault()
+    print()
+  }
+
   if (state?.user?.role == 'admin') useRouter().push('/dashboard/admin')
 
   if (loading)
@@ -98,8 +103,11 @@ const Dashboard = () => {
                   <option value="week">This Week</option>
                   <option value="month">This Month</option>
                 </Form.Select>
-                <Button variant="secondary" type="submit">
-                  Print
+                <Button variant="secondary" type="submit" className="me-2">
+                  Print Excel
+                </Button>
+                <Button variant="secondary" onClick={printPDF}>
+                  Print PDF
                 </Button>
               </Form>
               <AppointmentTable
@@ -136,57 +144,58 @@ const Dashboard = () => {
               </Row>
             </Tab>
             {state?.user?.role !== 'staff' && (
-            <Tab eventKey="4" title="Request Appointment">
-              <Form onSubmit={searchSubmit} className="d-flex mb-2">
-                <Form.Control
-                  type="text"
-                  value={keyword}
-                  required={true}
-                  className="w-50 me-2"
-                  placeholder="Search person by name, email..."
-                  onChange={(el) => setKeyword(el.target.value)}
-                />
-                <Button variant="primary" type="submit" className="me-auto">
-                  Search
-                </Button>
-              </Form>
-              {userSearchQuery?.data?.userSearch.length && (
-                <Table
-                  striped
-                  bordered
-                  hover
-                  responsive
-                  className="mt-2 shadow-sm"
-                >
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Email</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userSearchQuery?.data?.userSearch.map((user, index) => (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{user?.firstName}</td>
-                        <td>{user?.lastName}</td>
-                        <td>{user?.email}</td>
-                        <td>
-                          <Link href={'/user/' + user?.id}>
-                            <a className="btn btn-sm btn-secondary">
-                              Book Appointment
-                            </a>
-                          </Link>
-                        </td>
+              <Tab eventKey="4" title="Request Appointment">
+                <Form onSubmit={searchSubmit} className="d-flex mb-2">
+                  <Form.Control
+                    type="text"
+                    value={keyword}
+                    required={true}
+                    className="w-50 me-2"
+                    placeholder="Search person by name, email..."
+                    onChange={(el) => setKeyword(el.target.value)}
+                  />
+                  <Button variant="primary" type="submit" className="me-auto">
+                    Search
+                  </Button>
+                </Form>
+                {userSearchQuery?.data?.userSearch.length && (
+                  <Table
+                    striped
+                    bordered
+                    hover
+                    responsive
+                    className="mt-2 shadow-sm"
+                  >
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Action</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              )}
-            </Tab>)}
+                    </thead>
+                    <tbody>
+                      {userSearchQuery?.data?.userSearch.map((user, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{user?.firstName}</td>
+                          <td>{user?.lastName}</td>
+                          <td>{user?.email}</td>
+                          <td>
+                            <Link href={'/user/' + user?.id}>
+                              <a className="btn btn-sm btn-secondary">
+                                Book Appointment
+                              </a>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
+              </Tab>
+            )}
           </Tabs>
         </Container>
       </DefaultLayout>

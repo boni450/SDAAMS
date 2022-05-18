@@ -42,7 +42,7 @@ const Appointments = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Description</th>
+                <th style={{ width: '35%' }}>Description</th>
                 <th>Author</th>
                 <th>Time Span</th>
                 <th>Action</th>
