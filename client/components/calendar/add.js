@@ -135,7 +135,7 @@ const AddAppointmentModal = ({
             </Col>
             <Col md={3}>
               <Form.Control
-                min="1"
+                min={month.today.getDate()}
                 type="number"
                 required={true}
                 placeholder="Day"
