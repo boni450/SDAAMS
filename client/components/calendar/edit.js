@@ -139,7 +139,7 @@ const EditAppointmentModal = ({
             </Col>
             <Col md={3}>
               <button
-                disabled='true'
+                disabled={true}
                 title="next month"
                 data-bs-toggle="tooltip"
                 className="btn btn-secondary rounded-pill mx-1"

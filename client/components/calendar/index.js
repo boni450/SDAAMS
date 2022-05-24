@@ -108,14 +108,14 @@ const Calendar = ({ data, state, profile, refetch }) => {
     return appointments.filter((appointment) => {
       if (!appointment?.isApproved) return
 
-      let c = new Date();
-      let d = new Date();
+      let c = new Date()
+      let d = new Date()
 
       c.setTime(appointment?.startDate)
       d.setTime(appointment?.endDate)
-      
-      c.setHours(23);
-      d.setHours(0);
+
+      c.setHours(23)
+      d.setHours(0)
 
       return c < a && b < d
     })
@@ -149,6 +149,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
         ownerId: state?.user?.id,
       },
     })
+    refetch()
   }
 
   const deleteAppointment = () => {
@@ -214,7 +215,7 @@ const Calendar = ({ data, state, profile, refetch }) => {
           >
             &#8649;
           </button>
-          {(state?.user?.id && monthDifference >= 0) && (
+          {state?.user?.id && monthDifference >= 0 && (
             <button
               className="btn btn-primary rounded-pill ms-1"
               onClick={() => setShowAddModal(!showAddModal)}
