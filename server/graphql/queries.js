@@ -175,7 +175,32 @@ module.exports = {
   },
 
   printActivity: async (parent, { userId, range }, context) => {
-    // FIXME: range, get owner & approver
+    let condition = { [Op.or]: [{ ownerId: userId }, { approverId: userId }] }
+
+    if (range == 'today')
+      condition = {
+        [Op.or]: [{ ownerId: userId }, { approverId: userId }],
+        startDate: {
+          [Op.gt]: new Date().setHours(0, 0, 0, 0),
+          [Op.lt]: new Date().setHours(23, 59, 59, 59),
+        },
+      }
+    if (range == 'week')
+      condition = {
+        [Op.or]: [{ ownerId: userId }, { approverId: userId }],
+        startDate: {
+          [Op.gt]: new Date().setDate(new Date().getDate() - 6),
+          [Op.lt]: new Date().setDate(new Date().getDate() + 6),
+        },
+      }
+    if (range == 'month')
+      condition = {
+        [Op.or]: [{ ownerId: userId }, { approverId: userId }],
+        startDate: {
+          [Op.gt]: new Date().setDate(0),
+          [Op.lt]: new Date().setDate(31),
+        },
+      }
     const json = await Appointment.findAll({
       raw: true,
       limit: 100,
@@ -189,7 +214,7 @@ module.exports = {
         'endDate',
         'createdAt',
       ],
-      where: { [Op.or]: [{ ownerId: userId }, { approverId: userId }] },
+      where: condition,
       order: [['id', 'ASC']],
     })
 

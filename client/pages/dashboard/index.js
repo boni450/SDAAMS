@@ -53,11 +53,6 @@ const Dashboard = () => {
     printActivity({ variables: { userId: state?.user?.id, range } })
   }
 
-  const printPDF = (event) => {
-    event.preventDefault()
-    print()
-  }
-
   if (state?.user?.role == 'admin') useRouter().push('/dashboard/admin')
 
   if (loading)
@@ -93,9 +88,12 @@ const Dashboard = () => {
               title={'My Activities (' + data?.appointments?.length + ')'}
             >
               <Form onSubmit={rangeSubmit} className="d-flex mb-2">
+                <Button variant="info" type="submit" className="ms-auto me-2">
+                  Print Excel
+                </Button>
                 <Form.Select
                   value={range}
-                  className="me-2 ms-auto w-25"
+                  className="w-25"
                   onChange={(el) => setRange(el.target.value)}
                 >
                   <option value="all">All Activities</option>
@@ -103,12 +101,6 @@ const Dashboard = () => {
                   <option value="week">This Week</option>
                   <option value="month">This Month</option>
                 </Form.Select>
-                <Button variant="secondary" type="submit" className="me-2">
-                  Print Excel
-                </Button>
-                <Button variant="secondary" onClick={printPDF}>
-                  Print PDF
-                </Button>
               </Form>
               <AppointmentTable
                 state={state}
