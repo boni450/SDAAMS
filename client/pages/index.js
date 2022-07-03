@@ -13,6 +13,7 @@ const Home = () => {
               <p>
                 Smart Daily Actvities Planning and Appointment Management System
               </p>
+              <Image src="/img/auca-logo.png" width="1200" height="180" />
             </section>
           </Col>
           <Col md={2} sm={4}>

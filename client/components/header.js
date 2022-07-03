@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useContext } from 'react'
 import { useRouter } from 'next/router'
 import { Context } from '@/lib/context'
@@ -12,8 +13,9 @@ const Header = ({ fluid, notifications }) => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="mb-4 shadow">
       <Container fluid={fluid}>
+        <Image src="/img/auca.jpg" width="32" height="32" className='rounded-pill' />
         <Link href="/">
-          <a className="navbar-brand">
+          <a className="navbar-brand mx-2">
             {typeof state?.user?.id !== 'undefined'
               ? state?.user?.firstName + ' ' + state?.user?.lastName
               : process.env.TITLE}

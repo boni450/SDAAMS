@@ -50,7 +50,16 @@ const Dashboard = () => {
 
   const rangeSubmit = (event) => {
     event.preventDefault()
-    printActivity({ variables: { userId: state?.user?.id, range } })
+    // printActivity({ variables: { userId: state?.user?.id, range } })
+
+    let divToPrint=document.getElementById("print-table");
+    let newWin= window.open("");
+    newWin.document.write('<link rel="stylesheet" href="/css/bootstrap.css" />'+divToPrint.outerHTML);
+
+    setTimeout(() => {
+      newWin.print();
+      newWin.close();
+    }, 1500)
   }
 
   if (state?.user?.role == 'admin') useRouter().push('/dashboard/admin')
@@ -89,9 +98,9 @@ const Dashboard = () => {
             >
               <Form onSubmit={rangeSubmit} className="d-flex mb-2">
                 <Button variant="info" type="submit" className="ms-auto me-2">
-                  Print Excel
+                  Print Report
                 </Button>
-                <Form.Select
+                {/*<Form.Select
                   value={range}
                   className="w-25"
                   onChange={(el) => setRange(el.target.value)}
@@ -101,7 +110,7 @@ const Dashboard = () => {
                   <option value="week">This Week</option>
                   <option value="month">This Month</option>
                 </Form.Select>
-              </Form>
+*/}              </Form>
               <AppointmentTable
                 state={state}
                 refetch={refetch}

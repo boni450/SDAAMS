@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useMutation } from '@apollo/client'
 import { Table, Button } from 'react-bootstrap'
 import { DELETE_APPOINTMENT, UPDATE_APPOINTMENT } from '@/lib/graphql/mutations'
@@ -33,8 +34,16 @@ const AppointmentTable = ({ state, refetch, appointments }) => {
 	}
 
 	return (
-		<Table hover bordered responsive className="shadow-sm">
+		<Table hover bordered responsive className="shadow-sm" id='print-table'>
 			<thead>
+				<tr>
+					<th colSpan="2">
+						<Image src="/img/auca-logo.png" width="400" height="75" />
+					</th>
+					<th colSpan="4" className='text-center'>
+						<span className='fs-1 py-6 text-uppercase'>Daily Activities Report</span>
+					</th>
+				</tr>
 				<tr>
 					<th>#</th>
 					<th>Name</th>
@@ -145,6 +154,10 @@ const AppointmentTable = ({ state, refetch, appointments }) => {
 						</tr>
 					)
 				})}
+				<tr>
+					<td colSpan="3">Report generated on: { new Date().toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit', }) }</td>
+					<td colSpan="3">Done by: { state?.user?.firstName + ' ' + state?.user?.lastName }</td>
+				</tr>
 			</tbody>
 		</Table>
 	)
